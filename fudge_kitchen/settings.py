@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEVELOPMENT' in os.environ
 
-ALLOWED_HOSTS = ['8000-ajmccredie-fudgekitchen-g7huh7ai6bl.ws-eu108.gitpod.io', '.herokuapp.com']
+ALLOWED_HOSTS = ['8000-ajmccredie-fudgekitchen-g7huh7ai6bl.ws-eu108.gitpod.io', 'https://roos-fudge-kitchen-9f7897dcad9e.herokuapp.com/']
 
 
 # Application definition
