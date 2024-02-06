@@ -6,5 +6,44 @@
 {% endblock %}
 
 {% block content %}
-    <p>Hello WORLD!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-12 mb-4">
+      <div class="card">
+        <img src="{% static 'image1.jpg' %}" class="card-img-top" alt="Image 1">
+        <div class="card-body">
+          <h5 class="card-title">Delicious Fudge</h5>
+          <a href="#" class="btn btn-primary">See the products!</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 mb-4">
+      <div class="card">
+        <img src="{% static 'image2.jpg' %}" class="card-img-top" alt="Image 2">
+        <div class="card-body">
+          <h5 class="card-title">Sweet Merchandise</h5>
+          <a href="#" class="btn btn-primary">Get the gear!</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 mb-4">
+      <div class="card">
+        <img src="{% static 'image3.jpg' %}" class="card-img-top" alt="Image 3">
+        <div class="card-body">
+          <h5 class="card-title">Our story</h5>
+          <a href="#" class="btn btn-primary">Where it all began</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 mb-4">
+      <div class="card">
+        <img src="{% static 'image4.jpg' %}" class="card-img-top" alt="Image 4">
+        <div class="card-body">
+          <h5 class="card-title">Subscription Details</h5>
+          <a href="#" class="btn btn-primary">Make life sweeter...</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
