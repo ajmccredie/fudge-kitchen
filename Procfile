@@ -1,1 +1,1 @@
-web: gunicorn fudge_kitchen.wsgi:application
+web: gunicorn fudge_kitchen.wsgi
