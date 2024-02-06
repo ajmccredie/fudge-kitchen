@@ -32,6 +32,7 @@ DEBUG = 'DEVELOPMENT' in os.environ
 
 ALLOWED_HOSTS = ['.herokuapp.com', '8000-ajmccredie-fudgekitchen-g7huh7ai6bl.ws-eu108.gitpod.io']
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Application definition
 
@@ -197,4 +198,3 @@ if 'USE_AWS' in os.environ:
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
