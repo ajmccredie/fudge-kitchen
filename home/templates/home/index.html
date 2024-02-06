@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,12 +8,12 @@
     <!-- Include Bootstrap CSS from a CDN for styling -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
  
-    <link rel="stylesheet" href='./static/css/base.css'>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <script src="https://kit.fontawesome.com/8c6dac4a35.js" crossorigin="anonymous"></script>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
 </head>
 <body>
 
@@ -22,7 +23,7 @@
     <div class="col-lg-6 col-md-12 mb-4">
       <div class="card">
         <!-- Update image source to direct path or URL -->
-        <img src="./static/images/coming_soon.jpg" class="card-img-top" alt="Image 1">
+        <img src="{% static 'images/coming_soon.jpg' %}" class="card-img-top" alt="Image 1">
         <div class="card-body">
           <h5 class="card-title">Delicious Fudge</h5>
           <a href="#" class="btn btn-primary">See the products!</a>
@@ -32,7 +33,7 @@
     <div class="col-lg-6 col-md-12 mb-4">
       <div class="card">
         <!-- Update image source to direct path or URL -->
-        <img src="./static/images/coming_soon.jpg" class="card-img-top" alt="Image 2">
+        <img src="{% static 'images/coming_soon.jpg' %}" class="card-img-top" alt="Image 2">
         <div class="card-body">
           <h5 class="card-title">Sweet Merchandise</h5>
           <a href="#" class="btn btn-primary">Get the gear!</a>
@@ -42,7 +43,7 @@
     <div class="col-lg-6 col-md-12 mb-4">
       <div class="card">
         <!-- Update image source to direct path or URL -->
-        <img src="./static/images/coming_soon.jpg" class="card-img-top" alt="Image 3">
+        <img src="{% static 'images/coming_soon.jpg' %}" class="card-img-top" alt="Image 3">
         <div class="card-body">
           <h5 class="card-title">Our story</h5>
           <a href="#" class="btn btn-primary">Where it all began</a>
@@ -52,7 +53,7 @@
     <div class="col-lg-6 col-md-12 mb-4">
       <div class="card">
         <!-- Update image source to direct path or URL -->
-        <img src="./static/images/coming_soon.jpg" class="card-img-top" alt="Image 4">
+        <img src="{% static 'images/coming_soon.jpg' %}" class="card-img-top" alt="Image 4">
         <div class="card-body">
           <h5 class="card-title">Subscription Details</h5>
           <a href="#" class="btn btn-primary">Make life sweeter...</a>
