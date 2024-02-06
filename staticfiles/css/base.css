@@ -1,0 +1,21 @@
+/* static/css/style.css */
+
+@font-face {
+    font-family: 'Terrapin';
+    src: url('../fonts/Terrapin[1].ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
+
+/* Example of using the font in your CSS */
+h1, h5 {
+    font-family: 'Terrapin', serif;
+}
+
+
+body {
+    background-color: aqua;
+    font-family: 'Anonymous Pro', monospace;
+}
