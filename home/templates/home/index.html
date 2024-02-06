@@ -1,16 +1,27 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <!-- Include Bootstrap CSS from a CDN for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ 
+    <link rel="stylesheet" href='css/base.css'>
+    <script src="https://kit.fontawesome.com/8c6dac4a35.js" crossorigin="anonymous"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+</head>
+<body>
 
-{% block page_header %}
-
-{% endblock %}
-
-{% block content %}
 <div class="container">
   <div class="row">
     <div class="col-lg-6 col-md-12 mb-4">
       <div class="card">
-        <img src="{% static 'image1.jpg' %}" class="card-img-top" alt="Image 1">
+        <!-- Update image source to direct path or URL -->
+        <img src="./static/images/coming_soon.jpg" class="card-img-top" alt="Image 1">
         <div class="card-body">
           <h5 class="card-title">Delicious Fudge</h5>
           <a href="#" class="btn btn-primary">See the products!</a>
@@ -19,7 +30,8 @@
     </div>
     <div class="col-lg-6 col-md-12 mb-4">
       <div class="card">
-        <img src="{% static 'image2.jpg' %}" class="card-img-top" alt="Image 2">
+        <!-- Update image source to direct path or URL -->
+        <img src="coming_soon.jpg" class="card-img-top" alt="Image 2">
         <div class="card-body">
           <h5 class="card-title">Sweet Merchandise</h5>
           <a href="#" class="btn btn-primary">Get the gear!</a>
@@ -28,7 +40,8 @@
     </div>
     <div class="col-lg-6 col-md-12 mb-4">
       <div class="card">
-        <img src="{% static 'image3.jpg' %}" class="card-img-top" alt="Image 3">
+        <!-- Update image source to direct path or URL -->
+        <img src="coming_soon.jpg" class="card-img-top" alt="Image 3">
         <div class="card-body">
           <h5 class="card-title">Our story</h5>
           <a href="#" class="btn btn-primary">Where it all began</a>
@@ -37,7 +50,8 @@
     </div>
     <div class="col-lg-6 col-md-12 mb-4">
       <div class="card">
-        <img src="{% static 'image4.jpg' %}" class="card-img-top" alt="Image 4">
+        <!-- Update image source to direct path or URL -->
+        <img src="coming_soon.jpg" class="card-img-top" alt="Image 4">
         <div class="card-body">
           <h5 class="card-title">Subscription Details</h5>
           <a href="#" class="btn btn-primary">Make life sweeter...</a>
@@ -46,4 +60,11 @@
     </div>
   </div>
 </div>
-{% endblock %}
+
+<!-- Optional: Include jQuery and Bootstrap JS for interactive components -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
