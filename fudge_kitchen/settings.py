@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'home',
     'edible_products',
+    #'profiles',
+    'profiles.apps.ProfilesConfig',
     # 'bag',
     # other
     'crispy_forms',
