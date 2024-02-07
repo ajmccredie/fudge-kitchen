@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 pt-7">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="image-container my-5">
+                {% if edible_product.image %}
+                    <a href="{{ edible_product.image.url }}" target="_blank">
+                        <img class="img-fluid" src="{{ edible_product.image.url }}" alt="{{ edible_product.flavour }}">
+                    </a>
+                {% else %}
+                    <img class="img-fluid" src="{% static 'images/noimage.png' %}" alt="No image available">
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="product-details-container mb-5 mt-md-5">
+                <h2>{{ edible_product.flavour }}</h2>
+                <p class="lead font-weight-bold">£{{ edible_product.price }}</p>
+                {% if edible_product.plant_based %}
+                <p>Plant-Based: Yes</p>
+                {% else %}
+                <p>Plant-Based: No</p>
+                {% endif %}
+                <p class="mt-3">{{ edible_product.details }}</p>
+                <p>Ingredients: {{ edible_product.ingredients }}</p>
+                
+                <!-- <form class="form" action="{% url 'add_to_bag' edible_product.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add to Bag</button>
+                </form> -->
+
+                <!-- Back to products link -->
+                <a href="{% url 'product_list' %}" class="btn btn-outline-secondary mt-3">Back to Products</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

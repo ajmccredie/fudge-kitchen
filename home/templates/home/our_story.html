@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Our Story</h1>
+    <img class="icon" src="{{ MEDIA_URL }}logo-no-words-no-bg.jpg" alt="Roo's Fudge Kitchen Logo">
+    {% if story.image %}
+        <img src="{{ story.image.url }}" alt="Our Story Image" class="img-fluid">
+    {% endif %}
+    <p>{{ story.content }}</p>
+    <div class="centre-flex">
+        <a href="{% url 'product_list' %}" class="btn btn-primary">See the products!</a>
+    </div>
+</div>
+    
+{% endblock %}
