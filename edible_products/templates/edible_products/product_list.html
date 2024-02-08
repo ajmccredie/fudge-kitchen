@@ -9,7 +9,7 @@
     <!-- Product List -->
     <div class="row">
         {% for product in edible_products %}
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+        <a href="{% url 'product_detail' product.id %}" style="text-decoration: none; color: inherit;" class="col-sm-6 col-md-4 col-lg-3 mb-4" onmouseover="this.style.cursor='pointer'">
             <div class="card h-100">
                 {% if product.image %}
                 <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.flavour }}">
@@ -19,13 +19,13 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ product.flavour }}</h5>
                     <p class="card-text">{{ product.details }}</p>
-                    <p class="card-text"><small class="text-muted">Plant-Based: {{ product.plant_based|yesno:"Yes,No" }}</small></p>
+                    <p class="card-text"><small>Plant-Based: {{ product.plant_based|yesno:"Yes,No" }}</small></p>
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">Price: £{{ product.price }}</small>
                 </div>
             </div>
-        </div>
+        </a>
         {% empty %}
         <div class="col">
             <p>No products found.</p>

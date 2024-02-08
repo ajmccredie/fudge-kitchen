@@ -27,6 +27,7 @@ urlpatterns = [
     path('our_story/', include('home.urls')),
     path('edible_products/', include('edible_products.urls')),
     path('profiles/', include('profiles.urls')),
+    path('basket/', include('basket.urls')),
 ]
 
 if settings.DEBUG:
