@@ -10,12 +10,149 @@
 @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
 
 /* Example of using the font in your CSS */
-h1, h5 {
+html {
+    height: 100%;
+}
+
+
+h1, h2, h5 {
     font-family: 'Terrapin', serif;
 }
 
 
 body {
-    background-color: aqua;
+    background-color: #FFF8DC;
+    color: #2C2C2C;
     font-family: 'Anonymous Pro', monospace;
+}
+
+.centre-flex {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    text-align: center; /* Center text for child elements */
+}
+
+/* Header and Logo */
+.header-container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #6B4F4F;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: top 0.3s;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #6B4F4F;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: top 0.3s;
+}
+
+.header-container img.icon {
+    max-height: 50px; 
+    margin-top: 10px;
+}
+
+.header-container.fixed-top {
+    z-index: 1030; 
+    background-color: #6B4F4F;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1); 
+}
+
+#delivery-banner h4 {
+    margin: 0; 
+    padding: 10px 0; 
+    background-color: #2C2C2C;
+}
+
+.nav-link {
+    color: #FFF8DC; 
+}
+
+.nav-link:hover {
+    color: #DAA520; 
+}
+
+.message-container {
+    position: fixed;
+    top: 120px; 
+    right: 0;
+    z-index: 1050; 
+    width: 100%;
+    padding: 0 15px; 
+}
+
+.container {
+    padding-top: 200px;
+}
+
+/* Sticky Header JavaScript-Enabled Behavior */
+.header-hidden {
+    top: -100px; 
+}
+
+/* Cards */
+.card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    background-color: #6B4F4F;
+    color: #FFF8DC;
+}
+
+.card-title {
+    color: #DAA520;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.cartoon-fudge {
+    max-width: 50%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.cartoon-fudge img {
+    width: 100%;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #DAA520;
+    border-color: #DAA520;
+}
+
+.btn-primary:hover {
+    background-color: #c98a1e;
+    border-color: #c98a1e;
+}
+
+.btn:active, .btn:focus {
+    background-color: #8B4513; 
+    color: white; 
+    outline: none;
+}
+
+/* Utility Classes */
+.mt-mobile-header {
+    margin-top: 60px; 
+}
+
+@media (max-width: 768px) {
+    .mt-mobile-header {
+        margin-top: 0;
+    }
 }
