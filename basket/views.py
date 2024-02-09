@@ -17,6 +17,10 @@ class AddToBasketView(View):
         redirect_url = reverse('view_basket') 
         basket = request.session.get('basket', {})
 
+        weight = 400
+        if 'weight' in request.POST:
+            weight = request.POST('size')
+
         if item_id in list(basket.keys()):
             basket[item_id] += quantity
         else:

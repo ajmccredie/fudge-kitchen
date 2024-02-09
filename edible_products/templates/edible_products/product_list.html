@@ -20,6 +20,16 @@
                     <h5 class="card-title">{{ product.flavour }}</h5>
                     <p class="card-text">{{ product.details }}</p>
                     <p class="card-text"><small>Plant-Based: {{ product.plant_based|yesno:"Yes,No" }}</small></p>
+                    <div class="allergen-symbols">
+                        <h5>Allergens:</h5>
+                        {% for allergen in product.get_allergens_info %}
+                        <div class="d-inline-block text-center mx-2">
+                            <div class="allergen-circle">
+                                <img src="{% static allergen.symbol_path %}" alt="{{ allergen.name }}" class="img-fluid" style="width: 30px; height: 30px;">
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">Price: £{{ product.price }}</small>

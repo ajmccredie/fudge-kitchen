@@ -6,7 +6,7 @@ class EdibleProductListView(ListView):
     model = EdibleProduct
     context_object_name = 'edible_products'
     template_name = 'edible_products/product_list.html'
- #   queryset = EdibleProduct.objects.all().select_related('Allergens')
+
 
 class EdibleProductDetailView(DetailView):
     model = EdibleProduct

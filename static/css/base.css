@@ -129,6 +129,36 @@ header {
     width: 100%;
 }
 
+/* Allergen symbols */
+.allergen-symbols {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.allergen-symbol {
+    width: 30px; 
+    height: 30px;
+    object-fit: cover;
+}
+
+.allergen-circle {
+    display: inline-flex; 
+    justify-content: center; 
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    margin: 2px;
+}
+
+.allergen-circle img {
+    width: 70%;
+    height: auto; 
+}
+
 /* Buttons */
 .btn-primary {
     background-color: #DAA520;

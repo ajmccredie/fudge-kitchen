@@ -47,3 +47,32 @@ class EdibleProduct(models.Model):
             if getattr(self, field_name):
                 allergens.append(human_readable)
         return ", ".join(allergens) if allergens else "No Allergens"
+
+    def get_allergens_info(self):
+        """Returns a list of dictionaries for present allergens with their names and symbol paths."""
+        allergens_info = []
+        allergen_fields = [
+            ('gluten', 'Gluten'), ('crustaceans', 'Crustaceans'), ('eggs', 'Eggs'), 
+            ('fish', 'Fish'), ('peanuts', 'Peanuts'), ('soybeans', 'Soybeans'),
+            ('milk', 'Milk'), ('nuts', 'Nuts'), ('celery', 'Celery'), ('mustard', 'Mustard'),
+            ('sesame_seeds', 'Sesame Seeds'), ('sulphur_dioxide_and_sulphites', 'Sulphur Dioxide and Sulphites'),
+            ('lupin', 'Lupin'), ('molluscs', 'Molluscs')
+        ]
+        for field_name, human_readable in allergen_fields:
+            if getattr(self, field_name):
+                allergens_info.append({
+                    'name': human_readable,
+                    'symbol_path': f'images/{field_name}.png'
+                })
+
+        return allergens_info
+
+
+class ProductWeightPrice(models.Model):
+    product = models.ForeignKey(EdibleProduct, related_name='weight_prices', on_delete=models.CASCADE)
+    weight = models.DecimalField(max_digits=6, decimal_places=2, help_text="Weight in grams")
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.weight}g - £{self.price}"
+

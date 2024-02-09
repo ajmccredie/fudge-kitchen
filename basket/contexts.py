@@ -21,6 +21,10 @@ def basket_contents(request):
 
     delivery = 3
 
+    is_subscriber = request.user.is_subscriber if hasattr(request.user, 'is_subscriber') else False
+    # Set delivery cost based on subscription status
+    delivery = 0 if is_subscriber else 3
+
     grand_total = delivery + total
 
     context = {
