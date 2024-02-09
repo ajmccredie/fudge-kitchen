@@ -27,14 +27,15 @@
                 <p class="mt-3">{{ edible_product.details }}</p>
                 <p>Ingredients: {{ edible_product.ingredients }}</p>
                 
-                <!-- <form class="form" action="{% url 'add_to_basket' edible_product.id %}" method="POST">
+                <form class="form" action="{% url 'add_to_basket' edible_product.id %}" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
+                        <input type="hidden" name="redirect_url" value="{{ request.path }}">
                         <label for="quantity">Quantity:</label>
                         <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1">
                     </div>
-                    <button type="submit" class="btn btn-primary">Add to Bag</button>
-                </form> -->
+                    <button type="submit" class="btn btn-primary">Add to Your Basket</button>
+                </form>
 
                 <!-- Back to products link -->
                 <a href="{% url 'product_list' %}" class="btn btn-outline-secondary mt-3">Back to Products</a>
