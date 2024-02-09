@@ -20,7 +20,7 @@
 
         <div class="row">
             <div class="col">
-                {% if bag_items %}
+                {% if basket_items %}
                     <div class="table-responsive rounded">
                         <table class="table table-sm table-borderless">
                             <thead class="text-black">
@@ -36,16 +36,16 @@
                             {% for item in basket_items %}
                                 <tr>
                                     <td class="p-3 w-25">
-                                        <img class="img-fluid rounded" src="{{ item.product.image.url }}">
+                                        <img class="img-fluid rounded" src="{{ item.edible_product.image.url }}">
                                     </td>
                                     <td class="py-3">
-                                        <p class="my-0"><strong>{{ item.edible_product.name }}</strong></p>
+                                        <p class="my-0"><strong>{{ item.edible_product.flavour }}</strong></p>
                                     </td>
                                     <td class="py-3">
                                         <p class="my-0">£{{ item.edible_product.price }}</p>
                                     </td>
                                     <td class="py-3 w-25">
-                                        <p class="my-0">{{ edible_product.quantity }}</p>
+                                        <p class="my-0">{{ item.quantity }}</p>
                                     </td>
                                     <td class="py-3">
                                         <p class="my-0">£{{ item.edible_product.price }}</p>
@@ -54,7 +54,7 @@
                             {% endfor %}
                             <tr>
                                 <td colspan="5" class="pt-5 text-right">
-                                    <h6><strong>Basket Total: ${{ total|floatformat:2 }}</strong></h6>
+                                    <h6><strong>Basket Total: £{{ total|floatformat:2 }}</strong></h6>
                                     <h6>Delivery: £{{ delivery|floatformat:2 }}</h6>
                                     <h4 class="mt-4"><strong>Grand Total: £{{ grand_total|floatformat:2 }}</strong></h4>                            
                                         <p class="mb-1 text-danger">
@@ -64,7 +64,7 @@
                             </tr>
                             <tr>
                                 <td colspan="5" class="text-right">
-                                    <a href="{% url 'products' %}" class="btn btn-outline-black rounded-0 btn-lg">
+                                    <a href="{% url 'product_list' %}" class="btn btn-outline-black rounded-0 btn-lg">
                                         <span class="icon">
                                             <i class="fas fa-chevron-left"></i>
                                         </span>

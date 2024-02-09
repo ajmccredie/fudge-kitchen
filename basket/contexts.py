@@ -15,7 +15,7 @@ def basket_contents(request):
         basket_items.append({
             'item_id': item_id,
             'quantity': quantity,
-            'edible_products': edible_product,
+            'edible_product': edible_product,
         })
 
     delivery = 3
@@ -26,7 +26,8 @@ def basket_contents(request):
         'basket_items': basket_items,
         'total': total,
         'product_count': product_count,
-        'delivery': delivery
+        'delivery': delivery,
+        'grand_total': grand_total,
     }
 
     return context

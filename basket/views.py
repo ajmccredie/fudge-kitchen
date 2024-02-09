@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.views.generic import View
 from django.http import HttpRequest
 
@@ -14,7 +14,7 @@ class AddToBasketView(View):
         """ Add a quantity of the specified product to the shopping basket """
         
         quantity = int(request.POST.get('quantity'))
-        redirect_url = request.POST.get('redirect_url', '/')
+        redirect_url = reverse('view_basket') 
         basket = request.session.get('basket', {})
 
         if item_id in list(basket.keys()):
@@ -24,4 +24,8 @@ class AddToBasketView(View):
 
         request.session['basket'] = basket
         print(request.POST)
+        request.session['basket'] = basket
+        request.session.modified = True  # Ensure the session is marked as modified so it gets saved
+        print("Updated session basket:", request.session['basket'])
+
         return redirect(redirect_url)
