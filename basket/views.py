@@ -14,22 +14,22 @@ class AddToBasketView(View):
         """ Add a quantity of the specified product to the shopping basket """
         
         quantity = int(request.POST.get('quantity'))
-        redirect_url = reverse('view_basket') 
+        weight = request.POST.get('weight', '400')  # Default weight to '400' if not specified
+        redirect_url = request.POST.get('redirect_url', reverse('view_basket'))
+        
         basket = request.session.get('basket', {})
+        weight_key = str(weight)
 
-        weight = 400
-        if 'weight' in request.POST:
-            weight = request.POST('size')
-
-        if item_id in list(basket.keys()):
-            basket[item_id] += quantity
+        if item_id in basket:
+            if weight_key in basket[item_id]['items_by_weight']:
+                basket[item_id]['items_by_weight'][weight_key] += quantity
+            else:
+                basket[item_id]['items_by_weight'][weight_key] = quantity
         else:
-            basket[item_id] = quantity
+            basket[item_id] = {'items_by_weight': {weight_key: quantity}}
 
         request.session['basket'] = basket
-        print(request.POST)
-        request.session['basket'] = basket
-        request.session.modified = True  # Ensure the session is marked as modified so it gets saved
-        print("Updated session basket:", request.session['basket'])
+        request.session.modified = True
 
         return redirect(redirect_url)
+

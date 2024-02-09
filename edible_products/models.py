@@ -2,13 +2,19 @@ from django.db import models
 
 
 class EdibleProduct(models.Model):
+    WEIGHT_CHOICES = [
+        (100, '100g'),
+        (400, '400g'),
+        (800, '800g'),
+    ]
+
     plant_based = models.BooleanField(default=False)
     flavour = models.CharField(max_length=254, null=True, blank=True)
     guest_flavour = models.BooleanField(default=False)
     details = models.TextField()
     ingredients = models.TextField()
     quantity = models.IntegerField()
-    weight = models.DecimalField(default=400, max_digits=4, decimal_places=0, help_text="Weight in grams")
+    weight = models.PositiveIntegerField(default=400, choices=WEIGHT_CHOICES, help_text="Weight in grams")
     price = models.DecimalField(max_digits=6, decimal_places=2)
     rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     image_url = models.URLField(max_length=1024, null=True, blank=True)
