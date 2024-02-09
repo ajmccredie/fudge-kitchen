@@ -16,6 +16,7 @@ def basket_contents(request):
             'item_id': item_id,
             'quantity': quantity,
             'edible_product': edible_product,
+            'subtotal': quantity * edible_product.price,
         })
 
     delivery = 3

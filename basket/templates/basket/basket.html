@@ -48,7 +48,7 @@
                                         <p class="my-0">{{ item.quantity }}</p>
                                     </td>
                                     <td class="py-3">
-                                        <p class="my-0">£{{ item.edible_product.price }}</p>
+                                        <p class="my-0">£{{ item.subtotal|floatformat:2 }}</p>
                                     </td>
                                 </tr>
                             {% endfor %}
