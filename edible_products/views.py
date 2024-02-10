@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
+from django.http import JsonResponse
 from .models import EdibleProduct
 
 class EdibleProductListView(ListView):
