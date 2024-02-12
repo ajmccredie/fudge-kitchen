@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load basket_tools %}
 
 {% block page_header %}
     <div class="container header-container">
@@ -47,7 +48,7 @@
                                         <p class="my-0">£{{ item.price }}</p>
                                     </td>
                                     <td class="py-3 w-25">
-                                        <form class="form update-form" method="POST" action="{% url 'update_basket' item_id=item.item_id %}">
+                                        <form class="form update-form" method="POST" action="{% url 'adjust_basket' item.item_id %}">
                                             {% csrf_token %}
                                             <div class="form-group">
                                                 <div class="input-group">
@@ -72,10 +73,10 @@
                                             </div>
                                         </form>
                                         <a class="update-link text-info"><small>Update</small></a>
-                                        <a class="remove-item text-danger float-right" id="remove_{{ item.item_id }}" data-size="{{ item.weight }}"><small>Remove</small></a>
+                                        <a class="remove-item" data-item_id="{{ item.item_id }}" href="{% url 'remove_from_basket' item.item_id %}"><small>Remove</small></a>
                                     </td>
                                     <td class="py-3">
-                                        <p class="my-0">£{{ item.subtotal|floatformat:2 }}</p>
+                                        <p class="my-0">£{{ item.product.price | calc_subtotal:item.quantity }}</p>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -129,10 +130,16 @@
             </div>
         </div>
     </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 {% endblock %}
 
 {% block postloadjs %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     // Disable +/- buttons outside 1-99 range
     function handleEnableDisable(itemId) {
@@ -181,18 +188,27 @@
         form.submit();
     })
 
-    // Remove item and reload on click
     $('.remove-item').click(function(e) {
-        var csrfToken = "{{ csrf_token }}";
-        var itemId = $(this).attr('id').split('remove_')[1];
-        var weight = $(this).data('weight');
-        var url = `/bag/remove/${itemId}`;
-        var data = {'csrfmiddlewaretoken': csrfToken, 'weight': weight};
+    e.preventDefault();
+    var itemId = $(this).data('item_id'); // Ensure this is correctly fetching the item's ID
+    var csrfToken = "{{ csrf_token }}"; // When using Django template
+    // Or, if you need to fetch the CSRF token from cookies, use the appropriate method
 
-        $.post(url, data)
-         .done(function() {
-             location.reload();
-         });
-    })
+        $.ajax({
+            url: `/basket/remove/${itemId}/`, // Using template literals to insert the itemId
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': csrfToken,
+                // Include any other data required by your view
+            },
+            success: function(response) {
+                // Handle success (e.g., refreshing part of the page or showing a success message)
+            },
+            error: function(xhr, errmsg, err) {
+                // Handle error
+                console.log(`Error: ${errmsg}`);
+            }
+        });
+    });
 </script>    
 {% endblock %}

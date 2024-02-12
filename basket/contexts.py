@@ -9,7 +9,6 @@ def basket_contents(request):
     total = Decimal('0.00')
     product_count = 0
     basket = request.session.get('basket', {})
-    print(f"Basket from context processor (not basket_items): {basket}")
 
     # Define weight to price mapping
     weight_price_mapping = {
@@ -68,7 +67,5 @@ def basket_contents(request):
         'product_count': product_count,
         'delivery': delivery,
     }
-
-    print(f"Basket items straight from the context processor: {basket_items}")
 
     return context
