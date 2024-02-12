@@ -18,7 +18,6 @@
         <div class="col-12 col-md-6">
             <div class="product-details-container mb-5 mt-md-5">
                 <h2>{{ edible_product.flavour }}</h2>
-                <p class="lead font-weight-bold">£{{ edible_product.price }}</p>
                 {% if edible_product.plant_based %}
                 <p>Plant-Based: Yes</p>
                 {% else %}
@@ -42,11 +41,11 @@
                         <div class="form-group">
                             <input type="hidden" name="flavour" value="{{ edible_product.flavour }}">
                             <label for="weight">Weight:</label>
-                            <select name="weight" id="weight" class="form-control" onchange="updatePrice()">
-                                <option value="100">100g</option>
-                                <option value="400" selected>400g</option>
-                                <option value="800">800g</option>
-                            </select>
+                            <select name="weight" id="weight" class="form-control" onchange="updatePrice()" data-product-id="{{ edible_product.id }}">
+                                <option value="100">100g - £3.50</option>
+                                <option value="400" selected>400g - £7.00</option>
+                                <option value="800">800g - £11.00</option>
+                            </select>                            
                         </div>
                         <input type="hidden" name="redirect_url" value="{{ request.path }}">
                         <label for="quantity">Quantity:</label>
@@ -88,27 +87,6 @@
 
 {% block postloadjs %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    updatePrice();
-    });
-    function updatePrice() {
-    var weightSelect = document.getElementById('weight');
-    var weight = weightSelect.value;
-    var productId = weightSelect.getAttribute('data-product-id');
-    
-    fetch(`/get-price/?product_id=${productId}&weight=${weight}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.price) {
-                document.querySelector('.lead.font-weight-bold').innerText = `£${data.price}`;
-            } else {
-                console.error('Error: Price not found');
-            }
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });
-    }
     // Disable +/- buttons outside 1-99 range
     function handleEnableDisable(itemId) {
         var currentValue = parseInt($(`#id_qty_${itemId}`).val());

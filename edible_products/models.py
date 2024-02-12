@@ -89,7 +89,7 @@ class EdibleProduct(models.Model):
 
 class ProductWeightPrice(models.Model):
     product = models.ForeignKey(EdibleProduct, related_name='weight_prices', on_delete=models.CASCADE)
-    weight = models.DecimalField(max_digits=6, decimal_places=2, help_text="Weight in grams")
+    weight = models.IntegerField(help_text="Weight in grams")
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):

@@ -176,6 +176,10 @@ header {
     outline: none;
 }
 
+.update-link, .remove_item {
+    cursor: pointer;
+}
+
 /* Utility Classes */
 .mt-mobile-header {
     margin-top: 60px; 

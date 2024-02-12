@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
 from django.http import JsonResponse
-from .models import EdibleProduct
+from decimal import Decimal, InvalidOperation
+from .models import EdibleProduct, ProductWeightPrice
 
 class EdibleProductListView(ListView):
     model = EdibleProduct
@@ -20,12 +21,12 @@ class EdibleProductDetailView(DetailView):
 
 class GetPriceView(View):
     def get(self, request, *args, **kwargs):
-        weight = kwargs.get('weight')
-        price_lookup = {100: 3.50, 400: 7.00, 800: 11.00}
-        price = price_lookup.get(weight, "Error: Invalid weight")
-        
-        # Return price as JSON response
-        if price != "Error: Invalid weight":
-            return JsonResponse({'price': price})
-        else:
-            return JsonResponse({'error': price}, status=400)
+        weight = request.GET.get('weight')
+        product_id = request.GET.get('product_id')
+        try:
+            weight = int(weight) 
+            product = EdibleProduct.objects.get(pk=product_id)
+            weight_price_obj = ProductWeightPrice.objects.get(product=product, weight=weight)
+            return JsonResponse({'price': str(weight_price_obj.price)})
+        except (ValueError, EdibleProduct.DoesNotExist, ProductWeightPrice.DoesNotExist, InvalidOperation):
+            return JsonResponse({'error': 'Invalid product ID or weight'}, status=400)
