@@ -8,6 +8,12 @@ class EdibleProduct(models.Model):
         (800, '800g'),
     ]
 
+    DEFAULT_WEIGHT_PRICES = {
+    100: 3.50,
+    400: 7.00,
+    800: 11.00,
+    }
+
     plant_based = models.BooleanField(default=False)
     flavour = models.CharField(max_length=254, null=True, blank=True)
     guest_flavour = models.BooleanField(default=False)
@@ -38,6 +44,13 @@ class EdibleProduct(models.Model):
 
     def __str__(self):
         return self.flavour
+
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super().save(*args, **kwargs)
+        if is_new:
+            for weight, price in DEFAULT_WEIGHT_PRICES.items():
+                ProductWeightPrice.objects.create(product=self, weight=weight, price=price)
 
     def list_allergens(self):
         """Returns a list of allergens present in the product."""

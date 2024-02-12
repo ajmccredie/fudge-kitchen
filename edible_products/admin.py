@@ -1,8 +1,13 @@
 from django.contrib import admin
-from .models import EdibleProduct
+from .models import EdibleProduct, ProductWeightPrice
+
+class ProductWeightPriceInline(admin.TabularInline):
+    model = ProductWeightPrice
+    extra = 1
 
 @admin.register(EdibleProduct)
 class EdibleProductAdmin(admin.ModelAdmin):
+    inlines = [ProductWeightPriceInline]
     list_display = (
         'flavour', 'plant_based', 'guest_flavour', 
         'list_allergens',

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views import View
 from django.http import HttpRequest
-from edible_products.models import EdibleProduct
+from edible_products.models import EdibleProduct, ProductWeightPrice
 
 class BasketView(View):
     def get(self, request, *args, **kwargs):
@@ -13,27 +13,40 @@ class BasketView(View):
 
         for item_key, item_data in basket.items():
             parts = item_key.split('-')
-            if len(parts) == 1:
-                # This is for simple items or items without weight/flavour differentiation
-                real_item_id = parts[0]
-                edible_product = get_object_or_404(EdibleProduct, pk=real_item_id)
-                quantity = item_data if isinstance(item_data, int) else item_data.get('quantity', 0)
-            elif len(parts) == 3:
-                # For items stored with weight and flavour differentiation
-                real_item_id, flavour, weight = parts
-                edible_product = get_object_or_404(EdibleProduct, pk=real_item_id)
+            real_item_id = parts[0]
+            edible_product = get_object_or_404(EdibleProduct, pk=real_item_id)
+
+            weight = 400
+            flavour = None
+            price = edible_product.price
+
+            if len(parts) == 3:
+                _, flavour, weight = parts
                 quantity = item_data.get('quantity', 0) if isinstance(item_data, dict) else item_data
+
+                # Fetch the specific weight price for this product
+                weight_price_obj = ProductWeightPrice.objects.filter(
+                    product=edible_product,
+                    weight=weight
+                ).first()
+
+                if weight_price_obj:
+                    price = weight_price_obj.price
+                else:
+                    continue
+            elif len(parts) == 1:
+                quantity = item_data if isinstance(item_data, int) else item_data.get('quantity', 0)
             else:
-                # Handle other unexpected formats or log an error
                 continue
 
-            subtotal = quantity * edible_product.price
+            subtotal = quantity * price
             basket_items.append({
                 'item_id': real_item_id,
                 'quantity': quantity,
-                'weight': weight if len(parts) == 3 else None,
-                'flavour': flavour if len(parts) == 3 else None,
+                'weight': weight,
+                'flavour': flavour,
                 'edible_product': edible_product,
+                'price': price,
                 'subtotal': subtotal,
             })
 
