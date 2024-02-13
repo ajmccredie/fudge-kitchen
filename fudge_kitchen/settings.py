@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'home',
     'edible_products',
-    'checkout',
+    'checkout.apps.CheckoutConfig',
     #'profiles',
     'profiles.apps.ProfilesConfig',
     'basket',
