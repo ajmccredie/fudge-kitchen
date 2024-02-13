@@ -36,24 +36,24 @@
                         <p class="mb-1 mt-0 small text-muted">Subtotal</p>
                     </div>
                 </div>
-                {% for item in current_basket.basket_items %}
+                {% for item in basket_items %}
                     <div class="row">
                         <div class="col-2 mb-1">
-                            <a href="{% url 'product_detail' item.product.id %}">
+                            <a href="{% url 'product_detail' item.item_id %}">
                                 {% if item.product.image %}
-                                    <img class="w-100" src="{{ item.product.image.url }}" alt="{{ product.name }}">
+                                    <img class="w-100" src="{{ item.product.image.url }}" alt="{{ product.flavour }}">
                                 {% else %}
-                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.name }}">
+                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.flavour }}">
                                 {% endif %}
                             </a>
                         </div>
                         <div class="col-7">
-                            <p class="my-0"><strong>{{ item_details.product.flavour }}</strong></p>
-                            <p class="my-0 small">Weight: {{ item.product.weight }}g</p>
+                            <p class="my-0"><strong>{{ item.flavour }}</strong></p>
+                            <p class="my-0 small">Weight: {{ item.weight }}g</p>
                             <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
                         </div>
                         <div class="col-3 text-right">
-                            <p class="my-0 small text-muted">${{ item.product.price | calc_subtotal:item.quantity }}</p>
+                            <p class="my-0 small text-muted">£{{ item.price | calc_subtotal:item.quantity }}</p>
                         </div>
                     </div>
                 {% endfor %}
@@ -65,9 +65,9 @@
                         <p class="my-0">Grand Total:</p>
                     </div>
                     <div class="col-3">
-                        <p class="my-0">${{ total | floatformat:2 }}</p>
-                        <p class="my-0">${{ delivery | floatformat:2 }}</p>
-                        <p class="my-0"><strong>${{ grand_total | floatformat:2 }}</strong></p>
+                        <p class="my-0">£{{ total | floatformat:2 }}</p>
+                        <p class="my-0">£{{ delivery | floatformat:2 }}</p>
+                        <p class="my-0"><strong>£{{ grand_total | floatformat:2 }}</strong></p>
                     </div>
                 </div>
             </div>

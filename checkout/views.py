@@ -13,8 +13,8 @@ class CheckoutView(View):
         stripe_public_key = settings.STRIPE_PUBLIC_KEY
         stripe_secret_key = settings.STRIPE_SECRET_KEY
 
-        basket_items = basket_contents(request)
-        if not basket_items:
+        basket = basket_contents(request)
+        if not basket:
             messages.error(request, "There's nothing in your basket at the moment")
             return redirect(reverse('product_list'))
 
@@ -39,7 +39,10 @@ class CheckoutView(View):
         context = {
             'order_form': order_form,
             'stripe_public_key': 'pk_test_51OhByXCnqJdd7RmYyBtN9FKq1Uol9CDaIt4vXEpLTTGF77af9OLMOpurtcrquUONaH2JIrm9ZOJZkDvB8UejGomj00tA7MwXmi',
-            'client_secret': 'test client secret',
+            'client_secret': 'client_secret',
+            'basket_items': basket['basket_items'],
+            'total': total,
+            'grand_total': current_basket['grand_total'],
         }
 
         return render(request, template, context)
