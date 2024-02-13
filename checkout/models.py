@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Sum
 from django.conf import settings
 
-from edible_products.models import EdibleProduct
+from edible_products.models import EdibleProduct, ProductWeightPrice
 
 
 class Order(models.Model):
@@ -34,7 +34,7 @@ class Order(models.Model):
         Update grand total each time a line item is added,
         accounting for delivery costs.
         """
-        self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum']
+        self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum'] or 0
         # Will need to add something in here to sort out the free delivery for subscribers
         self.grand_total = self.order_total + self.delivery_cost
         self.save()
@@ -73,4 +73,4 @@ class OrderLineItem(models.Model):
         super(OrderLineItem, self).save(*args, **kwargs)  # Make sure to call the superclass's save method
 
     def __str__(self):
-        return f'{self.product.sku} ({self.weight}) on order {self.order.order_number}'
+        return f'{self.product.flavour} ({self.weight}) on order {self.order.order_number}'
