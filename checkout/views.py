@@ -93,7 +93,8 @@ class CheckoutSuccessView(View):
 
         if 'basket' in request.session:
             del request.session['basket']
-        basket_items = order.orderlineitem_set.all()
+
+        basket_items = order.lineitems.all()
 
         context = {
             'order': order,
