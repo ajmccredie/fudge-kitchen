@@ -76,7 +76,7 @@
                                         <a class="remove-item" data-item_id="{{ item.item_id }}" href="{% url 'remove_from_basket' item.item_id %}"><small>Remove</small></a>
                                     </td>
                                     <td class="py-3">
-                                        <p class="my-0">£{{ item.product.price | calc_subtotal:item.quantity }}</p>
+                                        <p class="my-0">£{{ item.price | calc_subtotal:item.quantity }}</p>
                                     </td>
                                 </tr>
                             {% endfor %}

@@ -36,18 +36,7 @@
                         <p class="mb-1 mt-0 small text-muted">Subtotal</p>
                     </div>
                 </div>
-                {% if basket %}
-                    <ul>
-                        {% for item_id, item_details in basket.items %}
-                            <li>
-                                {{ item_details.name }} - Quantity: {{ item_details.quantity }}
-                                <!-- Display other details as needed -->
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-
-                {% for item in basket_items %}
+                {% for item in current_basket.basket_items %}
                     <div class="row">
                         <div class="col-2 mb-1">
                             <a href="{% url 'product_detail' item.product.id %}">
@@ -59,7 +48,7 @@
                             </a>
                         </div>
                         <div class="col-7">
-                            <p class="my-0"><strong>{{ item.product.flavour }}</strong></p>
+                            <p class="my-0"><strong>{{ item_details.product.flavour }}</strong></p>
                             <p class="my-0 small">Weight: {{ item.product.weight }}g</p>
                             <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
                         </div>
