@@ -1,21 +1,41 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm
 from django.http import HttpResponse
 from django.views import View
+from django.contrib import messages
+from .models import Profile
+from .forms import ProfileForm
 
 class ProfileView(View):
     """ Display the user's profile. """
+    template_name = 'profiles/profile.html'
+    form_class = ProfileForm
 
     def get(self, request, *args, **kwargs):
-        # Your logic to retrieve user profile data
-        profile_data = {}  # Replace this with your actual logic
-        
-        template = 'profiles/profile.html'
+        profile = get_object_or_404(Profile, user=request.user)
+        form = self.form_class(instance=profile)
+        orders = profile.orders.all()
         context = {
-            'profile_data': profile_data,
+            'form': form,
+            'orders': orders,
+            'on_profile_page': True
         }
-        return render(request, template, context)
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        profile = get_object_or_404(Profile, user=request.user)
+        form = self.form_class(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+        orders = profile.orders.all()
+        context = {
+            'form': form,
+            'orders': orders,
+            'on_profile_page': True
+        }
+        return render(request, self.template_name, context)
 
 
 @login_required
