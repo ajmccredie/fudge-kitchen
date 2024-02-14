@@ -16,17 +16,20 @@ from django.http import HttpResponseBadRequest
 @require_POST
 def cache_checkout_data(request):
     try:
-        pid = request.POST.get('client_secret').split('_secret')[0]
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        stripe.PaymentIntent.modify(pid, metadata={
-            'basket': json.dumps(request.session.get('basket', {})),
-            'save_info': request.POST.get('save_info'),
-            'username': request.user,
-        })
-        return HttpResponse(status=200)
+        client_secret = request.POST.get('client_secret')
+        if client_secret:
+            pid = client_secret.split('_secret')[0]
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            stripe.PaymentIntent.modify(pid, metadata={
+                'basket': json.dumps(request.session.get('basket', {})),
+                'save_info': request.POST.get('save_info'),
+                'username': request.user,
+            })
+            return HttpResponse(status=200)
+        else:
+            raise ValueError('Client secret not found in the request.')
     except Exception as e:
-        messages.error(request, 'Sorry, your payment cannot be \
-            processed right now. Please try again later.')
+        messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
         return HttpResponse(content=e, status=400)
 
 
@@ -75,27 +78,39 @@ class CheckoutView(View):
             'street_address2': request.POST['street_address2'],
             'county': request.POST['county'],
         }
+
         order_form = OrderForm(form_data)
         if order_form.is_valid():
             order = order_form.save(commit=False)
-            order.save()
-            for item in basket: 
-                product = get_object_or_404(EdibleProduct, id=item['item_id'])
-                order_line_item = OrderLineItem(
-                    order=order,
-                    product=product,
-                    quantity=item['quantity'],
-                    weight=item['weight'],
-                )
-                order_line_item.save()
+            pid = request.POST.get('client_secret')
+            if pid:
+                pid = pid.split('_secret')[0]
+                order.stripe_pid = pid
+                order.original_basket = json.dumps(basket)
+                order.save()
+                for item in basket: 
+                    product = get_object_or_404(EdibleProduct, id=item['item_id'])
+                    order_line_item = OrderLineItem(
+                        order=order,
+                        product=product,
+                        quantity=item['quantity'],
+                        weight=item['weight'],
+                        price=item['price'],
+                    )
+                    order_line_item.save()
 
-            request.session['save_info'] = 'save-info' in request.POST
-            return redirect(reverse('checkout_success', args=[order.order_number]))
-        else:
-            messages.error(request, 'There was an error with your form. Please double check your information.')
-            return redirect(reverse('checkout'))
+                request.session['save_info'] = 'save-info' in request.POST
+                
+                # Ensure order_number is set before redirecting
+                if order.order_number:
+                    return redirect(reverse('checkout_success', args=[order.order_number]))
+                else:
+                    messages.error(request, 'Order number is missing.')
+                    return redirect(reverse('checkout'))
+            else:
+                messages.error(request, 'Client secret is missing in the request.')
+                return redirect(reverse('checkout'))
 
-        # Handle cases where the form is not valid; possibly return HTTP 400
         return HttpResponseBadRequest("Invalid form submission.")
 
 

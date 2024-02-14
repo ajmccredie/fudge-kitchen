@@ -49,7 +49,10 @@ def basket_contents(request):
         except ValueError:
             continue
 
-    delivery = Decimal(settings.DEFAULT_DELIVERY_CHARGE)
+    if not basket:  # Check if the basket is empty
+        delivery = Decimal('0.00')  # Set delivery charge to zero if basket is empty
+    else:
+        delivery = Decimal(settings.DEFAULT_DELIVERY_CHARGE)
     
     if request.user.is_authenticated:
         try:
