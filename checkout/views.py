@@ -61,6 +61,7 @@ class CheckoutView(View):
             'total': total,
             'grand_total': current_basket['grand_total'],
         }
+        print(f"The client secret being passed is: {client_secret}")
 
         return render(request, 'checkout/checkout.html', context)
 
@@ -82,9 +83,12 @@ class CheckoutView(View):
         order_form = OrderForm(form_data)
         if order_form.is_valid():
             order = order_form.save(commit=False)
+            print("Order is valid")
             pid = request.POST.get('client_secret')
             if pid:
                 pid = pid.split('_secret')[0]
+                print("The valid pid is:")
+                print(pid)
                 order.stripe_pid = pid
                 order.original_basket = json.dumps(basket)
                 order.save()
@@ -97,6 +101,8 @@ class CheckoutView(View):
                         weight=item['weight'],
                         price=item['price'],
                     )
+                    print("THis is what is being saved into order_line_item:")
+                    print(order_line_item)
                     order_line_item.save()
 
                 request.session['save_info'] = 'save-info' in request.POST
