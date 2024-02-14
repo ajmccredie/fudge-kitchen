@@ -39,7 +39,7 @@ body {
     top: 0;
     width: 100%;
     background-color: #6B4F4F;
-    z-index: 1000;
+    z-index: 500;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: top 0.3s;
 }
@@ -60,7 +60,7 @@ header {
 }
 
 .header-container.fixed-top {
-    z-index: 1030; 
+    z-index: 400; 
     background-color: #6B4F4F;
     box-shadow: 0 2px 4px rgba(0,0,0,.1); 
 }
@@ -79,14 +79,6 @@ header {
     color: #DAA520; 
 }
 
-.message-container {
-    position: fixed;
-    top: 120px; 
-    right: 0;
-    z-index: 1050; 
-    width: 100%;
-    padding: 0 15px; 
-}
 
 .container {
     padding-top: 200px;
@@ -180,6 +172,54 @@ header {
     cursor: pointer;
 }
 
+.message-container {
+    position: fixed;
+    top: 120px; 
+    right: 15px;
+    z-index: 9999999999;
+}
+
+.custom-toast {
+    overflow: visible;
+}
+
+.toast-capper {
+    height: 2px;
+}
+
+
+/* Convenience classes - colors copied from Bootstrap */
+.arrow-primary {
+    border-bottom-color: #007bff !important;
+}
+
+.arrow-secondary {
+    border-bottom-color: #6c757d !important;
+}
+
+.arrow-success {
+    border-bottom-color: #28a745 !important;
+}
+
+.arrow-danger {
+    border-bottom-color: #dc3545 !important;
+}
+
+.arrow-warning {
+    border-bottom-color: #ffc107 !important;
+}
+
+.arrow-info {
+    border-bottom-color: #17a2b8 !important;
+}
+
+.arrow-light {
+    border-bottom-color: #f8f9fa !important;
+}
+
+.arrow-dark {
+    border-bottom-color: #343a40 !important;
+}
 
 /* Utility Classes */
 .mt-mobile-header {

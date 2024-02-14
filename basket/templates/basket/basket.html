@@ -129,18 +129,31 @@
                 {% endif %}
             </div>
         </div>
-    </div>
-    {% if messages %}
-    <ul class="messages">
+        {% if messages %}
+        <div class="message-container">
         {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% with message.level as level %}
+                {% if level == 40 %}
+                    {% include 'includes/toasts/toast_error.html' %}
+                {% elif level == 30 %}
+                    {% include 'includes/toasts/toast_warning.html' %}
+                {% elif level == 25 %}
+                    {% include 'includes/toasts/toast_success.html' %}
+                {% else %}
+                    {% include 'includes/toasts/toast_info.html' %}
+                {% endif %}
+            {% endwith %}
         {% endfor %}
-    </ul>
-    {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    
 {% endblock %}
 
 {% block postloadjs %}
-<script>
+  <script type="text/javascript">
+    $('.toast').toast('show');</script>
+<script type="text/javascript">
     // Disable +/- buttons outside 1-99 range
     function handleEnableDisable(itemId) {
         var currentValue = parseInt($(`#id_qty_${itemId}`).val());
@@ -187,28 +200,19 @@
         var form = $(this).prev('.update-form');
         form.submit();
     })
-
+</script>
+<script>
+    // Remove item and reload on click
     $('.remove-item').click(function(e) {
-    e.preventDefault();
-    var itemId = $(this).data('item_id'); // Ensure this is correctly fetching the item's ID
-    var csrfToken = "{{ csrf_token }}"; // When using Django template
-    // Or, if you need to fetch the CSRF token from cookies, use the appropriate method
+        var csrfToken = "{{ csrf_token }}";
+        var itemId = $(this).attr('id').split('remove_')[1];
+        var url = `/basket/remove/${itemId}/`;
+        var data = {'csrfmiddlewaretoken': csrfToken};
 
-        $.ajax({
-            url: `/basket/remove/${itemId}/`, // Using template literals to insert the itemId
-            type: 'POST',
-            data: {
-                'csrfmiddlewaretoken': csrfToken,
-                // Include any other data required by your view
-            },
-            success: function(response) {
-                // Handle success (e.g., refreshing part of the page or showing a success message)
-            },
-            error: function(xhr, errmsg, err) {
-                // Handle error
-                console.log(`Error: ${errmsg}`);
-            }
-        });
-    });
+        $.post(url, data)
+         .done(function() {
+             location.reload();
+         });
+    })
 </script>    
 {% endblock %}

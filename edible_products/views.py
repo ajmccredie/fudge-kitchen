@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
 from django.http import JsonResponse
+from django.contrib import messages
 from decimal import Decimal, InvalidOperation
 from .models import EdibleProduct, ProductWeightPrice
 

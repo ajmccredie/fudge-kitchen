@@ -1,8 +1,9 @@
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.views import View
 from django.contrib import messages
-from django.http import HttpRequest, HttpResponseRedirect, JsonResponse
+from django.http import HttpRequest, HttpResponseRedirect, JsonResponse, HttpResponse
 from .contexts import basket_contents
 from decimal import Decimal, InvalidOperation
 from edible_products.models import EdibleProduct, ProductWeightPrice
@@ -23,17 +24,13 @@ class BasketView(View):
             'delivery': delivery,
             'grand_total': grand_total,
         }
-        print(f"The basket items the page should see: {basket_items}")
-        print(f"The total in the context: {total}")
         return render(request, 'basket/basket.html', context)
 
 
 class AddToBasketView(View):
     def post(self, request: HttpRequest, item_id: str):
         """Add a quantity of the specified product to the shopping basket."""
-       # product = get_object_or_404(EdibleProduct, pk=item_id)
         quantity = int(request.POST.get('quantity'))
-        #weight = request.POST.get('weight', '400')  # Default weight to '400' if not specified
         flavour = request.POST.get('flavour')
         redirect_url = request.POST.get('redirect_url', reverse('view_basket'))
 
@@ -62,29 +59,6 @@ class AddToBasketView(View):
 
         messages.success(request, f'Added "{product.flavour}" to your basket.')
         return redirect(redirect_url)
-
-
-
-# class UpdateBasketView(View):
-#     def post(self, request, *args, **kwargs):
-#         item_id = str(kwargs['item_id'])
-#         quantity = int(request.POST.get('quantity'))
-
-#         basket = request.session.get('basket', {})
-
-#         print(f"Updating item {item_id} with quantity {quantity}")
-#         print("Updated Basket:", request.session['basket'])
-        
-#         if item_id in basket:
-#             item = basket[item_id]
-#             item['quantity'] = quantity
-#             item['subtotal'] = quantity * Decimal(item['price'])
-#             basket[item_id] = item
-#             request.session.modified = True
-#         else:
-#             pass
-        
-#         return JsonResponse({'success': 'Quantity updated successfully'})
 
 
 class ClearBasketView(View):
@@ -124,15 +98,16 @@ class RemoveFromBasketView(View):
         basket = request.session.get('basket', {})
 
         item_key = f"{item_id}-{flavour}-{weight}"
-
-        if item_key in basket:
-            del basket[item_key]
-            if not basket:  
-                del request.session['basket']
-            request.session.modified = True
-        messages.success(request, f'Removed "{flavour} {item.weight}" from your basket.')
-        return HttpResponseRedirect(reverse('view_basket'))
-        return HttpResponseRedirect(reverse('view_basket'))
+        try:
+            if item_key in basket:
+                basket.pop(item_key)
+                if not basket:  
+                    del request.session['basket']
+                request.session['basket'] = basket
+            messages.success(request, f'Removed "{flavour} {item.weight}" from your basket.')
+            return HttpResponseRedirect(reverse('view_basket'))
+        except Exception as e:
+            return HttpResponse(status=500)
 
 
 class AdjustBasketView(View):
