@@ -61,51 +61,49 @@ class CheckoutView(View):
             'total': total,
             'grand_total': current_basket['grand_total'],
         }
-        print(f"The client secret being passed is: {client_secret}")
+        
 
         return render(request, 'checkout/checkout.html', context)
 
-    def post(self, request, *args, **kwargs):
-        basket = basket_contents(request)['basket_items']
+        def post(self, request, *args, **kwargs):
+            basket = basket_contents(request)['basket_items']
 
-        form_data = {
-            'full_name': request.POST['full_name'],
-            'email': request.POST['email'],
-            'phone_number': request.POST['phone_number'],
-            'country': request.POST['country'],
-            'postcode': request.POST['postcode'],
-            'town_or_city': request.POST['town_or_city'],
-            'street_address1': request.POST['street_address1'],
-            'street_address2': request.POST['street_address2'],
-            'county': request.POST['county'],
-        }
+            form_data = {
+                'full_name': request.POST['full_name'],
+                'email': request.POST['email'],
+                'phone_number': request.POST['phone_number'],
+                'country': request.POST['country'],
+                'postcode': request.POST['postcode'],
+                'town_or_city': request.POST['town_or_city'],
+                'street_address1': request.POST['street_address1'],
+                'street_address2': request.POST['street_address2'],
+                'county': request.POST['county'],
+            }
 
-        order_form = OrderForm(form_data)
-        if order_form.is_valid():
-            order = order_form.save(commit=False)
-            print("Order is valid")
-            pid = request.POST.get('client_secret')
-            if pid:
-                pid = pid.split('_secret')[0]
-                print("The valid pid is:")
-                print(pid)
-                order.stripe_pid = pid
-                order.original_basket = json.dumps(basket)
-                order.save()
-                for item in basket: 
-                    product = get_object_or_404(EdibleProduct, id=item['item_id'])
-                    order_line_item = OrderLineItem(
-                        order=order,
-                        product=product,
-                        quantity=item['quantity'],
-                        weight=item['weight'],
-                        price=item['price'],
-                    )
-                    print("THis is what is being saved into order_line_item:")
-                    print(order_line_item)
+            order_form = OrderForm(form_data)
+            if order_form.is_valid():
+                order = order_form.save(commit=False)
+                print("Order is valid")
+                pid = request.POST.get('client_secret')
+                if pid:
+                    pid = pid.split('_secret')[0]
+                    print("The valid pid is:")
+                    print(pid)
+                    order.stripe_pid = pid
+                    order.original_basket = json.dumps(basket)
+                    order.save()
+                    for item in basket: 
+                        product = get_object_or_404(EdibleProduct, id=item['item_id'])
+                        order_line_item = OrderLineItem(
+                            order=order,
+                            product=product,
+                            quantity=item['quantity'],
+                            weight=item['weight'],
+                            price=item['price'],
+                        )
                     order_line_item.save()
 
-                request.session['save_info'] = 'save-info' in request.POST
+                    request.session['save_info'] = 'save-info' in request.POST
                 
                 # Ensure order_number is set before redirecting
                 if order.order_number:
@@ -143,4 +141,4 @@ class CheckoutSuccessView(View):
             'grand_total': order.grand_total,
         }
 
-        return render(request, 'checkout/checkout_success.html', context)
+        return render(request, 'checkout_success', context)
