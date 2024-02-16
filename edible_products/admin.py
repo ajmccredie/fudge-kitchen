@@ -3,7 +3,7 @@ from .models import EdibleProduct, ProductWeightPrice
 
 class ProductWeightPriceInline(admin.TabularInline):
     model = ProductWeightPrice
-    extra = 1
+    extra = 3
 
 @admin.register(EdibleProduct)
 class EdibleProductAdmin(admin.ModelAdmin):
@@ -35,3 +35,10 @@ class EdibleProductAdmin(admin.ModelAdmin):
             'description': "Select all allergens present in this product."
         }),
     )
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        for weight_price in obj.weight_prices.all():
+            weight_price.save()
+
+admin.site.register(ProductWeightPrice)

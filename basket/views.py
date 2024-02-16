@@ -48,14 +48,17 @@ class AddToBasketView(View):
         # Create a composite key
         item_key = f"{item_id}-{flavour}-{weight}"
 
-        if item_key in basket:
-            basket[item_key]['quantity'] += quantity
-            basket[item_key]['price'] = str(price) 
+        if item_id in basket:
+            basket[item_id]['quantity'] += quantity
+            basket[item_id]['price'] = str(price) 
+            print(basket[item_id])
         else:
-            basket[item_key] = {'quantity': quantity, 'weight': weight, 'flavour': flavour, 'price': str(price)}
+            basket[item_id] = {'quantity': quantity, 'weight': weight, 'flavour': flavour, 'price': str(price)}
 
         request.session['basket'] = basket
         request.session.modified = True
+
+        print("basket line 61 - ", basket)
 
         messages.success(request, f'Added "{product.flavour}" to your basket.')
         return redirect(redirect_url)
@@ -90,8 +93,7 @@ class ClearBasketView(View):
 
 
 class RemoveFromBasketView(View):
-    def post(self, request, *args, **kwargs):
-        item_id = str(kwargs['item_id'])
+    def post(self, request: HttpRequest, item_id: str):
         flavour = request.POST.get('flavour')
         weight = request.POST.get('weight')
 
@@ -111,8 +113,7 @@ class RemoveFromBasketView(View):
 
 
 class AdjustBasketView(View):
-    def post(self, request, *args, **kwargs):
-        item_id = str(kwargs['item_id'])
+    def post(self, request: HttpRequest, item_id: str):
         quantity = int(request.POST.get('quantity'))
         flavour = request.POST.get('flavour') 
         weight = int(request.POST.get('weight')) 

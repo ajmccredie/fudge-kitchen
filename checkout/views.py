@@ -20,6 +20,7 @@ def cache_checkout_data(request):
         if client_secret:
             pid = client_secret.split('_secret')[0]
             stripe.api_key = settings.STRIPE_SECRET_KEY
+            # print('basket', json.dumps(request.session.get('basket', {})))
             stripe.PaymentIntent.modify(pid, metadata={
                 'basket': json.dumps(request.session.get('basket', {})),
                 'save_info': request.POST.get('save_info'),
@@ -31,6 +32,35 @@ def cache_checkout_data(request):
     except Exception as e:
         messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
         return HttpResponse(content=e, status=400)
+
+# @require_POST
+# def cache_checkout_data(request):
+#     try:
+#         client_secret = request.POST.get('client_secret')
+#         if client_secret:
+#             pid = client_secret.split('_secret')[0]
+#             stripe.api_key = settings.STRIPE_SECRET_KEY
+
+#             # Get the basket data
+#             basket_data = request.session.get('basket', {})
+#             # Get the first line of basket metadata
+#             basket_first_line = next(iter(basket_data.values()), '')
+
+#             # Clean the first line of basket metadata
+#             cleaned_basket_first_line = basket_first_line.split('-')[0]
+
+#             # Modify the PaymentIntent metadata with the cleaned basket data
+#             stripe.PaymentIntent.modify(pid, metadata={
+#                 'basket': json.dumps({0: cleaned_basket_first_line}),
+#                 'save_info': request.POST.get('save_info'),
+#             })
+#             return HttpResponse(status=200)
+#         else:
+#             raise ValueError('Client secret not found in the request.')
+#     except Exception as e:
+#         messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
+#         return HttpResponse(content=e, status=400)
+
 
 
 class CheckoutView(View):

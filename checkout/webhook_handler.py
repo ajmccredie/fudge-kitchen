@@ -5,6 +5,7 @@ from edible_products.models import EdibleProduct
 
 import json
 import time
+import stripe
 
 class StripeWH_Handler:
     """Handle Stripe webhooks"""
@@ -27,7 +28,10 @@ class StripeWH_Handler:
         intent = event.data.object
         pid = intent.id
         basket = intent.metadata.basket
+        print(basket)
         save_info = intent.metadata.save_info
+        print("Type of pid:", type(pid))
+        print("Value of pid:", pid)
 
         # Get the Charge object
         stripe_charge = stripe.Charge.retrieve(
@@ -87,15 +91,18 @@ class StripeWH_Handler:
                     stripe_pid=pid,
                 )
                 for item_id, item_data in json.loads(basket).items():
-                    product = Product.objects.get(id=item_id)
+                    product = EdibleProduct.objects.get(id=item_id)
+                    print("Doing the 'for' ")
                     if isinstance(item_data, int):
                         order_line_item = OrderLineItem(
                             order=order,
                             product=product,
                             quantity=item_data,
                         )
+                        print(order_line_item)
                         order_line_item.save()
                     else:
+                        print("Doing the 'else' ")
                         for weight, quantity in item_data.items():
                             order_line_item = OrderLineItem(
                                 order=order,
@@ -103,6 +110,7 @@ class StripeWH_Handler:
                                 quantity=quantity,
                                 weight=weight,
                             )
+                            print(order_line_item)
                             order_line_item.save()
             except Exception as e:
                 if order:

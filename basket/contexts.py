@@ -20,6 +20,7 @@ def basket_contents(request):
     for item_key, item_data in basket.items():
         parts = item_key.split('-')
         item_id_str = parts[0]
+        print(item_id_str)
         flavour = 'Default' if len(parts) < 3 else parts[1]
         weight_str = '400' if len(parts) < 2 else parts[-1]  # Default weight
         weight = Decimal(weight_str)
@@ -45,6 +46,7 @@ def basket_contents(request):
                 'price': price,
                 'subtotal': subtotal,
             })
+            print('Item ID from contexts', item_id)
 
         except ValueError:
             continue
