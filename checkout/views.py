@@ -19,6 +19,7 @@ def cache_checkout_data(request):
         client_secret = request.POST.get('client_secret')
         if client_secret:
             pid = client_secret.split('_secret')[0]
+            print("Cache pid: ", pid)
             stripe.api_key = settings.STRIPE_SECRET_KEY
             # print('basket', json.dumps(request.session.get('basket', {})))
             stripe.PaymentIntent.modify(pid, metadata={
@@ -95,55 +96,55 @@ class CheckoutView(View):
 
         return render(request, 'checkout/checkout.html', context)
 
-        def post(self, request, *args, **kwargs):
-            basket = basket_contents(request)['basket_items']
+    def post(self, request, *args, **kwargs):
+        basket = basket_contents(request)['basket_items']
 
-            form_data = {
-                'full_name': request.POST['full_name'],
-                'email': request.POST['email'],
-                'phone_number': request.POST['phone_number'],
-                'country': request.POST['country'],
-                'postcode': request.POST['postcode'],
-                'town_or_city': request.POST['town_or_city'],
-                'street_address1': request.POST['street_address1'],
-                'street_address2': request.POST['street_address2'],
-                'county': request.POST['county'],
-            }
+        form_data = {
+            'full_name': request.POST['full_name'],
+            'email': request.POST['email'],
+            'phone_number': request.POST['phone_number'],
+            'country': request.POST['country'],
+            'postcode': request.POST['postcode'],
+            'town_or_city': request.POST['town_or_city'],
+            'street_address1': request.POST['street_address1'],
+            'street_address2': request.POST['street_address2'],
+            'county': request.POST['county'],
+        }
 
-            order_form = OrderForm(form_data)
-            if order_form.is_valid():
-                order = order_form.save(commit=False)
-                print("Order is valid")
-                pid = request.POST.get('client_secret')
-                if pid:
-                    pid = pid.split('_secret')[0]
-                    print("The valid pid is:")
-                    print(pid)
-                    order.stripe_pid = pid
-                    order.original_basket = json.dumps(basket)
-                    order.save()
-                    for item in basket: 
-                        product = get_object_or_404(EdibleProduct, id=item['item_id'])
-                        order_line_item = OrderLineItem(
-                            order=order,
-                            product=product,
-                            quantity=item['quantity'],
-                            weight=item['weight'],
-                            price=item['price'],
-                        )
-                    order_line_item.save()
+        order_form = OrderForm(form_data)
+        if order_form.is_valid():
+            order = order_form.save(commit=False)
+            print("Order is valid")
+            pid = request.POST.get('client_secret')
+            if pid:
+                pid = pid.split('_secret')[0]
+                print("The valid pid is:")
+                print(pid)
+                order.stripe_pid = pid
+                order.original_basket = json.dumps(basket)
+                order.save()
+                for item in basket: 
+                    product = get_object_or_404(EdibleProduct, id=item['item_id'])
+                    order_line_item = OrderLineItem(
+                        order=order,
+                        product=product,
+                        quantity=item['quantity'],
+                        weight=item['weight'],
+                        price=item['price'],
+                    )
+                order_line_item.save()
 
-                    request.session['save_info'] = 'save-info' in request.POST
-                
-                # Ensure order_number is set before redirecting
-                if order.order_number:
-                    return redirect(reverse('checkout_success', args=[order.order_number]))
-                else:
-                    messages.error(request, 'Order number is missing.')
-                    return redirect(reverse('checkout'))
+                request.session['save_info'] = 'save-info' in request.POST
+            
+            # Ensure order_number is set before redirecting
+            if order.order_number:
+                return redirect(reverse('checkout_success', args=[order.order_number]))
             else:
-                messages.error(request, 'Client secret is missing in the request.')
+                messages.error(request, 'Order number is missing.')
                 return redirect(reverse('checkout'))
+        else:
+            messages.error(request, 'Client secret is missing in the request.')
+            return redirect(reverse('checkout'))
 
         return HttpResponseBadRequest("Invalid form submission.")
 

@@ -94,6 +94,7 @@ class StripeWH_Handler:
                     product = EdibleProduct.objects.get(id=item_id)
                     print("Doing the 'for' ")
                     if isinstance(item_data, int):
+                        print("instance: ", quantity)
                         order_line_item = OrderLineItem(
                             order=order,
                             product=product,
@@ -103,15 +104,21 @@ class StripeWH_Handler:
                         order_line_item.save()
                     else:
                         print("Doing the 'else' ")
-                        for weight, quantity in item_data.items():
-                            order_line_item = OrderLineItem(
-                                order=order,
-                                product=product,
-                                quantity=quantity,
-                                weight=weight,
-                            )
+                        for quantity, value in item_data.items():
+                            print("quantity: ", value)
+                            if quantity == "quantity":
+                                order_line_item = OrderLineItem(
+                                    order=order,
+                                    product=product,
+                                    quantity=value,
+                                )
+                        for weight, value in item_data.items():
+                            print("weight: ", value)
+                            if weight == "weight":
+                                order_line_item.weight = value
                             print(order_line_item)
                             order_line_item.save()
+
             except Exception as e:
                 if order:
                     order.delete()
