@@ -72,14 +72,23 @@ class CheckoutView(View):
         stripe_secret_key = settings.STRIPE_SECRET_KEY
 
         basket = basket_contents(request)
-        if not basket['basket_items']: 
-            messages.error(request, "There's nothing in your basket at the moment")
+        if not basket['basket_items']:
+            messages.error(request, "There's nothing in your basket at the moment.")
             return redirect(reverse('product_list'))
 
-        order_form = OrderForm()
-        current_basket = basket
-        total = current_basket['grand_total']
-        stripe_total = round(total * 100)
+        # Calculate total from basket items
+        total = sum(item['price'] * item['quantity'] for item in basket['basket_items'])
+
+        # Handling delivery costs
+        if request.user.is_authenticated and hasattr(request.user, 'profile') and request.user.profile.is_subscriber:
+            delivery = 0  # Free delivery for subscribers
+        else:
+            delivery = 3  # Standard delivery fee
+
+        grand_total = total + delivery
+
+        # Stripe total calculation for payment intent
+        stripe_total = round(grand_total * 100)
         stripe.api_key = stripe_secret_key
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
@@ -87,14 +96,14 @@ class CheckoutView(View):
         )
 
         context = {
-            'order_form': order_form,
+            'order_form': OrderForm(),
             'stripe_public_key': stripe_public_key,
             'client_secret': intent.client_secret,
-            'basket_items': current_basket['basket_items'],
-            'total': total,
-            'grand_total': current_basket['grand_total'],
+            'basket_items': basket['basket_items'],
+            'total': total, 
+            'delivery': delivery,
+            'grand_total': grand_total,
         }
-        
 
         return render(request, 'checkout/checkout.html', context)
 
@@ -145,6 +154,8 @@ class CheckoutView(View):
                         lineitem_total=product.price * item['quantity']
                     )
                     order_line_item.save()
+                
+                order.update_total()
 
                 request.session['save_info'] = 'save-info' in request.POST
             
@@ -183,6 +194,7 @@ class CheckoutSuccessView(View):
             'order': order,
             'basket_items': basket_items,
             'delivery': order.delivery_cost,
+            'total': order.order_total,
             'grand_total': order.grand_total,
             'on_checkout_success': True,
         }

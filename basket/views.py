@@ -49,11 +49,11 @@ class AddToBasketView(View):
         item_key = f"{item_id}-{flavour}-{weight}"
 
         if item_id in basket:
-            basket[item_id]['quantity'] += quantity
-            basket[item_id]['price'] = str(price) 
-            print(basket[item_id])
+            basket[item_key]['quantity'] += quantity
+            basket[item_key]['price'] = str(price) 
+            print(basket[item_key])
         else:
-            basket[item_id] = {'quantity': quantity, 'weight': weight, 'flavour': flavour, 'price': str(price)}
+            basket[item_key] = {'quantity': quantity, 'weight': weight, 'flavour': flavour, 'price': str(price)}
 
         request.session['basket'] = basket
         request.session.modified = True

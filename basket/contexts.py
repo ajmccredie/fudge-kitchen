@@ -46,7 +46,6 @@ def basket_contents(request):
                 'price': price,
                 'subtotal': subtotal,
             })
-            print('Item ID from contexts', item_id)
 
         except ValueError:
             continue
