@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.views import View
 from django.conf import settings
 from django.views.decorators.http import require_POST
+from django.core import serializers
 
 import stripe
 import json
@@ -12,6 +13,7 @@ from edible_products.models import EdibleProduct
 from basket.contexts import basket_contents
 from .forms import OrderForm
 from django.http import HttpResponseBadRequest
+from django.core.serializers import serialize
 
 @require_POST
 def cache_checkout_data(request):
@@ -97,7 +99,7 @@ class CheckoutView(View):
         return render(request, 'checkout/checkout.html', context)
 
     def post(self, request, *args, **kwargs):
-        basket = basket_contents(request)['basket_items']
+        basket_items = basket_contents(request)['basket_items']
 
         form_data = {
             'full_name': request.POST['full_name'],
@@ -118,32 +120,44 @@ class CheckoutView(View):
             pid = request.POST.get('client_secret')
             if pid:
                 pid = pid.split('_secret')[0]
-                print("The valid pid is:")
-                print(pid)
+                print("The valid pid is:", pid)
                 order.stripe_pid = pid
-                order.original_basket = json.dumps(basket)
+                
+                # Serializing each basket item
+                serializable_basket = json.dumps([{
+                    'id': item['product'].id,
+                    'name': item['product'].flavour,
+                    'quantity': item['quantity'],
+                    'price': str(item['product'].price),
+                    'weight': item['weight']
+                } for item in basket_items])
+
+                order.original_basket = serializable_basket
                 order.save()
-                for item in basket: 
-                    product = get_object_or_404(EdibleProduct, id=item['item_id'])
+
+                for item in basket_items:
+                    product = get_object_or_404(EdibleProduct, id=item['product'].id)
                     order_line_item = OrderLineItem(
                         order=order,
                         product=product,
                         quantity=item['quantity'],
                         weight=item['weight'],
-                        price=item['price'],
+                        lineitem_total=product.price * item['quantity']
                     )
-                order_line_item.save()
+                    order_line_item.save()
 
                 request.session['save_info'] = 'save-info' in request.POST
             
-            # Ensure order_number is set before redirecting
-            if order.order_number:
-                return redirect(reverse('checkout_success', args=[order.order_number]))
+                if order.order_number:
+                    return redirect(reverse('checkout_success', args=[order.order_number]))
+                else:
+                    messages.error(request, 'Order number is missing.')
+                    return redirect(reverse('checkout'))
             else:
-                messages.error(request, 'Order number is missing.')
+                messages.error(request, 'Client secret is missing in the request.')
                 return redirect(reverse('checkout'))
         else:
-            messages.error(request, 'Client secret is missing in the request.')
+            messages.error(request, 'There was an error with your form submission.')
             return redirect(reverse('checkout'))
 
         return HttpResponseBadRequest("Invalid form submission.")
@@ -170,6 +184,7 @@ class CheckoutSuccessView(View):
             'basket_items': basket_items,
             'delivery': order.delivery_cost,
             'grand_total': order.grand_total,
+            'on_checkout_success': True,
         }
 
-        return render(request, 'checkout_success', context)
+        return render(request, 'checkout/checkout_success.html', context)

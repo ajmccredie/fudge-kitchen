@@ -14,7 +14,7 @@
                 <hr class="mt-1 mb-3">
             </div>
         </div>
-        {% if grand_total and not on_profile_page %}
+        {% if grand_total and not on_profile_page and not on_checkout_success %}
             <p class="logo-font bg-white text-black py-1">Your Basket ({{ product_count }})</p>
             <div class="basket-notification-wrapper">
                 {% for item in basket_items %}
@@ -38,7 +38,6 @@
                         <span class="float-right">£{{ grand_total|floatformat:2 }}</span>
                     </p></strong>
                     <!-- Want to add something here regarding signing in or subscription for free delivery -->
-                    <!-- This button needs to disappear on checkout pages -->
                     <a href="{% url 'checkout' %}" class="btn btn-black btn-block rounded-0">
                         <span class="text-uppercase">Go To Secure Checkout</span>
                         <span class="icon">

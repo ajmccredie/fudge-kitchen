@@ -15,6 +15,7 @@
 {% endblock %}
 
 {% block content %}
+    {% with on_checkout_success=True %}
     <div class="container">
         <div class="row">
             <div class="col">
@@ -182,6 +183,12 @@
                 </div>
             </div>
             <!-- Eventually want a selection of buttons to subscription details and to home page -->
+            <div class="row mt-4">
+                <div class="col text-center">
+                    <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
         </div>
     </div>
+    {% endwith %}
 {% endblock %}
