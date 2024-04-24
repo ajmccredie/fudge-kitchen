@@ -287,6 +287,47 @@ header {
 	color: #17a2b8; /* text-info */
 }
 
+/* Overlay covering the entire screen */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1050; /* High z-index to cover other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for the loading image */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px; /* Adjust size as needed */
+    height: 100px; /* Adjust size as needed */
+}
+
+/* Styling the loading image */
+#loadingLogo {
+    width: 100%; /* Full width of its container */
+    height: auto; /* Maintain aspect ratio */
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.75); /* White glow around the image */
+    animation: glow 1.5s infinite alternate; /* Animated glow effect */
+}
+
+/* Keyframes for the glow animation */
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+    }
+}
+
 @media (max-width: 768px) {
     .mt-mobile-header {
         margin-top: 0;

@@ -52,6 +52,12 @@ class CheckoutView(View):
         # Calculate total from basket items
         total = sum(item['price'] * item['quantity'] for item in basket['basket_items'])
 
+        initial_data = {}
+        if request.user.is_authenticated:
+            initial_data['email'] = request.user.email
+        
+        order_form = OrderForm(initial=initial_data)
+
         # Handling delivery costs
         if request.user.is_authenticated and hasattr(request.user, 'profile') and request.user.profile.is_subscribed:
             delivery = 0  # Free delivery for subscribers

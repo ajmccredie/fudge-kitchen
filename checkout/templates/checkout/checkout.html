@@ -71,13 +71,14 @@
                 </div>
             </div>
             <div class="col-12 col-lg-6">
+                {% if user.is_authenticated %}
                 <p class="text-muted">Please fill out the form below to complete your order</p>
                 <form action="{% url 'checkout' %}" method="POST" id="payment-form">
                     {% csrf_token %}
                     <fieldset class="rounded px-3 mb-5">
                         <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
                         {{ order_form.full_name | as_crispy_field }}
-                        {{ order_form.email | as_crispy_field }}
+                        <input type="email" name="email" value="{{ request.user.email }}" class="form-control" readonly>
                     </fieldset>
                     <fieldset class="rounded px-3 mb-5">
                         <legend class="fieldset-label small text-black px-2 w-auto">Delivery</legend>
@@ -131,6 +132,11 @@
 						</p>
 					</div>
                 </form>
+                {% else %}
+                <h2>Please Login or Register</h2>
+                <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-primary">Login</a>
+                <a href="{% url 'account_signup' %}?next={{ request.path }}" class="btn btn-primary">Register</a>
+            {% endif %}
             </div>
         </div>
     </div>

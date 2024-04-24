@@ -47,12 +47,14 @@ class EditProfileView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        form = ProfileForm(request.POST, instance=request.user.profile)
+        profile = get_object_or_404(Profile, user=request.user)
+        form = ProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully')
             return redirect('profile')
         return render(request, self.template_name, {'form': form})
+
 
 class DeleteProfileView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):

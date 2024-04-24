@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col">
+            <h1 class="logo-font my-4">Edit Your Profile</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post" action="{% url 'edit_profile' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="full_name">Full Name:</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ form.full_name.value }}">
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ form.email.value }}">
+        </div>
+        <div class="form-group">
+            <label for="delivery_address">Delivery Address:</label>
+            <input type="text" class="form-control" id="delivery_address" name="delivery_address" value="{{ form.delivery_address.value }}">
+        </div>
+        <div class="form-group">
+            <label for="billing_address">Billing Address:</label>
+            <input type="text" class="form-control" id="billing_address" name="billing_address" value="{{ form.billing_address.value }}">
+        </div>
+        <div class="form-group">
+            <label for="is_subscriber">Subscriber Status:</label>
+            <input type="checkbox" class="form-control" id="is_subscribed" name="is_subscribed" {% if form.is_subscribed.value %}checked{% endif %} disabled>
+            <small class="form-text text-muted">Subscription changes must be handled through subscription management.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+</div>
+{% endblock %}
