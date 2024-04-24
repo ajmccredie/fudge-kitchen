@@ -1,0 +1,33 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <h1>Order Confirmation</h1>
+        <p>Good news, {{ order.full_name }}! Good things are coming your way...</p>
+        <p>Your order number is: <strong>{{ order.order_number }}</strong></p>
+        <p>We are currently processing your order and will send you another email once your items have shipped.</p>
+
+        <h3>Order Details</h3>
+        {% for item in order.lineitems.all %}
+        <p>{{ item.product.name }} ({{ item.quantity }} @ £{{ item.product.price }})</p>
+        {% endfor %}
+
+        <p>Total: £{{ order.order_total }}</p>
+        <p>Delivery: £{{ order.delivery_cost }}</p>
+        <p>Grand Total: £{{ order.grand_total }}</p>
+    </div>
+    <div class="footer">
+        Thank you for shopping with us.
+    </div>
+</body>
+
+</html>
+

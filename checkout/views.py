@@ -14,6 +14,8 @@ from basket.contexts import basket_contents
 from .forms import OrderForm
 from django.http import HttpResponseBadRequest
 from django.core.serializers import serialize
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 @require_POST
 def cache_checkout_data(request):
@@ -35,35 +37,6 @@ def cache_checkout_data(request):
     except Exception as e:
         messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
         return HttpResponse(content=e, status=400)
-
-# @require_POST
-# def cache_checkout_data(request):
-#     try:
-#         client_secret = request.POST.get('client_secret')
-#         if client_secret:
-#             pid = client_secret.split('_secret')[0]
-#             stripe.api_key = settings.STRIPE_SECRET_KEY
-
-#             # Get the basket data
-#             basket_data = request.session.get('basket', {})
-#             # Get the first line of basket metadata
-#             basket_first_line = next(iter(basket_data.values()), '')
-
-#             # Clean the first line of basket metadata
-#             cleaned_basket_first_line = basket_first_line.split('-')[0]
-
-#             # Modify the PaymentIntent metadata with the cleaned basket data
-#             stripe.PaymentIntent.modify(pid, metadata={
-#                 'basket': json.dumps({0: cleaned_basket_first_line}),
-#                 'save_info': request.POST.get('save_info'),
-#             })
-#             return HttpResponse(status=200)
-#         else:
-#             raise ValueError('Client secret not found in the request.')
-#     except Exception as e:
-#         messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
-#         return HttpResponse(content=e, status=400)
-
 
 
 class CheckoutView(View):
@@ -181,9 +154,17 @@ class CheckoutSuccessView(View):
         """
         save_info = request.session.get('save_info')
         order = get_object_or_404(Order, order_number=order_number)
+        # toast message 
         messages.success(request, f'Order successfully processed! \
             Your order number is {order_number}. A confirmation \
             email will be sent to {order.email}.')
+
+        # email confirmation
+        subject = "Roo's Fudge Kitchen Order Confirmation - Your Latest Order"
+        message = render_to_string('emails/order_confirmation.html', {'order': order})
+        email = EmailMessage(subject, message, to=[order.email])
+        email.content_subtype = 'html'  # (set to send the html contents
+        email.send()
 
         if 'basket' in request.session:
             del request.session['basket']
