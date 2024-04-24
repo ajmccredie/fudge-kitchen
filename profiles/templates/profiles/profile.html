@@ -4,22 +4,49 @@
 {% block page_header %}
 <div class="container header-container">
     <div class="row">
-        <div class="col"></div>
+        <div class="col">
+            <h1 class="logo-font my-4">Your Profile</h1>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block content %}
 <div class="container">
+    <!-- Order History -->
     <div class="row">
-        <div class="col">
-            <hr>
-            <h2 class="logo-font mb-4">Your Profile</h2>
-            <hr>
+        <div class="col-12">
+            <h3>Order History</h3>
+            <div class="list-group">
+                {% for order in orders %}
+                    <a href="{% url 'order_detail' order.id %}" class="list-group-item list-group-item-action">
+                        Order #{{ order.order_number }} - {{ order.date }} - £{{ order.grand_total }}
+                    </a>
+                {% empty %}
+                    <p>No orders yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Management -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>Account Management</h3>
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Details</a>
+            <a href="{% url 'delete_account' %}" class="btn btn-danger" id="delete-account-btn">Delete Account</a>
         </div>
     </div>
 </div>
 
-
-
+<script>
+    // Delete Account Confirmation
+    document.getElementById('delete-account-btn').addEventListener('click', function(event) {
+        event.preventDefault();
+        if(confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+            window.location.href = this.href;
+        }
+    });
+</script>
 {% endblock %}
+

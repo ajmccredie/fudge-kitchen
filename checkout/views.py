@@ -53,7 +53,7 @@ class CheckoutView(View):
         total = sum(item['price'] * item['quantity'] for item in basket['basket_items'])
 
         # Handling delivery costs
-        if request.user.is_authenticated and hasattr(request.user, 'profile') and request.user.profile.is_subscriber:
+        if request.user.is_authenticated and hasattr(request.user, 'profile') and request.user.profile.is_subscribed:
             delivery = 0  # Free delivery for subscribers
         else:
             delivery = 3  # Standard delivery fee

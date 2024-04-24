@@ -6,6 +6,7 @@ from django.views import View
 from django.contrib import messages
 from .models import Profile
 from .forms import ProfileForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class ProfileView(View):
     """ Display the user's profile. """
@@ -38,8 +39,7 @@ class ProfileView(View):
         return render(request, self.template_name, context)
 
 
-@login_required
-class EditProfileView(View):
+class EditProfileView(LoginRequiredMixin, View):
     template_name = 'profiles/edit_profile.html'
 
     def get(self, request, *args, **kwargs):
@@ -50,5 +50,14 @@ class EditProfileView(View):
         form = ProfileForm(request.POST, instance=request.user.profile)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Profile updated successfully')
             return redirect('profile')
         return render(request, self.template_name, {'form': form})
+
+class DeleteProfileView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        user.delete()
+        logout(request)  # Logout the user after account deletion
+        messages.success(request, "Your account has been successfully deleted.")
+        return redirect('home')
