@@ -25,7 +25,7 @@ def cache_checkout_data(request):
             pid = client_secret.split('_secret')[0]
             print("Cache pid: ", pid)
             stripe.api_key = settings.STRIPE_SECRET_KEY
-            # print('basket', json.dumps(request.session.get('basket', {})))
+            print('basket in cache checkout data', json.dumps(request.session.get('basket', {})))
             stripe.PaymentIntent.modify(pid, metadata={
                 'basket': json.dumps(request.session.get('basket', {})),
                 'save_info': request.POST.get('save_info'),
@@ -41,53 +41,33 @@ def cache_checkout_data(request):
 
 class CheckoutView(View):
     def get(self, request, *args, **kwargs):
-        stripe_public_key = settings.STRIPE_PUBLIC_KEY
-        stripe_secret_key = settings.STRIPE_SECRET_KEY
+        context = basket_contents(request)  # Fetch the basket context
 
-        basket = basket_contents(request)
-        if not basket['basket_items']:
+        if not context['basket_items']:
             messages.error(request, "There's nothing in your basket at the moment.")
             return redirect(reverse('product_list'))
 
-        # Calculate total from basket items
-        total = sum(item['price'] * item['quantity'] for item in basket['basket_items'])
-
-        initial_data = {}
-        if request.user.is_authenticated:
-            initial_data['email'] = request.user.email
-        
+        # Pass initial data for order form if the user is authenticated
+        initial_data = {'email': request.user.email} if request.user.is_authenticated else {}
         order_form = OrderForm(initial=initial_data)
 
-        # Handling delivery costs
-        if request.user.is_authenticated and hasattr(request.user, 'profile') and request.user.profile.is_subscribed:
-            delivery = 0  # Free delivery for subscribers
-        else:
-            delivery = 3  # Standard delivery fee
-
-        grand_total = total + delivery
-
-        # Stripe total calculation for payment intent
-        stripe_total = round(grand_total * 100)
-        stripe.api_key = stripe_secret_key
-        intent = stripe.PaymentIntent.create(
-            amount=stripe_total,
-            currency=settings.STRIPE_CURRENCY,
-        )
-
-        context = {
-            'order_form': OrderForm(),
-            'stripe_public_key': stripe_public_key,
-            'client_secret': intent.client_secret,
-            'basket_items': basket['basket_items'],
-            'total': total, 
-            'delivery': delivery,
-            'grand_total': grand_total,
-        }
+        # Add additional context needed for rendering
+        context.update({
+            'order_form': order_form,
+            'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
+            'client_secret': stripe.PaymentIntent.create(
+                amount=int(context['grand_total'] * 100),  # Stripe requires integer cents
+                currency=settings.STRIPE_CURRENCY,
+                api_key=settings.STRIPE_SECRET_KEY
+            ).client_secret
+        })
 
         return render(request, 'checkout/checkout.html', context)
 
+
     def post(self, request, *args, **kwargs):
-        basket_items = basket_contents(request)['basket_items']
+        context = basket_contents(request)  # Fetch the basket context again
+        basket_items = context['basket_items']
 
         form_data = {
             'full_name': request.POST['full_name'],
@@ -104,53 +84,41 @@ class CheckoutView(View):
         order_form = OrderForm(form_data)
         if order_form.is_valid():
             order = order_form.save(commit=False)
-            print("Order is valid")
-            pid = request.POST.get('client_secret')
-            if pid:
-                pid = pid.split('_secret')[0]
-                print("The valid pid is:", pid)
-                order.stripe_pid = pid
-                
-                # Serializing each basket item
-                serializable_basket = json.dumps([{
-                    'id': item['product'].id,
-                    'name': item['product'].flavour,
-                    'quantity': item['quantity'],
-                    'price': str(item['product'].price),
-                    'weight': item['weight']
-                } for item in basket_items])
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
 
-                order.original_basket = serializable_basket
-                order.save()
+            # Prepare a serializable version of basket items
+            serialisable_basket = json.dumps([{
+                'item_id': item['product'].id,
+                'name': item['product'].flavour,
+                'quantity': item['quantity'],
+                'weight': item['weight'],
+                'price': str(item['price']),
+                'subtotal': str(item['subtotal']),
+            } for item in basket_items], default=str)
 
-                for item in basket_items:
-                    product = get_object_or_404(EdibleProduct, id=item['product'].id)
-                    order_line_item = OrderLineItem(
-                        order=order,
-                        product=product,
-                        quantity=item['quantity'],
-                        weight=item['weight'],
-                        lineitem_total=product.price * item['quantity']
-                    )
-                    order_line_item.save()
-                
-                order.update_total()
+            order.original_basket = serialisable_basket
+            order.save()
 
-                request.session['save_info'] = 'save-info' in request.POST
-            
-                if order.order_number:
-                    return redirect(reverse('checkout_success', args=[order.order_number]))
-                else:
-                    messages.error(request, 'Order number is missing.')
-                    return redirect(reverse('checkout'))
-            else:
-                messages.error(request, 'Client secret is missing in the request.')
-                return redirect(reverse('checkout'))
+            # Create order line items
+            for item in basket_items:
+                product = item['product']
+                OrderLineItem.objects.create(
+                    order=order,
+                    product=product,
+                    quantity=item['quantity'],
+                    weight=item['weight'],
+                    lineitem_total=item['price'] * item['quantity']
+                )
+
+            order.update_total()  # Update the order total, which may trigger other business logic
+
+            return redirect(reverse('checkout_success', args=[order.order_number]))
+
         else:
-            messages.error(request, 'There was an error with your form submission.')
-            return redirect(reverse('checkout'))
+            messages.error(request, "There was an error with your form submission.")
+            return render(request, 'checkout/checkout.html', {'order_form': order_form, **context})
 
-        return HttpResponseBadRequest("Invalid form submission.")
 
 
 class CheckoutSuccessView(View):

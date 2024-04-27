@@ -28,7 +28,7 @@ class StripeWH_Handler:
         intent = event.data.object
         pid = intent.id
         basket = intent.metadata.basket
-        print(basket)
+        print("basket in metadata",basket)
         save_info = intent.metadata.save_info
         print("Type of pid:", type(pid))
         print("Value of pid:", pid)

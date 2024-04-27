@@ -108,7 +108,45 @@ This process is managed by {XXX}, and site users who have not yet signed
 1. An AWS account
 2. A Django project ready for deployment
 3. A Heroku account with your Django app successfully deployed (details of how to do this are shown below if you are unsure)
-### Forking, cloning and local deployment
+
+
+### Forking and cloning
+#### Cloning the Project
+
+This section guides you through the process of cloning this project to your local environment.
+
+1. **Access the Repository**:
+   - Go to the main page of the repository on GitHub.com.
+
+2. **Copy the Repository URL**:
+   - Click the ‘Code’ button located above the file list.
+   - Choose your preferred clone method: HTTPS, SSH, or GitHub CLI.
+   - Use the clipboard icon to copy the repository URL.
+
+3. **Clone the Repository**:
+   - Open your terminal.
+   - Navigate to the directory where you want the cloned repository to be placed.
+   - Type `git clone`, followed by a space, and then paste the URL you copied earlier.
+   - Press Enter to execute the command and clone the repository.
+
+#### Forking the Project
+
+Forking the project allows you to freely experiment with changes without affecting the original project.
+
+1. **Navigate to the Repository**:
+   - Visit the main page of the repository on GitHub.
+
+2. **Create a Fork**:
+   - At the top-right corner of the page, find and click the "Fork" button.
+   - This action will create a copy of the repository in your GitHub account.
+
+3. **Clone Your Fork**:
+   - Once the fork is created, you'll be redirected to your forked repository on GitHub.
+   - Follow the same steps as cloning (outlined above) to clone your fork to your local machine.
+   - Ensure you use the URL of your fork when performing the `git clone` command.
+
+Both cloning and forking provide ways to interact with the project, whether you’re contributing directly or experimenting with your own version.
+
 ### Heroku App creation
 1. **Disable Debug Mode**:
    - Ensure that debug mode is set to 'False' in your Django main app's `settings.py`.
@@ -266,3 +304,37 @@ AWS S3 is used to store static and media files, as Heroku does not persist this 
 - Monitor the Heroku logs for any errors during deployment or while accessing the files to ensure everything is functioning as expected.
 
 ### Stripe configuration
+This project uses Stripe for processing ecommerce payments efficiently.
+
+### Setting Up Stripe
+
+1. **Create and Configure Your Stripe Account**:
+   - Sign up or log into your Stripe account.
+
+2. **Retrieve API Keys**:
+   - Navigate to your Stripe dashboard.
+   - Expand the "Get your test API keys" section.
+   - Note down your keys:
+     - `STRIPE_PUBLIC_KEY` = Publishable Key (begins with `pk`)
+     - `STRIPE_SECRET_KEY` = Secret Key (begins with `sk`)
+
+#### Configuring Stripe Webhooks
+
+To ensure seamless transaction processing, especially if users exit the purchase-order page prematurely, setting up webhooks is crucial.
+
+1. **Set Up Webhooks**:
+   - In your Stripe dashboard, go to the "Developers" section and select "Webhooks".
+   - Click "Add Endpoint" and enter your endpoint URL:
+     ```
+     https://[your-deployed-site].herokuapp.com/checkout/wh/
+     ```
+   - Choose to receive all events.
+   - Click "Add Endpoint" to finalize the setup.
+
+2. **Webhook Signing Secret**:
+   - After adding the endpoint, you will receive a new key:
+     - `STRIPE_WH_SECRET` = Signing Secret (Webhook Key, starts with `wh`)
+
+#### Final Steps
+
+Ensure that all Stripe keys are securely stored and correctly configured in your project settings to facilitate transactions. Test the webhook by simulating payments to verify that the integration works as expected.

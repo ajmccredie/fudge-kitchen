@@ -30,6 +30,8 @@ class ProfileView(View):
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully')
+        else:
+            print(form.errors)
         orders = profile.orders.all()
         context = {
             'form': form,
@@ -53,6 +55,8 @@ class EditProfileView(LoginRequiredMixin, View):
             form.save()
             messages.success(request, 'Profile updated successfully')
             return redirect('profile')
+        else:
+            print(form.errors)
         return render(request, self.template_name, {'form': form})
 
 

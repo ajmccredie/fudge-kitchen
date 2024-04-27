@@ -3,10 +3,16 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Profile
 
-
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
-    Profile.objects.get_or_create(user=instance)
+    profile, new = Profile.objects.get_or_create(user=instance)
     if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
+        profile.default_phone_number = '0123456789'
+        profile.default_country = 'United Kingdom'
+        profile.default_postcode = 'Default Postcode'
+        profile.default_town_or_city = 'Default City'
+        profile.default_street_address1 = 'Default Address 1'
+        profile.default_street_address2 = 'Default Address 2'
+        profile.default_county = 'Default County'
+        profile.is_subscribed = False
+        profile.save()
