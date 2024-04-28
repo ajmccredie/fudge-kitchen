@@ -88,7 +88,7 @@ class CheckoutView(View):
             order.stripe_pid = pid
 
             # Prepare a serializable version of basket items
-            serialisable_basket = json.dumps([{
+            serializable_basket = json.dumps([{
                 'item_id': item['product'].id,
                 'name': item['product'].flavour,
                 'quantity': item['quantity'],
@@ -97,7 +97,7 @@ class CheckoutView(View):
                 'subtotal': str(item['subtotal']),
             } for item in basket_items], default=str)
 
-            order.original_basket = serialisable_basket
+            order.original_basket = serializable_basket
             order.save()
 
             # Create order line items
@@ -118,7 +118,7 @@ class CheckoutView(View):
         else:
             messages.error(request, "There was an error with your form submission.")
             return render(request, 'checkout/checkout.html', {'order_form': order_form, **context})
-
+            
 
 
 class CheckoutSuccessView(View):
