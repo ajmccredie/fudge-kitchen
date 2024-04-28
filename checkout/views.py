@@ -47,22 +47,27 @@ class CheckoutView(View):
             messages.error(request, "There's nothing in your basket at the moment.")
             return redirect(reverse('product_list'))
 
-        # Pass initial data for order form if the user is authenticated
+        # Setup initial form data
         initial_data = {'email': request.user.email} if request.user.is_authenticated else {}
         order_form = OrderForm(initial=initial_data)
 
-        # Add additional context needed for rendering
-        context.update({
+        # Create Stripe PaymentIntent
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        total = int(context['grand_total'] * 100)
+        intent = stripe.PaymentIntent.create(
+            amount=total,
+            currency='gbp',
+            metadata={'basket': json.dumps(request.session.get('basket', {}))}
+        )
+
+        context = {
             'order_form': order_form,
             'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
-            'client_secret': stripe.PaymentIntent.create(
-                amount=int(context['grand_total'] * 100),  # Stripe requires integer cents
-                currency=settings.STRIPE_CURRENCY,
-                api_key=settings.STRIPE_SECRET_KEY
-            ).client_secret
-        })
+            'client_secret': intent.client_secret
+        }
 
         return render(request, 'checkout/checkout.html', context)
+
 
 
     def post(self, request, *args, **kwargs):
