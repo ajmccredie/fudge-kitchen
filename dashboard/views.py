@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView
-from edible_products.models import EdibleProduct, ProductWeightPrice
+from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from .forms import EdibleProductForm
 
 # Create your views here.

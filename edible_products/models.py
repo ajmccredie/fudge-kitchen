@@ -1,5 +1,12 @@
 from django.db import models
 
+class Allergen(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    symbol = models.ImageField(upload_to='allergens/', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 class EdibleProduct(models.Model):
     WEIGHT_CHOICES = [
@@ -9,9 +16,9 @@ class EdibleProduct(models.Model):
     ]
 
     DEFAULT_WEIGHT_PRICES = {
-    100: 3.50,
-    400: 7.00,
-    800: 11.00,
+        100: 3.50,
+        400: 7.00,
+        800: 11.00,
     }
 
     plant_based = models.BooleanField(default=False)
@@ -26,7 +33,7 @@ class EdibleProduct(models.Model):
     image_url = models.URLField(max_length=1024, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
 
-    # Allergens as boolean fields
+    # Allergen boolean fields
     gluten = models.BooleanField(default=False, verbose_name='Gluten')
     crustaceans = models.BooleanField(default=False, verbose_name='Crustaceans')
     eggs = models.BooleanField(default=False, verbose_name='Eggs')
@@ -42,6 +49,8 @@ class EdibleProduct(models.Model):
     lupin = models.BooleanField(default=False, verbose_name='Lupin')
     molluscs = models.BooleanField(default=False, verbose_name='Molluscs')
 
+    allergens = models.ManyToManyField(Allergen, blank=True)
+
     def __str__(self):
         return self.flavour
 
@@ -49,14 +58,14 @@ class EdibleProduct(models.Model):
         is_new = self._state.adding
         super().save(*args, **kwargs)
         if is_new:
-            for weight, price in EdibleProduct.DEFAULT_WEIGHT_PRICES.items():
+            for weight, price in self.DEFAULT_WEIGHT_PRICES.items():
                 ProductWeightPrice.objects.create(product=self, weight=weight, price=price)
 
     def list_allergens(self):
-        """Returns a list of allergens present in the product."""
+        """Returns a list of allergens present in the product based on boolean fields."""
         allergens = []
         fields = [
-            ('gluten', 'Gluten'), ('crustaceans', 'Crustaceans'), ('eggs', 'Eggs'), 
+            ('gluten', 'Gluten'), ('crustaceans', 'Crustaceans'), ('eggs', 'Eggs'),
             ('fish', 'Fish'), ('peanuts', 'Peanuts'), ('soybeans', 'Soybeans'),
             ('milk', 'Milk'), ('nuts', 'Nuts'), ('celery', 'Celery'), ('mustard', 'Mustard'),
             ('sesame_seeds', 'Sesame Seeds'), ('sulphur_dioxide_and_sulphites', 'Sulphur Dioxide and Sulphites'),
@@ -71,7 +80,7 @@ class EdibleProduct(models.Model):
         """Returns a list of dictionaries for present allergens with their names and symbol paths."""
         allergens_info = []
         allergen_fields = [
-            ('gluten', 'Gluten'), ('crustaceans', 'Crustaceans'), ('eggs', 'Eggs'), 
+            ('gluten', 'Gluten'), ('crustaceans', 'Crustaceans'), ('eggs', 'Eggs'),
             ('fish', 'Fish'), ('peanuts', 'Peanuts'), ('soybeans', 'Soybeans'),
             ('milk', 'Milk'), ('nuts', 'Nuts'), ('celery', 'Celery'), ('mustard', 'Mustard'),
             ('sesame_seeds', 'Sesame Seeds'), ('sulphur_dioxide_and_sulphites', 'Sulphur Dioxide and Sulphites'),
@@ -86,7 +95,6 @@ class EdibleProduct(models.Model):
 
         return allergens_info
 
-
 class ProductWeightPrice(models.Model):
     product = models.ForeignKey(EdibleProduct, related_name='weight_prices', on_delete=models.CASCADE)
     weight = models.IntegerField(help_text="Weight in grams")
@@ -94,4 +102,3 @@ class ProductWeightPrice(models.Model):
 
     def __str__(self):
         return f"{self.weight}g - £{self.price}"
-

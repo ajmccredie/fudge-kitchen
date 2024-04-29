@@ -8,6 +8,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'dashboard:edible_product_list' %}" class="btn btn-secondary">Return to list with no changes</a>
     </form>
 </div>
 {% endblock %}
