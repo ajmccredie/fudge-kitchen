@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Admin Dashboard</h1>
+    <div class="dashboard-links">
+        <ul>
+            <li><a href="{% url 'dashboard:edible_product_list' %}">Edible Product Management</a></li>
+            <li><a href="">Merchandise Management</a></li>
+            <li><a href="">Order Management</a></li>
+            <!-- Add additional links as needed -->
+        </ul>
+    </div>
+</div>
+{% endblock %}

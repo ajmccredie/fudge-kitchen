@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Edible Products</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Flavour</th>
+                <th>Details</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td><img src="{{ product.image.url }}" alt="{{ product.flavour }}" style="width:100px; height:auto;"></td>
+                <td>{{ product.flavour }}</td>
+                <td>{{ product.details }}</td>
+                <td>
+                    <a href="{% url 'dashboard:edible_product_edit' product.id %}">Edit</a> |
+                    <a href="{% url 'dashboard:edible_product_delete' product.id %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
