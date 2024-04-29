@@ -4,12 +4,13 @@
 {% block content %}
 <div class="container">
     <h1>Edible Products</h1>
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Image</th>
                 <th>Flavour</th>
                 <th>Details</th>
+                <th>Allergens</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -20,12 +21,24 @@
                 <td>{{ product.flavour }}</td>
                 <td>{{ product.details }}</td>
                 <td>
+                    {% for allergen in product.get_allergens_info %}
+                    <img src="{% static allergen.symbol_path %}" alt="{{ allergen.name }}" title="{{ allergen.name }}" style="width: 30px; height: 30px; margin-right: 5px;">
+                    {% endfor %}
+                </td>
+                <td>
                     <a href="{% url 'dashboard:edible_product_edit' product.id %}">Edit</a> |
-                    <a href="{% url 'dashboard:edible_product_delete' product.id %}">Delete</a>
+                    <a href="{% url 'dashboard:edible_product_delete' product.id %}" onclick="return confirmDelete();">Delete</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <a href="{% url 'dashboard:edible_product_create' %}" class="btn btn-primary">Add new product</a>
 </div>
+
+<script>
+function confirmDelete() {
+    return confirm('Are you sure you want to delete this product? This action cannot be undone.');
+}
+</script>
 {% endblock %}

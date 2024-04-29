@@ -49,7 +49,7 @@ class EdibleProduct(models.Model):
         is_new = self._state.adding
         super().save(*args, **kwargs)
         if is_new:
-            for weight, price in DEFAULT_WEIGHT_PRICES.items():
+            for weight, price in EdibleProduct.DEFAULT_WEIGHT_PRICES.items():
                 ProductWeightPrice.objects.create(product=self, weight=weight, price=price)
 
     def list_allergens(self):
