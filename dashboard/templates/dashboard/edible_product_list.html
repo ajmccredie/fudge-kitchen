@@ -37,8 +37,18 @@
 </div>
 
 <script>
-function confirmDelete() {
-    return confirm('Are you sure you want to delete this product? This action cannot be undone.');
+function confirmDelete(productId) {
+    if(confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+        // Perform the delete operation
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{% url "dashboard:edible_product_delete" 0 %}'.replace('/0/', '/' + productId + '/');
+        form.style.display = 'none';  // Use 'none' instead of 'hidden'
+        var csrfToken = document.getElementById('csrfToken').value;
+        form.innerHTML = '<input type="hidden" name="csrfmiddlewaretoken" value="' + csrfToken + '">';
+        document.body.appendChild(form);
+        form.submit();
+    }
 }
 </script>
 {% endblock %}

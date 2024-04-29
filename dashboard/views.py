@@ -52,4 +52,4 @@ class EdibleProductDeleteView(StaffRequiredMixin, DeleteView):
 
     def get_success_url(self):
         # Redirect to the product list view after a successful delete
-        return reverse('dashboard:edible-product-list')
+        return reverse('dashboard:edible_product_list')
