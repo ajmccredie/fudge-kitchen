@@ -79,7 +79,60 @@ Users sign up with an email address. Those who do not opt out of marketing will 
 This process is managed by {XXX}, and site users who have not yet signed
 
 
-## Full user stories and acceptance criteria
+## Agile project planning and methodology
+An initail collection of user stories were determined at the start. These were then analysed for prioritisation and  the first sprint planned in terms of goals. 
+Each sprint was conducted the extent to which the goals were met was analysed, the sprints assessed and any incomplete work's value reassessed as to where/whether it should be tackled in the future.
+
+### Full user stories and acceptance criteria
+
+
+### Sprint 1: Objectives
+
+To set up a minimum viable product of an e-commerce site (MVP). Users are able to browse and select products for purchase, add them to a basket, be able to control the contents of that basket, allocate payment and receive a confirmation email. The site should be successfully deployed to Heroku and Stripe payments should show as successful test transactions. 
+
+#### Definintion of done for Sprint 1:
+A MVP site deployed to Heroku where customers can select and purchase products.
+
+#### User stories covered in this sprint
+- As a **site visitor** I can **browse fudge products and merchandise without creating an account** in order to **decide whether to purchase from the site**.
+- As a **member**, I can **select fudge sizes and packaging options**, in order **to customise my order**.
+- As a ** member**, I can **check out**, in order to **complete my purchase**.
+- As a ** member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**.
+- As a ** member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**.
+- As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**.
+
+#### Breakdown of the work goals to meet the objectives:
+Goal 1: Set-up Django project, launch on Heroky and set-up basic homepage view.
+Goal 2: Set-up "EdibleProducts" and a basic view of a single product (including database links and AWS, and linking these to Heroku)
+Goal 3: Set-up checkout including views
+Goal 4: Set-up Stripe payments and link these (including the webhooks) to both the development site and the Heroku site
+Goal 5: Set-up account sign-up and sign-in views
+Goal 6: Set-up email confirmation of purchase (to run to the terminal)
+Goal 7: Basic CSS and JavaScript to ensure reasonable UI/UX
+
+#### Analysis of the sprint (and lessons learned):
+There were some major issues with the time-boxing, in particular with linking the site effectively with Stripe. The goals were met, with the exception of one of the webhooks which is still suffering with a persistent bug relating to 'charges'. 
+The webhook issue will require tackling in a future Sprint, but setting up the admin dashboard capabilities and a large portion of other site functionality will be the focus of sprint 2.
+Packaging options were not covered from the user stories, but will hopefully be added into a later sprint (that user story was split into two parts). 
+Testing has identified some UX/UI bugs related to where the information appears on the screen and the 'toasts'. Some of these (such as removing the 'secure payment' option from confirmation screens) were tackled immediately, others will be dealt with later. The loading screen does not work as intended (no image of the packed fudge is showing currently).
+
+### Sprint 2: Objectives
+To make the site useable by a business owner with little-to-no coding experience or confidence. To improve site functionality for the customer and increase the number of products available for purchase.
+
+#### Definition of done for Sprint 2:
+
+#### User stories covered in this sprint
+- As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.
+- As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.
+- As a **member **, I can **create an account to save my details**, in order to **checkout faster in the future**.
+- As a **member**, I can **have the site remember my allergen preferences**, in order **to automatically filter products for me**.
+- As a **member**, I can **purchase merchandise like mugs and coasters**, in order to **have branded items from my favourite fudge shop**.
+- As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**.
+
+#### Breakdown of goals to meet the sprint objectives
+
+#### Sprint analysis and lessons learned
+
 
 ## Manual testing (overview)
 ### Responsiveness
