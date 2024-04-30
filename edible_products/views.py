@@ -13,24 +13,27 @@ class EdibleProductListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        allergen_ids = self.request.GET.getlist('allergen[]')
-        print(allergen_ids)
         query = self.request.GET.get('q')
-
-        if allergen_ids:
-            allergen_filter = Q()
-            for allergen_id in allergen_ids:
-                allergen_filter |= Q(allergens__id=allergen_id)
-            queryset = queryset.exclude(allergen_filter)
+        allergen_ids = self.request.GET.getlist('allergen[]')  # Assuming each allergen has an id field
 
         if query:
-            queryset = queryset.filter(name__icontains=query) 
+            queryset = queryset.filter(
+                Q(flavour__icontains=query) |  # Search in flavour
+                Q(details__icontains=query) |  # Search in details
+                Q(ingredients__icontains=query)  # Search in ingredients
+            )
+
+        # Filter out products with the specified allergens
+        if allergen_ids:
+            for allergen_id in allergen_ids:
+                queryset = queryset.exclude(**{f"{allergen_id}": True})
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['allergens'] = Allergen.objects.all()  # Pass allergens to the template
+        context['search_query'] = self.request.GET.get('q', '')
+        context['allergen_filters'] = self.request.GET.getlist('allergen[]')
         return context
 
 class EdibleProductDetailView(DetailView):

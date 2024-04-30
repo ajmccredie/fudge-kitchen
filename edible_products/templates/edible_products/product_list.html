@@ -7,15 +7,21 @@
 <div class="container mt-5 pt-7">
     <h2 class="logo-font text-center my-4">Our Products</h2>
     <!-- Product List -->
-    <form method="GET">
+    <form method="GET" action="{% url 'product_list' %}">
         <label for="allergen">Exclude Allergens:</label>
-        <select name="allergen[]" id="allergen" multiple>
-            <option value="">No Exclusion</option>
+        <div class="allergen-filters">
             {% for allergen in allergens %}
-                <option value="{{ allergen.id }}">{{ allergen.name }}</option>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="allergen[]" value="{{ allergen.id }}"
+                       id="allergen{{ allergen.id }}" {% if allergen.id|stringformat:"s" in allergen_filters %}checked{% endif %}>
+                <label class="form-check-label" for="allergen{{ allergen.id }}">
+                    <img src="{% static allergen.symbol_path %}" alt="{{ allergen.name }}" style="height: 20px;">
+                    {{ allergen.name }}
+                </label>
+            </div>
             {% endfor %}
-        </select>
-        <button type="submit">Filter</button>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
     </form>
     <div class="row">
         {% for product in edible_products %}
