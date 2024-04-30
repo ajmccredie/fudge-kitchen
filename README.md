@@ -84,7 +84,34 @@ An initail collection of user stories were determined at the start. These were t
 Each sprint was conducted the extent to which the goals were met was analysed, the sprints assessed and any incomplete work's value reassessed as to where/whether it should be tackled in the future.
 
 ### Full user stories and acceptance criteria
-
+| User story  | MoSCoW |  Acceptance criteria  |  Story points  |
+| ----------- | ----------- | ----------- | ----------- |
+| As a **site visitor** I can **browse fudge products and merchandise without creating an account**, in order to **decide whether to purchase from the site**.      | Title       | - Access the wesbite's homepage <br> - Navigate to the products section <br> - View a list of available fudge products without needing to log in <br> - Click on individual product items to view more details |  5 <br> This requires both front and backend development for product displays and navigation. |
+| As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.   | Text        |  | 8 <br> This involves complex filtering logic on both front and backend, drawing in information from across a number of the Django apps. |
+| As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.  | Text        |  | 2 <br> Simple frontend development. |
+| As a **member**, I can **select fudge sizes and packaging options**, in order **to customise my order**. |  |  | 3 <br> Requires front and backend development for order customisation. |
+|As a **member**, I can **check out**, in order to **complete my purchase**. |  |  |  |
+| As a **member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**. |  |  |  |
+| As a **member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**. |  |  |  |
+| As a **member**, I can **submit enquiries through a form**, in order to **get answers to questions not covered in the FAQs**. |  |  |  |
+| As a **member**, I can **create an account to save my details**, in order to **checkout faster in the future**. |  |  |  |
+| As a **member**, I can **log in to my account to view past orders and update my details**, in order to **manage my purchases and account information easily**. |  |  |  |
+| As a **member**, I can **receive promotional emails**, in order to **be informed about new flavours and special offers**. |  |  |  |
+| As a **member**, I can **have the site remember my allergen preferences**, in order **to automatically filter products for me**. |  |  |  |
+| As a **member**, I can **purchase merchandise like mugs and coasters**, in order to **have branded items from my favourite fudge shop**. |  |  |  |
+| As a **subscribing customer**, I can **choose a subscription plan**, in order **to best fit my needs**. |  |  |  |
+| As a **subscribing customer**, I can **receive free delivery and monthly 'flavour of the month' samples**, in order to **enjoy my subscription benefits**. |  |  |  |
+| As a **subscribing customer**, I can **update or cancel my subscription**, in order to **have control over my subscription choices**. |  |  |  |
+| As a **subscribing customer**, I can **receive a monthly email about the 'flavour of the month' and other promotions**, in order to **stay informed about new and special offers**. |  |  |  |
+| As a **subscribing customer**, I can **set my allergen/dietary preferences for the 'guest flavour' samples**, in order to **ensure they are always suitable for me to consume**. |  |  |  |
+| As a **subscribing customer**, I can **have my billing and shipping details remembered**, in order to **ensure smooth subscription renewals**. |  |  |  |
+| As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**. |  |  |  |
+| As a **site admin**, I can **view and manage customer orders**, in order to **ensure timely processing and delivery**. |  |  |  |
+| As a **site admin**, I can **manage user accounts, including subscription details**, in order to **provide customer support and manage subscriptions**. |  |  |  |
+| As a **site admin**, I can **send out monthly promotional emails to subscribers**, in order to **engage with my customers and promote new flavours and offers**. |  |  |  |
+| As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**. |  |  |  |
+| As a **site admin**, I can **receive and respond to customer enquiries submitted through the website**, in order to **provide assistance and information as needed**. |  |  |  |
+| As a **site admin**, I can **implement and manage SEO strategies and tools on the website**, in order to **improve the site's visibility and ranking on search engines, thereby attracting more potential customers to our fudge products and increasing sales**. |  |  |  |
 
 ### Sprint 1: Objectives
 
