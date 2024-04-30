@@ -1,5 +1,6 @@
 from django.shortcuts import render, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from .forms import EdibleProductForm
@@ -30,7 +31,11 @@ class EdibleProductCreateView(StaffRequiredMixin, CreateView):
     model = EdibleProduct
     form_class = EdibleProductForm
     template_name = 'dashboard/product_form.html'
-    # fields = ['flavour', 'details', 'ingredients', 'quantity', 'weight', 'price', 'image', 'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts', 'soybeans', 'milk', 'nuts', 'celery', 'mustard', 'sesame_seeds', 'sulphur_dioxide_and_sulphites', 'lupin', 'molluscs']
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Product created successfully!')
+        return response
 
     def get_success_url(self):
         return reverse('dashboard:edible_product_list')
@@ -40,7 +45,11 @@ class EdibleProductUpdateView(StaffRequiredMixin, UpdateView):
     model = EdibleProduct
     form_class = EdibleProductForm
     template_name = 'dashboard/product_form.html'
-    # fields = ['flavour', 'details', 'ingredients', 'quantity', 'weight', 'price', 'image', 'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts', 'soybeans', 'milk', 'nuts', 'celery', 'mustard', 'sesame_seeds', 'sulphur_dioxide_and_sulphites', 'lupin', 'molluscs']
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Product updated successfully!')
+        return response
 
     def get_success_url(self):
         return reverse('dashboard:edible_product_list')
@@ -49,6 +58,11 @@ class EdibleProductUpdateView(StaffRequiredMixin, UpdateView):
 class EdibleProductDeleteView(StaffRequiredMixin, DeleteView):
     model = EdibleProduct
     template_name = 'dashboard/product_confirm_delete.html'
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        messages.success(request, 'Product deleted successfully!')
+        return response
 
     def get_success_url(self):
         # Redirect to the product list view after a successful delete
