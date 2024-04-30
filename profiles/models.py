@@ -7,13 +7,22 @@ from django.dispatch import receiver
 from django_countries.fields import CountryField
 
 
+class Allergen(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    symbol = models.ImageField(upload_to='allergens/', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Profile(models.Model):
     """ 
     This will store the important information for the user
     which they can access on login
     """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    allergen_preferences = models.CharField(max_length=255, blank=True)
+    allergen_preferences = models.ManyToManyField(Allergen, blank=True)
     default_phone_number = models.CharField(max_length=20, null=True, blank=True)
     default_country = CountryField(blank_label='Country *', null=True, blank=True)
     default_postcode = models.CharField(max_length=20, null=True, blank=True)
