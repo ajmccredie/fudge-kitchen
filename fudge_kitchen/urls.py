@@ -17,14 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
+from home import views as home_views
 
 from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', include('home.urls')),
-    path('our_story/', include('home.urls')),
+    path('', home_views.index, name='index'),  # Map root URL directly to 'index' view
+    path('our_story/', home_views.our_story, name='our_story'),
     path('edible_products/', include('edible_products.urls')),
     path('profiles/', include('profiles.urls')),
     path('basket/', include('basket.urls')),
