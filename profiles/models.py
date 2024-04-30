@@ -31,8 +31,7 @@ class Profile(models.Model):
     default_street_address2 = models.CharField(max_length=80, null=True, blank=True)
     default_county = models.CharField(max_length=80, null=True, blank=True)
     is_subscribed = models.BooleanField(default=False)
-    shipping_address = models.CharField(max_length=255, blank=True)
-    billing_address = models.CharField(max_length=255, blank=True)
+    newsletter_recipient = models.BooleanField(default=False)  
 
     def __str__(self):
         return f"{self.user.username}'s profile"

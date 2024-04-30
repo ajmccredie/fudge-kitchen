@@ -18,15 +18,15 @@
                 Merch
             </a>
             <div class="dropdown-menu border-0" aria-labelledby="merch-link">
-                <a href="{% url '#' %}?category=mugs" class="dropdown-item">Mugs</a>
-                <a href="{% url '#' %}?category=bags" class="dropdown-item">Bags</a>
-                <a href="{% url '#' %}?category=coasters" class="dropdown-item">Coasters</a>
+                <a href="{% url 'product_list' %}?category=mugs" class="dropdown-item">Mugs</a>
+                <a href="{% url 'product_list' %}?category=bags" class="dropdown-item">Bags</a>
+                <a href="{% url 'product_list' %}?category=coasters" class="dropdown-item">Coasters</a>
             </div>
         </li>
 
         <!-- Story Link -->
         <li class="nav-item">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'story' %}">Story</a>
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'our_story' %}">Story</a>
         </li>
 
         <!-- Account Dropdown (Assuming use of Django Allauth for example) -->
@@ -43,7 +43,7 @@
 
         <!-- Subscription Link -->
         <li class="nav-item">
-            <a class="logo-font font-weight-bold nav-link text-black" href="{% url 'subscription' %}">Subscription</a>
+            <a class="logo-font font-weight-bold nav-link text-black" href="{% url 'our_story' %}">Subscription</a>
         </li>
     </ul>
 </div>
