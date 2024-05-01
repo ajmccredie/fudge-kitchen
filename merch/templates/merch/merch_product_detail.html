@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+  <h1>{{ object.name }}</h1>
+  <p>{{ object.description }}</p>
+  <p class="font-weight-bold">Price: £{{ object.price }}</p>
+
+  <h2>Available Colors</h2>
+  {% if object.variations.all %}
+  <div class="mb-3">
+    {% for variation in object.variations.all %}
+    <span class="badge badge-secondary">{{ variation.color }}</span>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>No colors available.</p>
+  {% endif %}
+
+  <h2>Text Options</h2>
+  {% if object.custom_texts.all %}
+  <div>
+    {% for text in object.custom_texts.all %}
+    <p>{{ text.text_option }}</p>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>No text options available.</p>
+  {% endif %}
+</div>
+{% endblock %}

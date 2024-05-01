@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'dashboard',
     'edible_products.apps.EdibleProductsConfig',
     'checkout.apps.CheckoutConfig',
+    'merch',
     #'profiles',
     'profiles.apps.ProfilesConfig',
     'basket',

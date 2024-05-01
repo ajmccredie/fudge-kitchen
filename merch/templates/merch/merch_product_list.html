@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <div class="row">
+        {% for product in object_list %}
+        <a href="{% url 'merch_product_detail' product.id %}" style="text-decoration: none; color: inherit;" class="col-sm-6 col-md-4 col-lg-3 mb-4" onmouseover="this.style.cursor='pointer'">
+            <div class="card h-100">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                {% else %}
+                <img src="{% static 'images/noimage.png' %}" class="card-img-top" alt="No image available">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    <!-- Example additional info like colour or text options could be added here -->
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Price: £{{ product.price }}</small>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="col">
+            <p>No merch products found.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
