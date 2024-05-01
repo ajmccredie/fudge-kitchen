@@ -86,14 +86,14 @@ Each sprint was conducted the extent to which the goals were met was analysed, t
 ### Full user stories and acceptance criteria
 | User story  | MoSCoW |  Acceptance criteria  |  Story points  |
 | ----------- | ----------- | ----------- | ----------- |
-| As a **site visitor** I can **browse fudge products and merchandise without creating an account**, in order to **decide whether to purchase from the site**.      | Title       | - Access the wesbite's homepage <br> - Navigate to the products section <br> - View a list of available fudge products without needing to log in <br> - Click on individual product items to view more details |  5 <br> This requires both front and backend development for product displays and navigation. |
-| As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.   | Text        |  | 8 <br> This involves complex filtering logic on both front and backend, drawing in information from across a number of the Django apps. |
-| As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.  | Text        |  | 2 <br> Simple frontend development. |
-| As a **member**, I can **select fudge sizes and packaging options**, in order **to customise my order**. |  |  | 3 <br> Requires front and backend development for order customisation. |
-|As a **member**, I can **check out**, in order to **complete my purchase**. |  |  |  |
-| As a **member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**. |  |  |  |
-| As a **member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**. |  |  |  |
-| As a **member**, I can **submit enquiries through a form**, in order to **get answers to questions not covered in the FAQs**. |  |  |  |
+| As a **site visitor** I can **browse fudge products and merchandise without creating an account**, in order to **decide whether to purchase from the site**.      | Must       | - Access the wesbite's homepage <br> - Navigate to the products section <br> - View a list of available fudge products without needing to log in <br> - Click on individual product items to view more details |  5 <br> This requires both front and backend development for product displays and navigation. |
+| As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.   | Should        | - Find filtering options prominently displayed on the fudge products page <br> - Select either plant-based or tradition for preferences <br> - Select allergens to exlclude from recipes <br> - See the available product list update dynamically based on the selected filter <br> - Be able to clear filters and return to full product list | 8 <br> This involves complex filtering logic on both front and backend, drawing in information from across a number of the Django apps. |
+| As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.  | Should        | - Locate the subscription section of the website <br> - Read clear descriptions of the benefits offered to subscribers <br> - Understand the benefits of paid subscription compared to non-subscribers | 2 <br> Simple frontend development. |
+| As a **member**, I can **select fudge sizes and packaging options**, in order **to customise my order**. | Should | - During the selection process allow different sizes to be chosen <br> - During the checkout process allow customisation of packaging. <br> - See the chosen options reflected in the order summary before purchase | 3 <br> Requires front and backend development for order customisation. |
+|As a **member**, I can **checkout**, in order to **complete my purchase**. | Must | - Add desired items to the shopping basket <br> - Proceed to the checkout page with the same selected items <br> - Enter necessary shipping and payment information <br> - Receive a confirmation emssage upon successful completion of the order |  |
+| As a **member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**. | Must  | - Use a secure link to Stripe's payment services <br> - Enter payment details securely <br> - Receive confirmation of successful payment processing |  |
+| As a **member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**. | Must | - Receive an email confirmation shortly after completing the purchase <br> - Email contains details of the items purchased, the amount spent, and the shipping address |  |
+| As a **member**, I can **submit enquiries through a form**, in order to **get answers to questions not covered in the FAQs**. | Could | - Locate the contact form on the website <br> - Fill out the form with relevant details and questions <br> Submit the form and receive a confirmation message |  |
 | As a **member**, I can **create an account to save my details**, in order to **checkout faster in the future**. |  |  |  |
 | As a **member**, I can **log in to my account to view past orders and update my details**, in order to **manage my purchases and account information easily**. |  |  |  |
 | As a **member**, I can **receive promotional emails**, in order to **be informed about new flavours and special offers**. |  |  |  |
@@ -123,9 +123,9 @@ A MVP site deployed to Heroku where customers can select and purchase products.
 #### User stories covered in this sprint
 - As a **site visitor** I can **browse fudge products and merchandise without creating an account** in order to **decide whether to purchase from the site**.
 - As a **member**, I can **select fudge sizes and packaging options**, in order **to customise my order**.
-- As a ** member**, I can **check out**, in order to **complete my purchase**.
-- As a ** member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**.
-- As a ** member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**.
+- As a **member**, I can **check out**, in order to **complete my purchase**.
+- As a **member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**.
+- As a **member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**.
 - As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**.
 
 #### Breakdown of the work goals to meet the objectives:
