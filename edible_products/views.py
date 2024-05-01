@@ -14,7 +14,8 @@ class EdibleProductListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         query = self.request.GET.get('q')
-        allergen_ids = self.request.GET.getlist('allergen[]')  # Assuming each allergen has an id field
+        allergen_ids = self.request.GET.getlist('allergen[]')  
+        print(allergen_ids)
 
         if query:
             queryset = queryset.filter(
@@ -33,6 +34,7 @@ class EdibleProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['search_query'] = self.request.GET.get('q', '')
+        context['allergens'] = Allergen.objects.all() 
         context['allergen_filters'] = self.request.GET.getlist('allergen[]')
         return context
 
