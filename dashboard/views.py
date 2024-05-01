@@ -3,7 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
-from .forms import EdibleProductForm
+from merch.models import MerchProduct
+from .forms import EdibleProductForm, MerchProductForm
 
 # Create your views here.
 
@@ -67,3 +68,47 @@ class EdibleProductDeleteView(StaffRequiredMixin, DeleteView):
     def get_success_url(self):
         # Redirect to the product list view after a successful delete
         return reverse('dashboard:edible_product_list')
+
+
+class MerchProductListView(StaffRequiredMixin, ListView):
+    model = MerchProduct
+    template_name = 'dashboard/merch_product_list.html'
+    context_object_name = 'merch_products'
+
+class MerchProductCreateView(StaffRequiredMixin, CreateView):
+    model = MerchProduct
+    form_class = MerchProductForm
+    template_name = 'dashboard/merch_product_form.html'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Merch product created successfully!')
+        return response
+
+    def get_success_url(self):
+        return reverse('dashboard:merch_product_list')
+
+class MerchProductUpdateView(StaffRequiredMixin, UpdateView):
+    model = MerchProduct
+    form_class = MerchProductForm
+    template_name = 'dashboard/merch_product_form.html'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Merch product updated successfully!')
+        return response
+
+    def get_success_url(self):
+        return reverse('dashboard:merch_product_list')
+
+class MerchProductDeleteView(StaffRequiredMixin, DeleteView):
+    model = MerchProduct
+    template_name = 'dashboard/merch_product_confirm_delete.html'
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        messages.success(request, 'Merch product deleted successfully!')
+        return response
+
+    def get_success_url(self):
+        return reverse('dashboard:merch_product_list')

@@ -1,5 +1,6 @@
 from django import forms
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
+from merch.models import MerchProduct
 
 class EdibleProductForm(forms.ModelForm):
     plant_based = forms.BooleanField(label='Plant-based', required=False)
@@ -38,3 +39,12 @@ class EdibleProductForm(forms.ModelForm):
                 )
 
         return instance
+
+
+class MerchProductForm(forms.ModelForm):
+    class Meta:
+        model = MerchProduct
+        fields = ['name', 'description', 'price', 'type', 'image']
+
+    def __init__(self, *args, **kwargs):
+        super(MerchProductForm, self).__init__(*args, **kwargs)
