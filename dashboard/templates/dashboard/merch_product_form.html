@@ -7,6 +7,12 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        {{ colour_formset.management_form }}
+        {% for form in colour_formset %}
+            <div class="inline-fields">
+                {{ form.as_p }}
+            </div>
+        {% endfor %}
         <button type="submit" class="btn btn-primary">Save</button>
         <a href="{% url 'dashboard:merch_product_list' %}" class="btn btn-secondary">Return to list with no changes</a>
     </form>

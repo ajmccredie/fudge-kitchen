@@ -1,39 +1,57 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 <div class="container mt-5 pt-5">
-  <h1>{{ object.name }}</h1>
-  <p>{{ object.description }}</p>
-  <p class="font-weight-bold">Price: £{{ object.price }}</p>
-
-  <img id="product-image" src="{% if object.colours.first %}{{ object.colours.first.image.url }}{% endif %}" alt="Product Image">
-
+    <h1>{{ object.name }}</h1>
+    <p>{{ object.description }}</p>
+    <p class="font-weight-bold">Price: £{{ object.price }}</p>
+  
+    <img id="main-product-image" src="{% if object.colours.first %}{{ object.colours.first.image.url }}{% endif %}" alt="{{ object.name }} Image" class="img-fluid">
+  
+    <div class="row mt-3">
+      {% for colour in object.colours.all %}
+      <div class="col-auto mb-2">
+        <a href="{% url 'merch_product_detail' colour.id %}">
+          <img src="{{ colour.image.url }}" alt="{{ colour.colour_name }} Image" class="img-thumbnail" style="width: 100px; height: 100px;" onclick="changeMainImage('{{ colour.image.url }}');">
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  
     <label for="colour-select">Choose a colour:</label>
     <select id="colour-select" onchange="updateImageDisplay();">
-        {% for colour in colours %}
+        {% for colour in object.colours.all %}
         <option value="{{ colour.id }}" data-img="{{ colour.image.url }}">{{ colour.colour_name }}</option>
         {% endfor %}
     </select>
-
+  
     <label for="text-select">Choose a text:</label>
     <select id="text-select" onchange="updateTextDisplay();">
         {% for text in text_options %}
         <option value="{{ text.text }}">{{ text.text }}</option>
         {% endfor %}
     </select>
-
+  
     <div id="text-display" style="font-family: 'Terrapin', sans-serif; margin-top: 20px;"></div>
-</div>
-
-<script>
-function updateImageDisplay() {
-    var imgURL = document.querySelector('#colour-select option:checked').dataset.img;
-    document.getElementById('product-image').src = imgURL;
-}
-
-function updateTextDisplay() {
-    var selectedText = document.getElementById("text-select").value;
-    document.getElementById("text-display").innerText = selectedText;
-}
-</script>
-{% endblock %}
+  
+    <button type="button" class="btn btn-primary mt-4">Add to Basket</button>
+  </div>
+  
+  <script>
+  function updateImageDisplay() {
+      var imgURL = document.querySelector('#colour-select option:checked').dataset.img;
+      document.getElementById('main-product-image').src = imgURL;
+  }
+  
+  function changeMainImage(imgUrl) {
+      document.getElementById('main-product-image').src = imgUrl;
+  }
+  
+  function updateTextDisplay() {
+      var selectedText = document.getElementById("text-select").value;
+      document.getElementById("text-display").innerText = selectedText;
+  }
+  </script>
+  {% endblock %}

@@ -1,6 +1,7 @@
 from django import forms
+from django.forms import inlineformset_factory
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
-from merch.models import MerchProduct
+from merch.models import MerchProduct, ColourVariation, TextOption
 
 class EdibleProductForm(forms.ModelForm):
     plant_based = forms.BooleanField(label='Plant-based', required=False)
@@ -48,3 +49,17 @@ class MerchProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(MerchProductForm, self).__init__(*args, **kwargs)
+
+
+ColourVariationFormSet = inlineformset_factory(
+    MerchProduct, 
+    ColourVariation, 
+    fields=('colour_name', 'image'), 
+    extra=1, 
+    can_delete=True
+)
+
+class TextOptionForm(forms.ModelForm):
+    class Meta:
+        model = TextOption
+        fields = ['text']
