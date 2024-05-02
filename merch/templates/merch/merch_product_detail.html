@@ -6,26 +6,34 @@
   <p>{{ object.description }}</p>
   <p class="font-weight-bold">Price: £{{ object.price }}</p>
 
-  <h2>Available Colors</h2>
-  {% if object.variations.all %}
-  <div class="mb-3">
-    {% for variation in object.variations.all %}
-    <span class="badge badge-secondary">{{ variation.color }}</span>
-    {% endfor %}
-  </div>
-  {% else %}
-  <p>No colors available.</p>
-  {% endif %}
+  <img id="product-image" src="{% if object.colours.first %}{{ object.colours.first.image.url }}{% endif %}" alt="Product Image">
 
-  <h2>Text Options</h2>
-  {% if object.custom_texts.all %}
-  <div>
-    {% for text in object.custom_texts.all %}
-    <p>{{ text.text_option }}</p>
-    {% endfor %}
-  </div>
-  {% else %}
-  <p>No text options available.</p>
-  {% endif %}
+    <label for="colour-select">Choose a colour:</label>
+    <select id="colour-select" onchange="updateImageDisplay();">
+        {% for colour in colours %}
+        <option value="{{ colour.id }}" data-img="{{ colour.image.url }}">{{ colour.colour_name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="text-select">Choose a text:</label>
+    <select id="text-select" onchange="updateTextDisplay();">
+        {% for text in text_options %}
+        <option value="{{ text.text }}">{{ text.text }}</option>
+        {% endfor %}
+    </select>
+
+    <div id="text-display" style="font-family: 'Terrapin', sans-serif; margin-top: 20px;"></div>
 </div>
+
+<script>
+function updateImageDisplay() {
+    var imgURL = document.querySelector('#colour-select option:checked').dataset.img;
+    document.getElementById('product-image').src = imgURL;
+}
+
+function updateTextDisplay() {
+    var selectedText = document.getElementById("text-select").value;
+    document.getElementById("text-display").innerText = selectedText;
+}
+</script>
 {% endblock %}

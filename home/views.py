@@ -10,6 +10,6 @@ def index(request):
 
 
 def our_story(request):
-    story = OurStory.objects.first()  # Assuming there will only be one OurStory instance
+    story = OurStory.objects.first() 
     context = {'story': story}
     return render(request, 'home/our_story.html', context)

@@ -17,4 +17,6 @@ class MerchProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['colours'] = self.object.colours.all()
+        context['text_options'] = self.object.text_options.all()
         return context
