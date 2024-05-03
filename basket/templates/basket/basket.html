@@ -35,50 +35,100 @@
                                 </tr>
                             </thead>
 
-                            {% for item in basket_items %}
-                                <tr>
-                                    <td class="p-3 w-25">
-                                        <img class="img-fluid rounded" src="{{ item.product.image.url }}">
-                                    </td>
-                                    <td class="py-3">
-                                        <p class="my-0"><strong>{{ item.product.flavour }}</strong></p>
-                                        <p class="my-0"><strong>{{ item.weight }}g</strong></p>
-                                    </td>
-                                    <td class="py-3">
-                                        <p class="my-0">£{{ item.price }}</p>
-                                    </td>
-                                    <td class="py-3 w-25">
-                                        <form class="form update-form" method="POST" action="{% url 'adjust_basket' item.item_id %}">
-                                            {% csrf_token %}
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <button type="button" class="decrement-qty btn btn-sm btn-black rounded-0" 
-                                                            data-item_id="{{ item.item_id }}">
-                                                            <span><i class="fa-regular fa-circle-down"></i></span>
-                                                        </button>
+                            {% for item_key, item_data in basket_items.items %}
+                                {% if 'edible' in item_key %}
+                                    {% with item_data.product as product %}
+                                        <tr>
+                                            <td class="p-3 w-25">
+                                                <img class="img-fluid rounded" src="{{ product.image.url }}">
+                                            </td>
+                                            <td class="py-3">
+                                                <p class="my-0"><strong>{{ product.flavour }}</strong></p>
+                                                <p class="my-0"><strong>{{ item_data.weight }}g</strong></p>
+                                            </td>
+                                            <td class="py-3">
+                                                <p class="my-0">£{{ item_data.price }}</p>
+                                            </td>
+                                            <td class="py-3 w-25">
+                                                <form class="form update-form" method="POST" action="{% url 'adjust_basket' item_key %}">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <button type="button" class="decrement-qty btn btn-sm btn-black rounded-0" 
+                                                                    data-item_key="{{ item_key }}">
+                                                                    <span><i class="fa-regular fa-circle-down"></i></span>
+                                                                </button>
+                                                            </div>
+                                                            <input class="form-control form-control-sm qty_input" type="number"
+                                                                name="quantity" value="{{ item_data.quantity }}" min="1" max="99"
+                                                                data-item_key="{{ item_key }}"
+                                                                id="id_qty_{{ item_key }}">
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="increment-qty btn btn-sm btn-black rounded-0"
+                                                                    data-item_key="{{ item_key }}">
+                                                                    <span><i class="fa-regular fa-circle-up"></i></span>
+                                                                </button>
+                                                            </div>
+                                                            <input type="hidden" name="weight" value="{{ item_data.weight }}">
+                                                        </div>
                                                     </div>
-                                                    <input class="form-control form-control-sm qty_input" type="number"
-                                                        name="quantity" value="{{ item.quantity }}" min="1" max="99"
-                                                        data-item_id="{{ item.item_id }}"
-                                                        id="id_qty_{{ item.item_id }}">
-                                                    <div class="input-group-append">
-                                                        <button type="button" class="increment-qty btn btn-sm btn-black rounded-0"
-                                                            data-item_id="{{ item.item_id }}">
-                                                            <span><i class="fa-regular fa-circle-up"></i></span>
-                                                        </button>
+                                                </form>
+                                                <a class="update-link text-info"><small>Update</small></a>
+                                                <a class="remove-item" data-item_key="{{ item_key }}" href="{% url 'remove_from_basket' item_key %}"><small>Remove</small></a>
+                                            </td>
+                                            <td class="py-3">
+                                                <p class="my-0">£{{ item_data.price | calc_subtotal:item_data.quantity }}</p>
+                                            </td>
+                                        </tr>
+                                    {% endwith %}
+                                {% elif 'merch' in item_key %}
+                                    {% with item_data.product as product %}
+                                        <tr>
+                                            <td class="p-3 w-25">
+                                                <img class="img-fluid rounded" src="{{ product.image.url }}">
+                                            </td>
+                                            <td class="py-3">
+                                                <p class="my-0"><strong>{{ product.name }}</strong></p>
+                                                <!-- Colour variation and text option -->
+                                            </td>
+                                            <td class="py-3">
+                                                <p class="my-0">£{{ item_data.price }}</p>
+                                            </td>
+                                            <td class="py-3 w-25">
+                                                <form class="form update-form" method="POST" action="{% url 'adjust_basket' item_key %}">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <button type="button" class="decrement-qty btn btn-sm btn-black rounded-0" 
+                                                                    data-item_key="{{ item_key }}">
+                                                                    <span><i class="fa-regular fa-circle-down"></i></span>
+                                                                </button>
+                                                            </div>
+                                                            <input class="form-control form-control-sm qty_input" type="number"
+                                                                name="quantity" value="{{ item_data.quantity }}" min="1" max="99"
+                                                                data-item_key="{{ item_key }}"
+                                                                id="id_qty_{{ item_key }}">
+                                                            <div class="input-group-append">
+                                                                <button type="button" class="increment-qty btn btn-sm btn-black rounded-0"
+                                                                    data-item_key="{{ item_key }}">
+                                                                    <span><i class="fa-regular fa-circle-up"></i></span>
+                                                                </button>
+                                                            </div>
+                                                            <input type="hidden" name="weight" value="{{ item_data.weight }}">
+                                                        </div>
                                                     </div>
-                                                    <input type="hidden" name="weight" value="{{ item.weight }}">
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <a class="update-link text-info"><small>Update</small></a>
-                                        <a class="remove-item" data-item_id="{{ item.item_id }}" href="{% url 'remove_from_basket' item.item_id %}"><small>Remove</small></a>
-                                    </td>
-                                    <td class="py-3">
-                                        <p class="my-0">£{{ item.price | calc_subtotal:item.quantity }}</p>
-                                    </td>
-                                </tr>
+                                                </form>
+                                                <a class="update-link text-info"><small>Update</small></a>
+                                                <a class="remove-item" data-item_key="{{ item_key }}" href="{% url 'remove_from_basket' item_key %}"><small>Remove</small></a>
+                                            </td>
+                                            <td class="py-3">
+                                                <p class="my-0">£{{ item_data.price | calc_subtotal:item_data.quantity }}</p>
+                                            </td>
+                                        </tr>
+                                    {% endwith %}
+                                {% endif %}
                             {% endfor %}
                             <tr>
                                 <td colspan="5" class="pt-5 text-right">
@@ -100,18 +150,14 @@
                                     </a>
                                     <form method="POST" action="{% url 'clear_basket' %}" onsubmit="return confirmClearBasket();">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger">Clear Basket</button>
+                                        <button type="submit" class="btn btn-black rounded-0 btn-lg">
+                                            <span class="text-uppercase">Clear Basket</span>
+                                        </button>
                                     </form>
-                                    
-                                    <script>
-                                    function confirmClearBasket() {
-                                        return confirm('Are you sure you want to clear your basket?');
-                                    }
-                                    </script>
                                     <a href="{% url 'checkout' %}" class="btn btn-black rounded-0 btn-lg">
-                                        <span class="text-uppercase">Secure Checkout</span>
+                                        <span class="text-uppercase">Proceed to Checkout</span>
                                         <span class="icon">
-                                            <i class="fas fa-lock"></i>
+                                            <i class="fas fa-chevron-right"></i>
                                         </span>
                                     </a>
                                 </td>
@@ -148,7 +194,7 @@
         {% endif %}
     </div>
     
-{% endblock %}
+    {% endblock %}
 
 {% block postloadjs %}
   <script type="text/javascript">
@@ -214,5 +260,5 @@
              location.reload();
          });
     })
-</script>    
+</script>  
 {% endblock %}

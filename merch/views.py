@@ -14,6 +14,7 @@ class MerchProductListView(ListView):
 class MerchProductDetailView(DetailView):
     model = MerchProduct
     template_name = 'merch/merch_product_detail.html'
+    context_object_name = 'merch'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

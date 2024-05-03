@@ -36,7 +36,31 @@
   
     <div id="text-display" style="font-family: 'Terrapin', sans-serif; margin-top: 20px;"></div>
   
-    <button type="button" class="btn btn-primary mt-4">Add to Basket</button>
+    <form method="post" action="{% url 'add_merch_to_basket' item_id=merch.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="product_id" value="{{ merch.id }}">
+      <select name="colour" id="colour-select">
+          {% for colour in merch.colours.all %}
+              <option value="{{ colour.id }}">{{ colour.colour_name }}</option>
+          {% endfor %}
+      </select>
+      <select name="text_option" id="text-option-select">
+          {% for option in merch.text_options.all %}
+              <option value="{{ option.id }}">{{ option.text }}</option>
+          {% endfor %}
+      </select>
+  
+      <div class="form-group w-50">
+          <label for="quantity">Quantity:</label>
+          <div class="input-group">
+              <input type="number" name="quantity" class="form-control" value="1" min="1" max="99">
+          </div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Add to Your Basket</button>
+  </form>
+    <!-- Back to products link -->
+    <a href="{% url 'merch_product_list' %}" class="btn btn-outline-secondary mt-3">Back to Products</a>
   </div>
   
   <script>
