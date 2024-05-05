@@ -15,7 +15,7 @@
     <div class="row mt-3">
       {% for colour in object.colours.all %}
       <div class="col-auto mb-2">
-        <a href="{% url 'merch_product_detail' colour.id %}">
+        <a href="{% url 'merch_product_detail' object.id %}">
           <img src="{{ colour.image.url }}" alt="{{ colour.colour_name }} Image" class="img-thumbnail" style="width: 100px; height: 100px;" onclick="changeMainImage('{{ colour.image.url }}');">
         </a>
       </div>
@@ -38,7 +38,7 @@
   
     <div id="text-display" style="font-family: 'Terrapin', sans-serif; margin-top: 20px;"></div>
   
-    <form method="post" action="{% url 'add_merch_to_basket' item_id=merch.id %}">
+    <form method="post" action="{% url 'add_merch_to_basket' item_id=object.id %}">
       {% csrf_token %}
       <input type="hidden" name="product_id" value="{{ merch.id }}">
       <select name="colour" id="colour-select">

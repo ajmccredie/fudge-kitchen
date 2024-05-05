@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from edible_products.models import EdibleProduct
+from edible_products.models import EdibleProduct, ProductWeightPrice
 from profiles.models import Profile
 from merch.models import MerchProduct, ColourVariation, TextOption
 from decimal import Decimal
@@ -77,16 +77,14 @@ from decimal import Decimal
 
 
 def basket_contents(request):
-    basket_items = []
+    basket_items = {}
     total = Decimal('0.00')
     product_count = 0
     basket = request.session.get('basket', {})
 
-    # Handlers for different product types
     product_handlers = {
         'edible': handle_edible_product,
         'merch': handle_merch_product,
-        # Future product type can be added here
     }
 
     for item_key, item_data in basket.items():
@@ -95,7 +93,7 @@ def basket_contents(request):
         if handler:
             result = handler(item_key, item_data)
             if result:
-                basket_items.append(result['item'])
+                basket_items[item_key] = result['item']
                 total += result['subtotal']
                 product_count += result['quantity']
 
@@ -113,10 +111,16 @@ def basket_contents(request):
 
 def handle_edible_product(item_key, item_data):
     product = get_object_or_404(EdibleProduct, pk=item_data['product_id'])
-    weight = item_data.get('weight', '400')
-    price = product.DEFAULT_WEIGHT_PRICES.get(int(weight), product.price)
+    weight = int(item_data.get('weight', '400'))
+
+    try:
+        weight_price = ProductWeightPrice.objects.get(product=product, weight=weight)
+        price = weight_price.price
+    except ProductWeightPrice.DoesNotExist:
+        price = product.price
+
     quantity = item_data.get('quantity', 1)
-    subtotal = Decimal(quantity) * price
+    subtotal = Decimal(quantity) * Decimal(price)
 
     return {
         'item': {
@@ -125,7 +129,11 @@ def handle_edible_product(item_key, item_data):
             'product': product,
             'price': price,
             'subtotal': subtotal,
-            'product_type': 'edible'
+            'product_type': 'edible',
+            'image_url': product.image.url if product.image else None,
+            'name': product.flavour,
+            'flavour': product.flavour,
+            'weight': weight
         },
         'subtotal': subtotal,
         'quantity': quantity
@@ -149,6 +157,7 @@ def handle_merch_product(item_key, item_data):
         'subtotal': subtotal,
         'quantity': quantity
     }
+
 
 def calculate_delivery(total, user):
     delivery = Decimal(settings.DEFAULT_DELIVERY_CHARGE) if total > Decimal('0.00') else Decimal('0.00')

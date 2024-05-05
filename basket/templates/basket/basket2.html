@@ -50,7 +50,7 @@
                                                 <p class="my-0">£{{ item_data.price }}</p>
                                             </td>
                                             <td class="py-3 w-25">
-                                                <form class="form update-form" method="POST" action="{% url 'adjust_basket' item_id=item_key %}">
+                                                <form class="form update-form" method="POST" action="{% url 'adjust_basket' item_key %}">
                                                     {% csrf_token %}
                                                     <div class="form-group">
                                                         <div class="input-group">
@@ -75,7 +75,7 @@
                                                     </div>
                                                 </form>
                                                 <a class="update-link text-info"><small>Update</small></a>
-                                                <a class="remove-item" data-item_key="{{ item_key }}" href="{% url 'remove_from_basket' item_id=item_key %}"><small>Remove</small></a>
+                                                <a class="remove-item" data-item_key="{{ item_key }}" href="{% url 'remove_from_basket' item_key %}"><small>Remove</small></a>
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0">£{{ item_data.price | calc_subtotal:item_data.quantity }}</p>
@@ -90,7 +90,7 @@
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0"><strong>{{ product.name }}</strong></p>
-                                                
+                                                <!-- Colour variation and text option -->
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0">£{{ item_data.price }}</p>
@@ -135,11 +135,10 @@
                                     <h6><strong>Basket Total: £{{ total|floatformat:2 }}</strong></h6>
                                     <h6>Delivery: £{{ delivery|floatformat:2 }}</h6>
                                     <h4 class="mt-4"><strong>Grand Total: £{{ grand_total|floatformat:2 }}</strong></h4>                            
-                                    {% if not is_subscribed %}
                                         <p class="mb-1 text-danger">
                                             You could get free delivery by joining the subscription gang!
                                         </p>
-                                    {% endif %}
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="5" class="text-right">

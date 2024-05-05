@@ -18,7 +18,7 @@ class MerchProduct(models.Model):
 class ColourVariation(models.Model):
     product = models.ForeignKey(MerchProduct, related_name='colours', on_delete=models.CASCADE)
     colour_name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='colour_variations/')
+    image = models.ImageField(upload_to='colour_variations/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.product.name} - {self.colour_name}"

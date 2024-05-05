@@ -17,14 +17,18 @@ class BasketView(View):
         product_count = context_data.get('product_count')
         delivery = context_data.get('delivery')
         grand_total = context_data.get('grand_total')
+        is_subscribed = False
+        if request.user.is_authenticated and hasattr(request.user, 'profile'):
+            is_subscribed = request.user.profile.is_subscribed  
 
         context = {
-            'basket_items': basket_items,
-            'total': total,
-            'product_count': product_count,
-            'delivery': delivery,
-            'grand_total': grand_total,
-        }
+            'is_subscribed': is_subscribed,
+                'basket_items': basket_items,
+                'total': total,
+                'product_count': product_count,
+                'delivery': delivery,
+                'grand_total': grand_total,
+            }
         return render(request, 'basket/basket.html', context)
 
 
@@ -34,10 +38,9 @@ class AddToBasketView(View):
         quantity = int(request.POST.get('quantity'))
         flavour = request.POST.get('flavour')
         redirect_url = request.POST.get('redirect_url', reverse('view_basket'))
-
         product = get_object_or_404(EdibleProduct, pk=item_id)
         weight = int(request.POST.get('weight', '100')) 
-        
+
         try:
             weight_price_obj = product.weight_prices.get(weight=weight)
             price = weight_price_obj.price
@@ -45,22 +48,24 @@ class AddToBasketView(View):
             price = product.price
 
         basket = request.session.get('basket', {})
-
-        # Create a composite key
         item_key = f"edible-{item_id}-{flavour}-{weight}"
 
-        if item_id in basket:
+        if item_key in basket:
             basket[item_key]['quantity'] += quantity
-            basket[item_key]['price'] = str(price) 
-            print(basket[item_key])
         else:
-            basket[item_key] = {'quantity': quantity, 'weight': weight, 'flavour': flavour, 'price': str(price)}
+            basket[item_key] = {
+                'product_id': item_id,
+                'product_type': 'edible',
+                'flavour': flavour,
+                'weight': weight,
+                'quantity': quantity,
+                'price': str(price),
+                'image_url': product.image.url if product.image else None,
+                'name': product.name
+            }
 
         request.session['basket'] = basket
         request.session.modified = True
-
-        print("basket line 61 - ", basket)
-
         messages.success(request, f'Added "{product.flavour}" to your basket.')
         return redirect(redirect_url)
 
@@ -135,31 +140,14 @@ class ClearBasketView(View):
         if 'basket' in request.session:
             del request.session['basket']
             request.session.modified = True
-        class AdjustBasketView(View):
-            def post(self, request, *args, **kwargs):
-                item_id = str(kwargs['item_id'])
-                quantity = int(request.POST.get('quantity'))
-                flavour = request.POST.get('flavour')
-                weight = int(request.POST.get('weight'))
-
-                basket = request.session.get('basket', {})
-
-                item_key = f"{item_id}-{flavour}-{weight}"
-
-                if item_key in basket:
-                    if quantity > 0:
-                        basket[item_key]['quantity'] = quantity
-                    else:
-                        del basket[item_key]
-                        if not basket:
-                            del request.session['basket']
-                    request.session.modified = True
-        messages.success(request, 'Basket successfully emptied for you to reimagine the delicious things you want...')
+            messages.success(request, 'Basket successfully emptied for you to reimagine the delicious things you want...')
+        else:
+            messages.info(request, 'Your basket is already empty.')
         return HttpResponseRedirect(reverse('view_basket'))
 
 
 class RemoveFromBasketView(View):
-    def post(self, request: HttpRequest, item_key: str):
+    def post(self, request, item_key):
         basket = request.session.get('basket', {})
         try:
             if item_key in basket:
@@ -170,35 +158,36 @@ class RemoveFromBasketView(View):
                 messages.success(request, 'Item removed from your basket.')
             else:
                 messages.error(request, 'Item not found in your basket.')
-            return HttpResponseRedirect(reverse('view_basket'))
         except Exception as e:
             messages.error(request, f'Error removing item: {str(e)}')
-            return HttpResponse(status=500)
-
+        return redirect('view_basket')
 
 class AdjustBasketView(View):
-    def post(self, request: HttpRequest, item_id: str):
-        quantity = int(request.POST.get('quantity'))
-        flavour = request.POST.get('flavour') 
-        weight = int(request.POST.get('weight')) 
-
-        product = get_object_or_404(EdibleProduct, pk=item_id)
+    def post(self, request, item_id):
         basket = request.session.get('basket', {})
+        quantity = int(request.POST.get('quantity'))
 
-        item_key = f"{item_id}-{flavour}-{weight}"
+        if 'edible' in item_id:
+            flavour = request.POST.get('flavour')
+            weight = int(request.POST.get('weight', 100)) 
+            item_key = f"edible-{item_id}-{flavour}-{weight}"
+        elif 'merch' in item_id:
+            item_key = f"merch-{item_id}-{colour_id}-{text_option_id if text_option_id else ''}"
+        else:
+            item_key = item_id
 
         if item_key in basket:
             if quantity > 0:
                 basket[item_key]['quantity'] = quantity
-                messages.success(request, f'Updated "{flavour} {product.name}" quantity in your basket.')
+                messages.success(request, f'Updated quantity in your basket.')
             else:
                 del basket[item_key]
                 if not basket:
                     del request.session['basket']
-                messages.success(request, f'Removed "{flavour} {product.name}" from your basket.')
+                messages.success(request, 'Removed item from your basket.')
             request.session.modified = True
         else:
             messages.error(request, 'Item not found in your basket.')
 
-        return redirect(reverse('view_basket'))
+        return HttpResponseRedirect(reverse('view_basket'))
 

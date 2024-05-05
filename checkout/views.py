@@ -42,6 +42,7 @@ def cache_checkout_data(request):
 class CheckoutView(View):
     def get(self, request, *args, **kwargs):
         context = basket_contents(request)  # Fetch the basket context
+        print(context['basket_items'])
 
         if not context['basket_items']:
             messages.error(request, "There's nothing in your basket at the moment.")

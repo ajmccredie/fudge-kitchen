@@ -22,6 +22,7 @@ class EdibleProduct(models.Model):
     }
 
     plant_based = models.BooleanField(default=False)
+    name = models.CharField(max_length=20, null=True, blank=True)
     flavour = models.CharField(max_length=254, null=True, blank=True)
     guest_flavour = models.BooleanField(default=False)
     details = models.TextField()
@@ -52,7 +53,7 @@ class EdibleProduct(models.Model):
     allergens = models.ManyToManyField(Allergen, blank=True)
 
     def __str__(self):
-        return self.flavour
+        return f"{self.name} - {self.flavour}"
 
     def save(self, *args, **kwargs):
         is_new = self._state.adding

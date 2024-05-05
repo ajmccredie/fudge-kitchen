@@ -9,7 +9,7 @@ class ProductWeightPriceInline(admin.TabularInline):
 class EdibleProductAdmin(admin.ModelAdmin):
     inlines = [ProductWeightPriceInline]
     list_display = (
-        'flavour', 'plant_based', 'guest_flavour', 
+        'name', 'flavour', 'plant_based', 'guest_flavour', 
         'list_allergens',
         'quantity', 'weight', 'price'
     )
