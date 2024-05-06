@@ -33,7 +33,7 @@ class BasketView(View):
 
 
 class AddToBasketView(View):
-    def post(self, request: HttpRequest, item_id: str):
+    def post(self, request: HttpRequest, item_id):
         """Add a quantity of the specified product to the shopping basket."""
         quantity = int(request.POST.get('quantity'))
         flavour = request.POST.get('flavour')
@@ -147,11 +147,11 @@ class ClearBasketView(View):
 
 
 class RemoveFromBasketView(View):
-    def post(self, request, item_key):
+    def post(self, request, item_id):
         basket = request.session.get('basket', {})
         try:
-            if item_key in basket:
-                del basket[item_key]
+            if item_id in basket:
+                del basket[item_id]
                 if not basket:
                     del request.session['basket']
                 request.session.modified = True
@@ -162,26 +162,46 @@ class RemoveFromBasketView(View):
             messages.error(request, f'Error removing item: {str(e)}')
         return redirect('view_basket')
 
+# class AdjustBasketView(View):
+#     def post(self, request, item_id):
+#         basket = request.session.get('basket', {})
+#         quantity = int(request.POST.get('quantity'))
+
+#         if 'edible' in item_id:
+#             flavour = request.POST.get('flavour')
+#             weight = int(request.POST.get('weight', 100)) 
+#             item_key = f"edible-{item_id}-{flavour}-{weight}"
+#         elif 'merch' in item_id:
+#             item_key = f"merch-{item_id}-{colour_id}-{text_option_id if text_option_id else ''}"
+#         else:
+#             item_key = item_id
+
+#         if item_key in basket:
+#             if quantity > 0:
+#                 basket[item_key]['quantity'] = quantity
+#                 messages.success(request, f'Updated quantity in your basket.')
+#             else:
+#                 del basket[item_key]
+#                 if not basket:
+#                     del request.session['basket']
+#                 messages.success(request, 'Removed item from your basket.')
+#             request.session.modified = True
+#         else:
+#             messages.error(request, 'Item not found in your basket.')
+
+#         return HttpResponseRedirect(reverse('view_basket'))
+
 class AdjustBasketView(View):
     def post(self, request, item_id):
         basket = request.session.get('basket', {})
         quantity = int(request.POST.get('quantity'))
 
-        if 'edible' in item_id:
-            flavour = request.POST.get('flavour')
-            weight = int(request.POST.get('weight', 100)) 
-            item_key = f"edible-{item_id}-{flavour}-{weight}"
-        elif 'merch' in item_id:
-            item_key = f"merch-{item_id}-{colour_id}-{text_option_id if text_option_id else ''}"
-        else:
-            item_key = item_id
-
-        if item_key in basket:
+        if item_id in basket:
             if quantity > 0:
-                basket[item_key]['quantity'] = quantity
-                messages.success(request, f'Updated quantity in your basket.')
+                basket[item_id]['quantity'] = quantity
+                messages.success(request, 'Updated quantity in your basket.')
             else:
-                del basket[item_key]
+                del basket[item_id]
                 if not basket:
                     del request.session['basket']
                 messages.success(request, 'Removed item from your basket.')
@@ -190,4 +210,5 @@ class AdjustBasketView(View):
             messages.error(request, 'Item not found in your basket.')
 
         return HttpResponseRedirect(reverse('view_basket'))
+
 
