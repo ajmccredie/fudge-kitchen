@@ -128,6 +128,7 @@ header {
     height: 200px;  
     object-fit: cover; 
     margin-top: 10px;  
+    object-position: top;
 }
 
 .cartoon-fudge {
