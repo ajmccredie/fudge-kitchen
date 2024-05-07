@@ -10,7 +10,7 @@
     <p>{{ object.description }}</p>
     <p class="font-weight-bold">Price: £{{ object.price }}</p>
   
-    <img id="main-product-image" src="{% if object.colours.first %}{{ object.colours.first.image.url }}{% endif %}" alt="{{ object.name }} Image" class="img-fluid mb-3">
+    <img id="main-product-image" src="{{ object.image.url }}" alt="{{ object.name }} Image" class="img-fluid mb-3">
   
     <div class="row mt-3">
       {% for colour in object.colours.all %}

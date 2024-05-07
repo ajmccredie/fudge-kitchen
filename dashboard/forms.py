@@ -45,7 +45,7 @@ class EdibleProductForm(forms.ModelForm):
 class MerchProductForm(forms.ModelForm):
     class Meta:
         model = MerchProduct
-        fields = ['name', 'description', 'price', 'type', 'image']
+        fields = ['name', 'description', 'price', 'type', 'colour', 'image']
 
     def __init__(self, *args, **kwargs):
         super(MerchProductForm, self).__init__(*args, **kwargs)

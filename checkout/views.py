@@ -39,7 +39,7 @@ def cache_checkout_data(request):
         return HttpResponse(content=e, status=400)
 
 
-class CheckoutView(View):
+# class CheckoutView(View):
     # def get(self, request, *args, **kwargs):
     #     context = basket_contents(request)  # Fetch the basket context
     #     print(context['basket_items'])
@@ -69,6 +69,7 @@ class CheckoutView(View):
 
     #     return render(request, 'checkout/checkout.html', context)
 
+class CheckoutView(View):
     def get(self, request, *args, **kwargs):
         context = basket_contents(request)
         
@@ -76,28 +77,17 @@ class CheckoutView(View):
             messages.error(request, "There's nothing in your basket at the moment.")
             return redirect(reverse('product_list'))
 
-        if request.user.is_authenticated:
-            initial_data = {
-                'email': request.user.email,
-            }
-        else:
-            initial_data = {}
+        initial_data = {
+            'email': request.user.email,
+        } if request.user.is_authenticated else {}
 
         order_form = OrderForm(initial=initial_data)
 
-        order = Order()
-        if request.user.is_authenticated:
-            order.user_profile = request.user.profile
-        order.save()
-
-        # Continue with creating Stripe PaymentIntent
-        # For example, if basket is not empty and user proceeds to checkout
         stripe.api_key = settings.STRIPE_SECRET_KEY
         total = int(context['grand_total'] * 100) 
         intent = stripe.PaymentIntent.create(
             amount=total,
             currency='gbp',
-            metadata={'order_reference': order.order_number} 
         )
 
         context.update({
@@ -108,11 +98,8 @@ class CheckoutView(View):
 
         return render(request, 'checkout/checkout.html', context)
 
-
     def post(self, request, *args, **kwargs):
-        context = basket_contents(request)  # Fetch the basket context again
-        basket_items = context['basket_items']
-
+        context = basket_contents(request)
         form_data = {
             'full_name': request.POST['full_name'],
             'email': request.POST['email'],
@@ -130,38 +117,28 @@ class CheckoutView(View):
             order = order_form.save(commit=False)
             pid = request.POST.get('client_secret').split('_secret')[0]
             order.stripe_pid = pid
-
-            # Prepare a serializable version of basket items
-            serializable_basket = json.dumps([{
-                'item_id': item['product'].id,
-                'name': item['product'].flavour,
-                'quantity': item['quantity'],
-                'weight': item['weight'],
-                'price': str(item['price']),
-                'subtotal': str(item['subtotal']),
-            } for item in basket_items], default=str)
-
-            order.original_basket = serializable_basket
             order.save()
 
-            # Create order line items
-            for item in basket_items:
-                product = item['product']
+            # Handle different types of products
+            for item_key, item_data in context['basket_items'].items():
+                product = get_object_or_404(EdibleProduct if 'edible' in item_key else MerchProduct, pk=item_data['product_id'])
+                quantity = item_data['quantity']
+                price = Decimal(item_data['price'])
+
                 OrderLineItem.objects.create(
                     order=order,
                     product=product,
-                    quantity=item['quantity'],
-                    weight=item['weight'],
-                    lineitem_total=item['price'] * item['quantity']
+                    quantity=quantity,
+                    weight=item_data.get('weight', None),  # Only for edible products
+                    lineitem_total=price * quantity
                 )
 
-            order.update_total()  # Update the order total, which may trigger other business logic
-
+            order.update_total()  # Update the order total
             return redirect(reverse('checkout_success', args=[order.order_number]))
-
         else:
             messages.error(request, "There was an error with your form submission.")
             return render(request, 'checkout/checkout.html', {'order_form': order_form, **context})
+
             
 
 
