@@ -9,7 +9,7 @@ class EdibleProductForm(forms.ModelForm):
 
     class Meta:
         model = EdibleProduct
-        fields = ['flavour', 'details', 'ingredients', 'quantity', 'weight', 'price', 'image', 'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts', 'soybeans', 'milk', 'nuts', 'celery', 'mustard', 'sesame_seeds', 'sulphur_dioxide_and_sulphites', 'lupin', 'molluscs', 'plant_based']
+        fields = ['name', 'flavour', 'details', 'ingredients', 'quantity', 'weight', 'price', 'image', 'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts', 'soybeans', 'milk', 'nuts', 'celery', 'mustard', 'sesame_seeds', 'sulphur_dioxide_and_sulphites', 'lupin', 'molluscs', 'plant_based']
 
     def __init__(self, *args, **kwargs):
         super(EdibleProductForm, self).__init__(*args, **kwargs)

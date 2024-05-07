@@ -78,18 +78,16 @@ class CheckoutView(View):
 
         if request.user.is_authenticated:
             initial_data = {
-                'full_name': request.user.get_full_name(),  # Assuming you have a method to get user's full name
-                'email': request.user.email,  # Email from user model
-                'phone_number': request.user.profile.phone_number if hasattr(request.user, 'profile') else '',  # Assuming there's a phone_number field in user's profile
+                'email': request.user.email,
             }
         else:
             initial_data = {}
 
         order_form = OrderForm(initial=initial_data)
 
-        order = Order()  # assuming no fields are required immediately
+        order = Order()
         if request.user.is_authenticated:
-            order.user_profile = request.user.profile  # or any other fields that need setting
+            order.user_profile = request.user.profile
         order.save()
 
         # Continue with creating Stripe PaymentIntent
