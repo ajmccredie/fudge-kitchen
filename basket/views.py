@@ -58,7 +58,8 @@ class AddToBasketView(View):
                 'product_type': 'edible',
                 'flavour': flavour,
                 'weight': weight,
-                'quantity': quantity,
+                # 'quantity': quantity,
+                'quantity': basket.get(item_key, {}).get('quantity', 0) + quantity,
                 'price': str(price),
                 'image_url': product.image.url if product.image else None,
                 'name': product.name
@@ -113,7 +114,7 @@ class AddMerchToBasketView(View):
         merch = get_object_or_404(MerchProduct, pk=item_id)
         colour_id = request.POST.get('colour')
         text_option_id = request.POST.get('text_option', None)
-        quantity = int(request.POST.get('quantity', 1))
+        quantity = int(request.POST.get('quantity'))
 
         basket = request.session.get('basket', {})
         item_key = f"merch-{item_id}-{colour_id}-{text_option_id if text_option_id else ''}"
@@ -126,7 +127,11 @@ class AddMerchToBasketView(View):
                 'product_type': 'merch',
                 'colour_id': colour_id,
                 'text_option_id': text_option_id,
-                'quantity': quantity,
+                # 'quantity': quantity,
+                'quantity': basket.get(item_key, {}).get('quantity', 0) + quantity,
+                'price': str(merch.price),
+                'image_url': merch.image.url if merch.image else None,
+                'name': merch.name
             }
 
         request.session['basket'] = basket

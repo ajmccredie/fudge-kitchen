@@ -40,35 +40,75 @@ def cache_checkout_data(request):
 
 
 class CheckoutView(View):
-    def get(self, request, *args, **kwargs):
-        context = basket_contents(request)  # Fetch the basket context
-        print(context['basket_items'])
+    # def get(self, request, *args, **kwargs):
+    #     context = basket_contents(request)  # Fetch the basket context
+    #     print(context['basket_items'])
 
+    #     if not context['basket_items']:
+    #         messages.error(request, "There's nothing in your basket at the moment.")
+    #         return redirect(reverse('product_list'))
+
+    #     # Setup initial form data
+    #     initial_data = {'email': request.user.email} if request.user.is_authenticated else {}
+    #     order_form = OrderForm(initial=initial_data)
+
+    #     # Create Stripe PaymentIntent
+    #     stripe.api_key = settings.STRIPE_SECRET_KEY
+    #     total = int(context['grand_total'] * 100)
+    #     intent = stripe.PaymentIntent.create(
+    #         amount=total,
+    #         currency='gbp',
+    #         metadata={'basket': json.dumps(request.session.get('basket', {}))}
+    #     )
+
+    #     context = {
+    #         'order_form': order_form,
+    #         'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
+    #         'client_secret': intent.client_secret
+    #     }
+
+    #     return render(request, 'checkout/checkout.html', context)
+
+    def get(self, request, *args, **kwargs):
+        context = basket_contents(request)
+        
         if not context['basket_items']:
             messages.error(request, "There's nothing in your basket at the moment.")
             return redirect(reverse('product_list'))
 
-        # Setup initial form data
-        initial_data = {'email': request.user.email} if request.user.is_authenticated else {}
+        if request.user.is_authenticated:
+            initial_data = {
+                'full_name': request.user.get_full_name(),  # Assuming you have a method to get user's full name
+                'email': request.user.email,  # Email from user model
+                'phone_number': request.user.profile.phone_number if hasattr(request.user, 'profile') else '',  # Assuming there's a phone_number field in user's profile
+            }
+        else:
+            initial_data = {}
+
         order_form = OrderForm(initial=initial_data)
 
-        # Create Stripe PaymentIntent
+        order = Order()  # assuming no fields are required immediately
+        if request.user.is_authenticated:
+            order.user_profile = request.user.profile  # or any other fields that need setting
+        order.save()
+
+        # Continue with creating Stripe PaymentIntent
+        # For example, if basket is not empty and user proceeds to checkout
         stripe.api_key = settings.STRIPE_SECRET_KEY
-        total = int(context['grand_total'] * 100)
+        total = int(context['grand_total'] * 100) 
         intent = stripe.PaymentIntent.create(
             amount=total,
             currency='gbp',
-            metadata={'basket': json.dumps(request.session.get('basket', {}))}
+            metadata={'order_reference': order.order_number} 
         )
 
-        context = {
+        context.update({
             'order_form': order_form,
             'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
             'client_secret': intent.client_secret
-        }
+        })
 
         return render(request, 'checkout/checkout.html', context)
-
 
 
     def post(self, request, *args, **kwargs):

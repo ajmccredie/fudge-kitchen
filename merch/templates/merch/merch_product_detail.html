@@ -5,79 +5,57 @@
 {% block extra_title %} - Merchandise details{% endblock %}
 
 {% block content %}
-<div class="container mt-5 pt-5">
+<div class="container mt-5 pt-7">
     <h1>{{ object.name }}</h1>
     <p>{{ object.description }}</p>
     <p class="font-weight-bold">Price: £{{ object.price }}</p>
   
-    <img id="main-product-image" src="{% if object.colours.first %}{{ object.colours.first.image.url }}{% endif %}" alt="{{ object.name }} Image" class="img-fluid">
+    <img id="main-product-image" src="{% if object.colours.first %}{{ object.colours.first.image.url }}{% endif %}" alt="{{ object.name }} Image" class="img-fluid mb-3">
   
     <div class="row mt-3">
       {% for colour in object.colours.all %}
       <div class="col-auto mb-2">
-        <a href="{% url 'merch_product_detail' object.id %}">
-          <img src="{{ colour.image.url }}" alt="{{ colour.colour_name }} Image" class="img-thumbnail" style="width: 100px; height: 100px;" onclick="changeMainImage('{{ colour.image.url }}');">
+        <a href="#" onclick="changeMainImage('{{ colour.image.url }}'); return false;">
+          <img src="{{ colour.image.url }}" alt="{{ colour.colour_name }} Image" class="img-thumbnail" style="width: 100px; height: 100px;">
         </a>
       </div>
       {% endfor %}
     </div>
-  
-    <label for="colour-select">Choose a colour:</label>
-    <select id="colour-select" onchange="updateImageDisplay();">
-        {% for colour in object.colours.all %}
-        <option value="{{ colour.id }}" data-img="{{ colour.image.url }}">{{ colour.colour_name }}</option>
+
+    <!-- Text options display and selection -->
+    <label for="text-select">Text options:</label>
+    <select id="text-select" name="text_option" onchange="updateTextDisplay();">
+        {% for text in object.text_options.all %}
+        <option value="{{ text.id }}" data-img="{{ text.image.url }}">{{ text.text }}</option>
         {% endfor %}
     </select>
-  
-    <label for="text-select">Choose a text:</label>
-    <select id="text-select" onchange="updateTextDisplay();">
-        {% for text in text_options %}
-        <option value="{{ text.text }}">{{ text.text }}</option>
-        {% endfor %}
-    </select>
-  
-    <div id="text-display" style="font-family: 'Terrapin', sans-serif; margin-top: 20px;"></div>
-  
-    <form method="post" action="{% url 'add_merch_to_basket' item_id=object.id %}">
-      {% csrf_token %}
-      <input type="hidden" name="product_id" value="{{ merch.id }}">
-      <select name="colour" id="colour-select">
-          {% for colour in merch.colours.all %}
-              <option value="{{ colour.id }}">{{ colour.colour_name }}</option>
-          {% endfor %}
-      </select>
-      <select name="text_option" id="text-option-select">
-          {% for option in merch.text_options.all %}
-              <option value="{{ option.id }}">{{ option.text }}</option>
-          {% endfor %}
-      </select>
-  
-      <div class="form-group w-50">
-          <label for="quantity">Quantity:</label>
-          <div class="input-group">
-              <input type="number" name="quantity" class="form-control" value="1" min="1" max="99">
-          </div>
-      </div>
-  
-      <button type="submit" class="btn btn-primary">Add to Your Basket</button>
-  </form>
+
+    <!-- Image display based on selected text option -->
+    <img id="text-display-image" src="{% if object.text_options.first %}{{ object.text_options.first.image.url }}{% endif %}" alt="Selected Text Image" class="img-fluid mt-3">
+    
+     <!-- Add to basket form -->
+     <form method="post" action="{% url 'add_merch_to_basket' object.id %}">
+       {% csrf_token %}
+       <input type="hidden" name="product_id" value="{{ object.id }}">
+       <input type="hidden" name="colour" value="{% if object.colours.first %}{{ object.colours.first.id }}{% endif %}">
+       
+       <div class="form-group w-50">
+           <label for="quantity">Quantity:</label>
+           <div class="input-group">
+               <input type="number" name="quantity" class="form-control" value="1" min="1" max="99">
+           </div>
+       </div>
+   
+       <button type="submit" class="btn btn-primary">Add to Your Basket</button>
+   </form>
     <!-- Back to products link -->
     <a href="{% url 'merch_product_list' %}" class="btn btn-outline-secondary mt-3">Back to Products</a>
   </div>
   
   <script>
-  function updateImageDisplay() {
-      var imgURL = document.querySelector('#colour-select option:checked').dataset.img;
-      document.getElementById('main-product-image').src = imgURL;
-  }
-  
-  function changeMainImage(imgUrl) {
-      document.getElementById('main-product-image').src = imgUrl;
-  }
-  
-  function updateTextDisplay() {
+    function updateTextDisplay() {
       var selectedText = document.getElementById("text-select").value;
       document.getElementById("text-display").innerText = selectedText;
-  }
+    }
   </script>
   {% endblock %}

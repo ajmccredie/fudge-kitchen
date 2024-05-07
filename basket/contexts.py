@@ -88,7 +88,7 @@ def basket_contents(request):
     }
 
     for item_key, item_data in basket.items():
-        product_type = item_data.get('product_type')
+        product_type = item_data.get('product_type', 'default_type')
         handler = product_handlers.get(product_type)
         if handler:
             result = handler(item_key, item_data)
@@ -129,10 +129,9 @@ def handle_edible_product(item_key, item_data):
             'product': product,
             'price': price,
             'subtotal': subtotal,
-            'product_type': 'edible',
+            'name': product.name,
             'image_url': product.image.url if product.image else None,
-            'name': product.flavour,
-            'flavour': product.flavour,
+            'flavour': product.flavour,  # This should be safe to use directly for edible products
             'weight': weight
         },
         'subtotal': subtotal,

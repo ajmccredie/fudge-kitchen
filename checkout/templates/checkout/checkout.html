@@ -35,24 +35,19 @@
                         <p class="mb-1 mt-0 small text-muted">Subtotal</p>
                     </div>
                 </div>
-                {% for item in basket_items %}
+                {% for item_key, item in basket_items.items %}
                     <div class="row">
                         <div class="col-2 mb-1">
-                            {% if item.product_type == 'edible' %}
-                                <a href="{% url 'product_detail' item.item_id %}">
-                            {% elif item.product_type == 'merch' %}
-                                <a href="{% url 'merch_product_detail' item.item_id %}">
-                            {% endif %}
-                                {% if item.product.image %}
-                                    <img class="w-100" src="{{ item.product.image.url }}" alt="{{ product.flavour }}">
-                                {% else %}
-                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.flavour }}">
-                                {% endif %}
+                            <a href="{% if item.product_type == 'edible' %}{% url 'product_detail' item.product_id %}{% else %}{% url 'merch_product_detail' item.product_id %}{% endif %}">
+                                <img class="w-100" src="{{ item.image_url }}" alt="{{ item.name }}">
                             </a>
                         </div>
                         <div class="col-7">
-                            <p class="my-0"><strong>{{ item.flavour }}</strong></p>
-                            <p class="my-0 small">Weight: {{ item.weight }}g</p>
+                            <p class="my-0"><strong>{{ item.name }}</strong></p>
+                            {% if item.product_type == 'edible' %}
+                                <p class="my-0 small">Flavour: {{ item.flavour }}</p>
+                                <p class="my-0 small">Weight: {{ item.weight }}g</p>
+                            {% endif %}
                             <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
                         </div>
                         <div class="col-3 text-right">
@@ -69,7 +64,7 @@
                     </div>
                     <div class="col-3">
                         <p class="my-0">£{{ total | floatformat:2 }}</p>
-                        <p class="my-0">£{{ delivery | floatformat:2 }}</p>
+                        <p the="my-0">£{{ delivery | floatformat:2 }}</p>
                         <p class="my-0"><strong>£{{ grand_total | floatformat:2 }}</strong></p>
                     </div>
                 </div>
@@ -94,16 +89,16 @@
                         {{ order_form.street_address2 | as_crispy_field }}
                         {{ order_form.county | as_crispy_field }}
                         <div class="form-check form-check-inline float-right mr-0">
-							{% if user.is_authenticated %}
-								<label class="form-check-label" for="id-save-info">Save this delivery information to my profile</label>
+                            {% if user.is_authenticated %}
+                                <label class="form-check-label" for="id-save-info">Save this delivery information to my profile</label>
                                 <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info" checked>
-							{% else %}
-								<label class="form-check-label" for="id-save-info">
+                            {% else %}
+                                <label class="form-check-label" for="id-save-info">
                                     <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or 
                                     <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
                                 </label>
-							{% endif %}
-						</div>
+                            {% endif %}
+                        </div>
                     </fieldset>
                     <fieldset class="px-3">
                         <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
@@ -115,32 +110,32 @@
                         <input type="hidden" value="{{ client_secret }}" name="client_secret">
                     </fieldset>
 
-                    <div class="submit-button text-right mt-5 mb-2">                    
-						<a href="{% url 'view_basket' %}" class="btn btn-outline-black rounded-0">
-							<span class="icon">
-								<i class="fas fa-chevron-left"></i>
-							</span>
-							<span class="font-weight-bold">Adjust Basket</span>
-						</a>
-						<button id="submit-button" class="btn btn-black rounded-0">
-							<span class="font-weight-bold">Complete Order</span>
-							<span class="icon">
-								<i class="fas fa-lock"></i>
-							</span>
-						</button>
-						<p class="small text-danger my-0">
-							<span class="icon">
-								<i class="fas fa-exclamation-circle"></i>
-							</span>
-							<span>Your card will be charged <strong>£{{ grand_total|floatformat:2 }}</strong></span>
-						</p>
-					</div>
+                    <div class="submit-button text-right mt-5 mb-2">
+                        <a href="{% url 'view_basket' %}" class="btn btn-outline-black rounded-0">
+                            <span class="icon">
+                                <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="font-weight-bold">Adjust Basket</span>
+                        </a>
+                        <button id="submit-button" class="btn btn-black rounded-0">
+                            <span class="font-weight-bold">Complete Order</span>
+                            <span class="icon">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </button>
+                        <p class="small text-danger my-0">
+                            <span class="icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </span>
+                            <span>Your card will be charged <strong>£{{ grand_total|floatformat:2 }}</strong></span>
+                        </p>
+                    </div>
                 </form>
                 {% else %}
                 <h2>Please Login or Register</h2>
                 <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-primary">Login</a>
                 <a href="{% url 'account_signup' %}?next={{ request.path }}" class="btn btn-primary">Register</a>
-            {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
