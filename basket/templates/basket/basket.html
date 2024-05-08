@@ -90,7 +90,9 @@
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0"><strong>{{ product.name }}</strong></p>
-                                                
+                                                {% if item_data.text_option %}
+                                                    <p class="text-muted" style="font-size: smaller;">{{ item_data.text_option }}</p>
+                                                {% endif %}
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0">£{{ item_data.price }}</p>

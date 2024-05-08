@@ -144,15 +144,34 @@ def handle_merch_product(item_key, item_data):
     price = product.price
     subtotal = Decimal(quantity) * price
 
+    colour_variation = None
+    text_option = None
+    if 'colour_id' in item_data:
+        colour_variation = ColourVariation.objects.filter(id=item_data['colour_id']).first()
+    if 'text_option_id' in item_data:
+        text_option = TextOption.objects.filter(id=item_data['text_option_id']).first()
+        print(text_option)
+
+    item_dict = {
+        'product_id': product.id,
+        'quantity': quantity,
+        'product': product,
+        'price': price,
+        'subtotal': subtotal,
+        'product_type': 'merch',
+        'name': product.name,
+        'image_url': product.image.url if product.image else None
+    }
+
+    if colour_variation:
+        item_dict['colour'] = colour_variation.colour_name
+        item_dict['colour_image'] = colour_variation.image.url if colour_variation.image else None
+    if text_option:
+        item_dict['text_option'] = text_option.text
+        item_dict['text_option_image'] = text_option.image.url if text_option.image else None
+
     return {
-        'item': {
-            'product_id': product.id,
-            'quantity': quantity,
-            'product': product,
-            'price': price,
-            'subtotal': subtotal,
-            'product_type': 'merch'
-        },
+        'item': item_dict,
         'subtotal': subtotal,
         'quantity': quantity
     }
