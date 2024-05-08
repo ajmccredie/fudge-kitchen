@@ -21,14 +21,16 @@ from django.template.loader import render_to_string
 def cache_checkout_data(request):
     try:
         client_secret = request.POST.get('client_secret')
+        order_number = request.POST.get('order_number')
         if client_secret:
             pid = client_secret.split('_secret')[0]
             print("Cache pid: ", pid)
             stripe.api_key = settings.STRIPE_SECRET_KEY
             print('basket in cache checkout data', json.dumps(request.session.get('basket', {})))
             stripe.PaymentIntent.modify(pid, metadata={
-                'basket': json.dumps(request.session.get('basket', {})),
-                'save_info': request.POST.get('save_info'),
+                # 'basket': json.dumps(request.session.get('basket', {})),
+                'order_number': order_number, 
+                # 'save_info': request.POST.get('save_info'),
                 'username': request.user,
             })
             return HttpResponse(status=200)
@@ -98,49 +100,69 @@ class CheckoutView(View):
 
         return render(request, 'checkout/checkout.html', context)
 
+    # def post(self, request, *args, **kwargs):
+    #     context = basket_contents(request)
+    #     form_data = {
+    #         'full_name': request.POST['full_name'],
+    #         'email': request.POST['email'],
+    #         'phone_number': request.POST['phone_number'],
+    #         'country': request.POST['country'],
+    #         'postcode': request.POST['postcode'],
+    #         'town_or_city': request.POST['town_or_city'],
+    #         'street_address1': request.POST['street_address1'],
+    #         'street_address2': request.POST['street_address2'],
+    #         'county': request.POST['county'],
+    #     }
+
+    #     order_form = OrderForm(form_data)
+    #     if order_form.is_valid():
+    #         order = order_form.save(commit=False)
+    #         pid = request.POST.get('client_secret').split('_secret')[0]
+    #         order.stripe_pid = pid
+    #         order.save()
+
+    #         # Handle different types of products
+    #         for item_key, item_data in context['basket_items'].items():
+    #             product = get_object_or_404(EdibleProduct if 'edible' in item_key else MerchProduct, pk=item_data['product_id'])
+    #             quantity = item_data['quantity']
+    #             price = Decimal(item_data['price'])
+
+    #             OrderLineItem.objects.create(
+    #                 order=order,
+    #                 product=product,
+    #                 quantity=quantity,
+    #                 weight=item_data.get('weight', None),  # Only for edible products
+    #                 lineitem_total=price * quantity
+    #             )
+
+    #         order.update_total()  # Update the order total
+    #         return redirect(reverse('checkout_success', args=[order.order_number]))
+    #     else:
+    #         messages.error(request, "There was an error with your form submission.")
+    #         return render(request, 'checkout/checkout.html', {'order_form': order_form, **context})
+    
     def post(self, request, *args, **kwargs):
-        context = basket_contents(request)
-        form_data = {
-            'full_name': request.POST['full_name'],
-            'email': request.POST['email'],
-            'phone_number': request.POST['phone_number'],
-            'country': request.POST['country'],
-            'postcode': request.POST['postcode'],
-            'town_or_city': request.POST['town_or_city'],
-            'street_address1': request.POST['street_address1'],
-            'street_address2': request.POST['street_address2'],
-            'county': request.POST['county'],
-        }
-
-        order_form = OrderForm(form_data)
-        if order_form.is_valid():
-            order = order_form.save(commit=False)
-            pid = request.POST.get('client_secret').split('_secret')[0]
-            order.stripe_pid = pid
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.stripe_pid = request.POST.get('client_secret').split('_secret')[0]
             order.save()
-
-            # Handle different types of products
-            for item_key, item_data in context['basket_items'].items():
-                product = get_object_or_404(EdibleProduct if 'edible' in item_key else MerchProduct, pk=item_data['product_id'])
-                quantity = item_data['quantity']
-                price = Decimal(item_data['price'])
-
-                OrderLineItem.objects.create(
-                    order=order,
-                    product=product,
-                    quantity=quantity,
-                    weight=item_data.get('weight', None),  # Only for edible products
-                    lineitem_total=price * quantity
-                )
-
-            order.update_total()  # Update the order total
-            return redirect(reverse('checkout_success', args=[order.order_number]))
+            self.handle_line_items(order, request.session.get('basket', {}))
+            return redirect('checkout_success', args=[order.order_number])
         else:
-            messages.error(request, "There was an error with your form submission.")
-            return render(request, 'checkout/checkout.html', {'order_form': order_form, **context})
+            return render(request, 'checkout.html', {'form': form})
 
+    def handle_line_items(self, order, basket):
+        for item_id, details in basket.items():
+            product = get_object_or_404(Product, pk=item_id)
+            OrderLineItem.objects.create(
+                order=order,
+                product=product,
+                quantity=details['quantity'],
+                price=details['price']
+            )
+        order.update_total()
             
-
 
 class CheckoutSuccessView(View):
     def get(self, request, order_number, *arg, **kwargs):
