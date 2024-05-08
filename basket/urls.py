@@ -7,5 +7,5 @@ urlpatterns = [
     path('add/merch/<int:item_id>/', AddMerchToBasketView.as_view(), name='add_merch_to_basket'),
     path('basket/clear/', ClearBasketView.as_view(), name='clear_basket'),
     path('basket/adjust/<str:item_id>/', AdjustBasketView.as_view(), name='adjust_basket'),
-    path('basket/remove/<str:item_id>/', RemoveFromBasketView.as_view(), name='remove_from_basket'),
+    path('basket/remove/<str:item_key>/', RemoveFromBasketView.as_view(), name='remove_from_basket'),
 ]

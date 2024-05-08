@@ -38,7 +38,6 @@
                     <p>Flavour: {{ item.flavour }}</p>
                     <p>Weight: {{ item.weight }}g</p>
                     {% elif item.product_type == 'merch' %}
-                    <p>Color: {{ item.colour_name }}</p>
                     <p>Text: {{ item.text_option }}</p>
                     {% endif %}
                     <p>Qty: {{ item.quantity }}</p>
@@ -75,6 +74,15 @@
                     {{ order_form.postcode | as_crispy_field }}
                     {{ order_form.town_or_city | as_crispy_field }}
                 </div>
+                <fieldset class="px-3">
+                    <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
+                    <!-- A Stripe card element will go here -->
+                    <div class="mb-3" id="card-element"></div>
+                    <!-- Used to display form errors -->
+                    <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+                    <!-- Pass the client secret to the view so we can get the payment intent id -->
+                    <input type="hidden" value="{{ client_secret }}" name="client_secret">
+                </fieldset>
                 <button type="submit" class="btn btn-primary">Complete Order</button>
             </form>
             {% else %}

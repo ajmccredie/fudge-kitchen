@@ -75,7 +75,10 @@
                                                     </div>
                                                 </form>
                                                 <a class="update-link text-info"><small>Update</small></a>
-                                                <a class="remove-item" data-item_key="{{ item_key }}" href="{% url 'remove_from_basket' item_id=item_key %}"><small>Remove</small></a>
+                                                <form method="POST" action="{% url 'remove_from_basket' item_key %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-link p-0 text-danger">Remove</button>
+                                                </form>
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0">£{{ item_data.price | calc_subtotal:item_data.quantity }}</p>
@@ -123,7 +126,10 @@
                                                     </div>
                                                 </form>
                                                 <a class="update-link text-info"><small>Update</small></a>
-                                                <a class="remove-item" data-item_key="{{ item_key }}" href="{% url 'remove_from_basket' item_key %}"><small>Remove</small></a>
+                                                <form method="POST" action="{% url 'remove_from_basket' item_key %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-link p-0 text-danger">Remove</button>
+                                                </form>
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0">£{{ item_data.price | calc_subtotal:item_data.quantity }}</p>

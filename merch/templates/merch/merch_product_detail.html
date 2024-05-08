@@ -42,7 +42,8 @@
   <form method="post" action="{% url 'add_merch_to_basket' object.id %}">
     {% csrf_token %}
     <input type="hidden" name="product_id" value="{{ object.id }}">
-    <input type="hidden" name="text_option_id" id="text-option-id" value="{% for text in object.text_options.all %}{% if text.is_default %}{{ text.id }}{% endif %}{% endfor %}">
+    <input type="hidden" name="text_option_id" id="text-option-id"
+      value="{% for text in object.text_options.all %}{% if text.is_default %}{{ text.id }}{% endif %}{% endfor %}">
     <input type="hidden" name="colour" value="{% if object.colours.first %}{{ object.colours.first.id }}{% endif %}">
 
     <div class="form-group w-50">
@@ -64,14 +65,14 @@
     var textImage = document.getElementById('text-display-image');
     var textOptionIdInput = document.getElementById('text-option-id');
 
-    // Get the 'data-img' attribute of the selected option
     var imageUrl = selectElement.options[selectElement.selectedIndex].getAttribute('data-img');
+    var selectedTextOptionId = selectElement.value;
 
-    // Update the 'src' attribute of the image
     textImage.src = imageUrl;
+    textOptionIdInput.value = selectedTextOptionId;
   }
 
-  // Update the image display when the page loads
+  document.getElementById('text-select').addEventListener('change', updateTextDisplay);
   document.addEventListener('DOMContentLoaded', function () {
     updateTextDisplay();
   });

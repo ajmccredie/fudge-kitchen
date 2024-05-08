@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.views import View
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponseRedirect, JsonResponse, HttpResponse
+from django.views.decorators.http import require_POST
+from django.utils.decorators import method_decorator
 from .contexts import basket_contents
 from decimal import Decimal, InvalidOperation
 from edible_products.models import EdibleProduct, ProductWeightPrice
@@ -76,12 +78,9 @@ class AddMerchToBasketView(View):
         merch = get_object_or_404(MerchProduct, pk=item_id)
         colour_id = request.POST.get('colour')
         text_option_id = request.POST.get('text_option_id')
+        text_option = get_object_or_404(TextOption, pk=text_option_id) if text_option_id else None
+        print(text_option)
         quantity = int(request.POST.get('quantity'))
-
-        text_option = None
-        if text_option_id:
-            text_option = get_object_or_404(TextOption, pk=text_option_id)
-            print(text_option)
 
         price = merch.price 
         image_url = merch.image.url if merch.image else None
@@ -120,20 +119,19 @@ class ClearBasketView(View):
 
 
 class RemoveFromBasketView(View):
-    def post(self, request, item_id):
-        basket = request.session.get('basket', {})
+    @method_decorator(require_POST)
+    def post(self, request, item_key):
         try:
-            if item_id in basket:
-                del basket[item_id]
-                if not basket:
-                    del request.session['basket']
+            basket = request.session.get('basket', {})
+            if item_key in basket:
+                del basket[item_key]
                 request.session.modified = True
-                messages.success(request, 'Item removed from your basket.')
+                messages.success(request, "Item removed successfully.")
             else:
-                messages.error(request, 'Item not found in your basket.')
+                messages.error(request, "Item not found in basket.")
         except Exception as e:
-            messages.error(request, f'Error removing item: {str(e)}')
-        return redirect('view_basket')
+            messages.error(request, f"Error removing item: {str(e)}")
+        return redirect(reverse('view_basket'))
 
 
 class AdjustBasketView(View):
