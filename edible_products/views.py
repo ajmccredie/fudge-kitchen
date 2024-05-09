@@ -41,13 +41,17 @@ class EdibleProductListView(ListView):
 
     model = EdibleProduct
     template_name = 'edible_products/product_list.html'
+    context_object_name = 'edible_products'
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        if 'allergens' in self.request.GET:
-            allergens = self.request.GET.getlist('allergens')
-            for allergen in allergens:
+        allergens_selected = self.request.GET.getlist('allergens')
+
+        if allergens_selected:
+            for allergen in allergens_selected:
                 queryset = queryset.exclude(**{allergen: True})
+        
+        print("Number of products found:", queryset.count())
         return queryset
 
     def get_context_data(self, **kwargs):
