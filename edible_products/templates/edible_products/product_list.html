@@ -7,25 +7,17 @@
 <div class="container mt-5 pt-7">
     <h2 class="logo-font text-center my-4">Our Products</h2>
     <!-- Product List -->
-    <form method="GET" action="{% url 'product_list' %}">
-        <label for="allergen">Exclude Allergens:</label>
-        <div class="allergen-filters">
-            {% for allergen in allergens %}
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="allergen[]" value="{{ allergen.id }}"
-                       id="allergen{{ allergen.id }}" {% if allergen.id|stringformat:"s" in allergen_filters %}checked{% endif %}>
-                <label class="form-check-label" for="allergen{{ allergen.id }}">
-                    <img src="{% static allergen.symbol_path %}" alt="{{ allergen.name }}" style="height: 20px;">
-                    {{ allergen.name }}
-                </label>
-            </div>
-            {% endfor %}
-        </div>
-        <button type="submit" class="btn btn-primary">Filter</button>
+    <div class="allergen-filters">
+        <form method="GET" action="">
+            {{ allergen_form.as_p }}
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+    </div>
     </form>
     <div class="row">
         {% for product in edible_products %}
-        <a href="{% url 'product_detail' product.id %}" style="text-decoration: none; color: inherit;" class="col-sm-6 col-md-4 col-lg-3 mb-4" onmouseover="this.style.cursor='pointer'">
+        <a href="{% url 'product_detail' product.id %}" style="text-decoration: none; color: inherit;"
+            class="col-sm-6 col-md-4 col-lg-3 mb-4" onmouseover="this.style.cursor='pointer'">
             <div class="card h-100">
                 {% if product.image %}
                 <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.flavour }}">
@@ -41,7 +33,8 @@
                         {% for allergen in product.get_allergens_info %}
                         <div class="d-inline-block text-center mx-2">
                             <div class="allergen-circle">
-                                <img src="{% static allergen.symbol_path %}" alt="{{ allergen.name }}" class="img-fluid" style="width: 30px; height: 30px;">
+                                <img src="{% static allergen.symbol_path %}" alt="{{ allergen.name }}" class="img-fluid"
+                                    style="width: 30px; height: 30px;">
                             </div>
                         </div>
                         {% endfor %}
