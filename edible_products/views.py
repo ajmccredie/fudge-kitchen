@@ -8,37 +8,6 @@ from .models import EdibleProduct, ProductWeightPrice, Allergen
 from .forms import AllergenFilterForm
 
 class EdibleProductListView(ListView):
-    # model = EdibleProduct
-    # context_object_name = 'edible_products'
-    # template_name = 'edible_products/product_list.html'
-
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     query = self.request.GET.get('q')
-    #     allergen_ids = self.request.GET.getlist('allergen[]')  
-    #     print(allergen_ids)
-
-    #     if query:
-    #         queryset = queryset.filter(
-    #             Q(flavour__icontains=query) |  # Search in flavour
-    #             Q(details__icontains=query) |  # Search in details
-    #             Q(ingredients__icontains=query)  # Search in ingredients
-    #         )
-
-    #     # Filter out products with the specified allergens
-    #     if allergen_ids:
-    #         for allergen_id in allergen_ids:
-    #             queryset = queryset.exclude(**{f"{allergen_id}": True})
-
-    #     return queryset
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['search_query'] = self.request.GET.get('q', '')
-    #     context['allergens'] = Allergen.objects.all() 
-    #     context['allergen_filters'] = self.request.GET.getlist('allergen[]')
-    #     return context
-
     model = EdibleProduct
     template_name = 'edible_products/product_list.html'
     context_object_name = 'edible_products'
@@ -57,6 +26,36 @@ class EdibleProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['allergen_form'] = AllergenFilterForm(self.request.GET)
+        return context
+
+
+class PlantBasedListView(EdibleProductListView):
+    template_name = 'edible_products/product_list_plant.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Filter only plant-based products
+        queryset = queryset.filter(plant_based=True)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Plant Based Deliciousness'
+        return context
+
+
+class TraditionalListView(EdibleProductListView):
+    template_name = 'edible_products/product_list_trad.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Filter out plant-based products
+        queryset = queryset.filter(plant_based=False)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Traditional Delights'
         return context
 
 

@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 #DEBUG = 'DEVELOPMENT' in os.environ
 
-ALLOWED_HOSTS = ['.herokuapp.com', '8000-ajmccredie-fudgekitchen-ahnpg5hhmub.ws-eu111.gitpod.io']
+ALLOWED_HOSTS = ['.herokuapp.com', '8080-ajmccredie-fudgekitchen-ahnpg5hhmub.ws-eu111.gitpod.io']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.gitpod.io',
