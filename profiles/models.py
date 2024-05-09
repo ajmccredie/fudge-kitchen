@@ -23,6 +23,7 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     allergen_preferences = models.ManyToManyField(Allergen, blank=True)
+    dietary_preference = models.CharField(max_length=20, blank=True, null=True, help_text='Would you prefer to only see plant-based options?')
     default_phone_number = models.CharField(max_length=20, null=True, blank=True)
     default_country = CountryField(blank_label='Country *', null=True, blank=True)
     default_postcode = models.CharField(max_length=20, null=True, blank=True)
