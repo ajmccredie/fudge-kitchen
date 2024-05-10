@@ -13,6 +13,20 @@
 
 {% block content %}
 <div class="container">
+    <!-- Account Details -->
+    <div class="row">
+        <div class="col-12">
+            <h3>Account Details</h3>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Full Name:</strong> {{ profile.full_name }}</p>
+            <p><strong>Phone Number:</strong> {{ profile.default_phone_number }}</p>
+            <p><strong>Address:</strong> {{ profile.default_street_address1 }} {{ profile.default_street_address2 }},
+            {{ profile.default_town_or_city }}, {{ profile.default_county }}, {{ profile.default_country }}</p>
+            <p><strong>Postal Code:</strong> {{ profile.default_postcode }}</p>
+            <p><strong>Subscription Status:</strong> {{ profile.is_subscribed|yesno:"Subscribed,Not Subscribed" }}</p>
+        </div>
+    </div>
+
     <!-- Order History -->
     <div class="row">
         <div class="col-12">
@@ -49,4 +63,3 @@
     });
 </script>
 {% endblock %}
-

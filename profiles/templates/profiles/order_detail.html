@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col">
+            <h1 class="logo-font my-4">Order Details</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-6 order-lg-last mb-5">
+            <p class="text-muted">Order Summary ({{ line_items.count }} items)</p>
+            {% for item in line_items %}
+            <div class="row mb-3">
+                <div class="col-2">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+                </div>
+                <div class="col-7">
+                    <p><strong>{{ item.product.name }}</strong></p>
+                    {% if item.product.flavour %}
+                        <p>Flavour: {{ item.product.flavour }}</p>
+                        <p>Weight: {{ item.weight }}g</p>
+                    {% endif %}
+                    {% if item.product.text_option %}
+                        <p>Text: {{ item.product.text_option }}</p>
+                    {% endif %}
+                    <p>Qty: {{ item.quantity }}</p>
+                </div>
+                <div class="col-3 text-right">
+                    <p>£{{ item.lineitem_total | floatformat:2 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            <hr>
+            <div class="row text-black text-right">
+                <div class="col-7 offset-2">
+                    <p>Order Total: </p>
+                    <p>Delivery: </p>
+                    <p><strong>Grand Total: </strong></p>
+                </div>
+                <div class="col-3">
+                    <p>£{{ order.order_total | floatformat:2 }}</p>
+                    <p>£{{ order.delivery_cost | floatformat:2 }}</p>
+                    <p><strong>£{{ order.grand_total | floatformat:2 }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'profile' %}" class="btn btn-primary">Back to profile</a>
+</div>
+{% endblock %}

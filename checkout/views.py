@@ -4,12 +4,14 @@ from django.views import View
 from django.conf import settings
 from django.views.decorators.http import require_POST
 from django.core import serializers
+from decimal import Decimal
 
 import stripe
 import json
 
 from .models import Order, OrderLineItem
 from edible_products.models import EdibleProduct
+from merch.models import MerchProduct
 from basket.contexts import basket_contents
 from .forms import OrderForm
 from django.http import HttpResponseBadRequest
@@ -142,25 +144,47 @@ class CheckoutView(View):
     #         return render(request, 'checkout/checkout.html', {'order_form': order_form, **context})
     
     def post(self, request, *args, **kwargs):
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
+        filled_form = OrderForm(request.POST)
+        if filled_form.is_valid():
+            order = filled_form.save(commit=False)
+            order.user_profile = request.user.profile if request.user.is_authenticated else None
             order.stripe_pid = request.POST.get('client_secret').split('_secret')[0]
             order.save()
-            self.handle_line_items(order, request.session.get('basket', {}))
-            return redirect('checkout_success', args=[order.order_number])
+            basket = request.session.get('basket', {})
+            print('basket in view')
+            print(basket)
+            self.handle_line_items(order, basket)
+            request.session['basket'] = {}  # Clear the basket after saving the order
+            return redirect('checkout_success', order.order_number)
         else:
-            return render(request, 'checkout.html', {'form': form})
+            messages.error(request, "There was an error with your form. Please double-check your information.")
+            return render(request, self.template_name, {'order_form': filled_form})
 
     def handle_line_items(self, order, basket):
-        for item_id, details in basket.items():
-            product = get_object_or_404(Product, pk=item_id)
-            OrderLineItem.objects.create(
+        for item_id, item_details in basket.items():
+
+            quantity = Decimal(item_details['quantity'])
+            lineitem_total = Decimal(item_details['price']) * Decimal(quantity)
+            
+            if item_details['product_type'] == 'edible':
+                edible_product = get_object_or_404(EdibleProduct, pk=int(item_details['product_id']))
+                OrderLineItem.objects.create(
                 order=order,
-                product=product,
-                quantity=details['quantity'],
-                price=details['price']
+                edible_product=edible_product,
+                product_type='edible',
+                weight=item_details.get('weight', None),
+                quantity=quantity,
+                lineitem_total=lineitem_total
             )
+            elif item_details['product_type'] == 'merch':
+                merch_product = get_object_or_404(MerchProduct, pk=int(item_details['product_id']))
+                OrderLineItem.objects.create(
+                    order=order,
+                    merch_product=merch_product,
+                    product_type='merch',
+                    quantity=quantity,
+                    lineitem_total=lineitem_total
+                )
         order.update_total()
             
 

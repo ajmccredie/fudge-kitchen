@@ -61,17 +61,32 @@
                 {% for item in order.lineitems.all %}
                     <div class="row">
                         <div class="col-2 mb-1">
-                            <a href="{% url 'product_detail' item.product.pk %}">
-                                {% if item.product.image %}
-                                    <img class="w-100" src="{{ item.product.image.url }}" alt="{{ product.flavour }}">
-                                {% else %}
-                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.flavour }}">
-                                {% endif %}
+                            {% if item.product_type == 'edible' %}
+                                <a href="{% url 'product_detail' item.edible_product.id %}">
+                                    {% if item.edible_product.image %}
+                                    <img class="w-100" src="{{ item.edible_product.image.url }}" alt="{{ item.edible_product.flavour }}">
+                                    {% else %}
+                                        <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
+                                    {% endif %}
+                            {% else %}
+                                <a href="{% url 'product_detail' item.merch_product.id %}">
+                                    {% if item.merch_product.image %}
+                                    <img class="w-100" src="{{ item.merch_product.image.url }}" alt="{{ item.merch_product.name }}">
+                                    {% else %}
+                                        <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
+                                    {% endif %}
+                            {% endif %}
+                                
                             </a>
                         </div>
                         <div class="col-7">
-                            <p class="my-0"><strong>{{ item.product.flavour }}</strong></p>
+                            {% if item.product_type == 'edible' %}
+                            <p class="my-0"><strong>{{ item.edible_product.flavour }}</strong></p>
                             <p class="my-0 small">Weight: {{ item.weight }}g</p>
+                            {% elif item.product_type == 'merch' %}
+                            <p class="my-0"><strong>{{ item.merch_product.name }}
+                            <p class="my-0 small text-muted">Text: {{ item.merch_product.text_option }}</p>
+                            {% endif %}
                             <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
                         </div>
                         <div class="col-3 text-right">
@@ -185,7 +200,7 @@
             <!-- Eventually want a selection of buttons to subscription details and to home page -->
             <div class="row mt-4">
                 <div class="col text-center">
-                    <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+                    <a href="{% url 'index' %}" class="btn btn-primary">Back to Home</a>
                 </div>
             </div>
         </div>

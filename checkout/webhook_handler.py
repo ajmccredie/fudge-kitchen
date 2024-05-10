@@ -128,15 +128,12 @@ class StripeWH_Handler:
 
         try:
             order = Order.objects.get(order_number=order_reference)
-            # Here you would update order status to something like 'completed'
             order.status = 'completed'
             order.save()
-            # You might want to trigger a signal here or send a confirmation email as well
             send_order_confirmation_email(order)  # Assuming this function exists
             messages.success(self.request, f"Thank you! Your payment has been successfully processed. Order Number: {order.order_number}")
             return HttpResponse(content=f'Webhook received: {event["type"]} | SUCCESS: Order processed successfully', status=200)
         except Order.DoesNotExist:
-            # Log this error, possibly alert admins
             logger.error(f"Order not found in database: {order_reference}")
             return HttpResponse(content='Order not found.', status=404)
 

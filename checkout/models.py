@@ -8,6 +8,7 @@ from django_countries.fields import CountryField
 
 from profiles.models import Profile
 from edible_products.models import EdibleProduct, ProductWeightPrice
+from merch.models import MerchProduct
 
 
 class Order(models.Model):
@@ -41,7 +42,7 @@ class Order(models.Model):
         accounting for delivery costs.
         """
         self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum'] or 0
-        if self.user_profile and self.user_profile.is_subscriber:
+        if self.user_profile and self.user_profile.is_subscribed:
             self.delivery_cost = 0
         else:
             self.delivery_cost = 3
@@ -63,23 +64,25 @@ class Order(models.Model):
 
 class OrderLineItem(models.Model):
     order = models.ForeignKey(Order, null=False, blank=False, on_delete=models.CASCADE, related_name='lineitems')
-    product = models.ForeignKey(EdibleProduct, null=False, blank=False, on_delete=models.CASCADE)
+    edible_product = models.ForeignKey(EdibleProduct, null=True, blank=True, on_delete=models.CASCADE)
+    merch_product = models.ForeignKey(MerchProduct, null=True, blank=True, on_delete=models.CASCADE)
+    product_type = models.CharField(max_length=10, null=True, blank=True)
+
     weight = models.IntegerField(null=True, blank=True)  # Stores the selected weight
     quantity = models.IntegerField(null=False, blank=False, default=0)
     lineitem_total = models.DecimalField(max_digits=6, decimal_places=2, null=False, blank=False, editable=False)
 
-    def save(self, *args, **kwargs):
-        """
-        Save the price based on the weight
-        """
-        # Attempt to get the specific weight price for the product
-        try:
-            weight_price = self.product.weight_prices.get(weight=self.weight)
-            self.lineitem_total = weight_price.price * self.quantity
-        except ProductWeightPrice.DoesNotExist:
-            self.lineitem_total = self.product.price * self.quantity
-        
-        super(OrderLineItem, self).save(*args, **kwargs)  # Make sure to call the superclass's save method
+    # def save(self, *args, **kwargs):
+    #     if not self.id:
+    #         if self.weight:
+    #             weight_price = self.product.weight_prices.get(weight=self.weight)
+    #             self.lineitem_total = weight_price.price * self.quantity
+    #         else:
+    #             self.lineitem_total = self.product.price * self.quantity
+    #     super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.product.flavour} ({self.weight}) on order {self.order.order_number}'
+        if self.product_type == 'edible':
+            return f'{self.edible_product.flavour} ({self.weight}) on order {self.order.order_number}'
+        else:
+            return f'{self.merch_product.name} on order {self.order.order_number}'
