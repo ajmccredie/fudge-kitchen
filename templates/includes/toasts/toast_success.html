@@ -17,6 +17,7 @@
                 <hr class="mt-1 mb-3">
             </div>
         </div>
+        {% if grand_total and not on_profile_page and not on_checkout_success and not on_checkout %}
         {% if basket_items %}
             <p class="logo-font bg-white text-black py-1">Your Basket ({{ basket_items|length }})</p>
             <div class="basket-notification-wrapper">
@@ -61,6 +62,7 @@
                     <p class="lead my-3">Your basket is currently empty.</p>
                 </div>
             </div>
+        {% endif %}
         {% endif %}
     </div>
 </div>

@@ -17,7 +17,11 @@
 
         <h3>Order Details</h3>
         {% for item in order.lineitems.all %}
-        <p>{{ item.product.name }} ({{ item.quantity }} @ £{{ item.product.price }})</p>
+        {% if item.product_type == 'edible' %}
+            <p>{{ item.edible_product.flavour }} ({{ item.quantity }} @ £{{ item.edible_product.price }})</p>
+        {% elif item.product_type == 'merch' %}
+            <p>{{ item.merch_product.name }} ({{ item.quantity }} @ £{{ item.merch_product.price }})</p>
+        {% endif %}
         {% endfor %}
 
         <p>Total: £{{ order.order_total }}</p>
