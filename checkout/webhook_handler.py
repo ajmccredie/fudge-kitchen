@@ -124,7 +124,7 @@ class StripeWH_Handler:
 
     def handle_payment_intent_succeeded(self, event):
         intent = event['data']['object']
-        order_reference = intent['metadata']['order_reference']  # This is your order_number from the metadata
+        order_reference = intent['metadata'].get('order_reference')
 
         try:
             order = Order.objects.get(order_number=order_reference)

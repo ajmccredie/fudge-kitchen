@@ -86,12 +86,14 @@ class CheckoutView(View):
         } if request.user.is_authenticated else {}
 
         order_form = OrderForm(initial=initial_data)
+        order_reference = get_object_or_404(Order, order_number=order_number)
 
         stripe.api_key = settings.STRIPE_SECRET_KEY
         total = int(context['grand_total'] * 100) 
         intent = stripe.PaymentIntent.create(
             amount=total,
             currency='gbp',
+            metadata={'order_reference': order_reference}
         )
 
         context.update({
