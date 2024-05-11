@@ -14,7 +14,7 @@ from edible_products.models import EdibleProduct
 from merch.models import MerchProduct
 from basket.contexts import basket_contents
 from .forms import OrderForm
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.core.serializers import serialize
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
@@ -24,20 +24,20 @@ def cache_checkout_data(request):
     try:
         client_secret = request.POST.get('client_secret')
         order_number = request.POST.get('order_number')
-        if client_secret:
-            pid = client_secret.split('_secret')[0]
-            print("Cache pid: ", pid)
-            stripe.api_key = settings.STRIPE_SECRET_KEY
-            print('basket in cache checkout data', json.dumps(request.session.get('basket', {})))
-            stripe.PaymentIntent.modify(pid, metadata={
-                # 'basket': json.dumps(request.session.get('basket', {})),
-                'order_number': order_number, 
-                # 'save_info': request.POST.get('save_info'),
-                'username': request.user,
-            })
-            return HttpResponse(status=200)
-        else:
-            raise ValueError('Client secret not found in the request.')
+        if not client_secret or not order_number:
+            return JsonResponse({'error': 'Missing data!'}, status=400)
+
+        pid = client_secret.split('_secret')[0]
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        stripe.PaymentIntent.modify(
+            pid,
+            metadata={
+                'order_number': order_number,
+                'username': request.user.username if request.user.is_authenticated else 'Guest'
+            }
+        )
+        return HttpResponse(status=200)
     except Exception as e:
         messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
         return HttpResponse(content=e, status=400)
@@ -86,20 +86,10 @@ class CheckoutView(View):
         } if request.user.is_authenticated else {}
 
         order_form = OrderForm(initial=initial_data)
-        order_reference = get_object_or_404(Order, order_number=order_number)
-
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        total = int(context['grand_total'] * 100) 
-        intent = stripe.PaymentIntent.create(
-            amount=total,
-            currency='gbp',
-            metadata={'order_reference': order_reference}
-        )
 
         context.update({
             'order_form': order_form,
-            'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
-            'client_secret': intent.client_secret
+            'stripe_public_key': settings.STRIPE_PUBLIC_KEY
         })
 
         return render(request, 'checkout/checkout.html', context)
@@ -146,21 +136,30 @@ class CheckoutView(View):
     #         return render(request, 'checkout/checkout.html', {'order_form': order_form, **context})
     
     def post(self, request, *args, **kwargs):
-        filled_form = OrderForm(request.POST)
-        if filled_form.is_valid():
-            order = filled_form.save(commit=False)
+        order_form = OrderForm(request.POST)
+        if order_form.is_valid():
+            order = order_form.save(commit=False)
             order.user_profile = request.user.profile if request.user.is_authenticated else None
+            print(user_profile)
             order.stripe_pid = request.POST.get('client_secret').split('_secret')[0]
             order.save()
-            basket = request.session.get('basket', {})
-            print('basket in view')
-            print(basket)
-            self.handle_line_items(order, basket)
-            request.session['basket'] = {}  # Clear the basket after saving the order
+            self.handle_line_items(order, request.session.get('basket', {}))
+
+            # Setup Stripe payment intent with metadata
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            total = int(order.grand_total * 100)
+            intent = stripe.PaymentIntent.create(
+                amount=total,
+                currency='gbp',
+                metadata={'order_reference': order.order_number}
+            )
+
+            request.session['basket'] = {}
+            messages.success(request, f'Order successfully processed! Your order number is {order.order_number}.')
             return redirect('checkout_success', order.order_number)
         else:
             messages.error(request, "There was an error with your form. Please double-check your information.")
-            return render(request, self.template_name, {'order_form': filled_form})
+            return render(request, self.template_name, {'order_form': order_form})
 
     def handle_line_items(self, order, basket):
         for item_id, item_details in basket.items():
