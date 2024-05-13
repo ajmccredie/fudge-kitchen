@@ -11,6 +11,7 @@ Postcode: 42424
 
 
 ### Target audience:
+This site is aimed at the market for luxury snacks. The site's main marketing drives to set it apart from similar companies include the availability of both 'traditional' fudge and plant-based products, the ability to filter all the products to exclude allergens, and the ability to purchase merchandise of their 'favourite' fudge supplier.
 
 ## Business and customer goals
 ### User goals:
@@ -19,7 +20,9 @@ Purpose and value
 Purpose and value
 
 ### User stories and project goals
-(potentially in a separate file, definitely in a table) - brief overview and covered in more detail later
+A full list of user stories and the associated acceptance criteria are detailed in a later section. The main over-arching goals for this project were:
+- To create an e-commerce website to support a small, home-made, luxury fudge company
+- For the website to be easy to use, and a positive experience for both the customer (who has many other options for how and where to spend their money) and the owner of the small business (who has far better things to do than fight with a 'difficult' website)
 
 ## UX/UI
 ### Wireframes
@@ -147,19 +150,67 @@ Testing has identified some UX/UI bugs related to where the information appears 
 To make the site useable by a business owner with little-to-no coding experience or confidence. To improve site functionality for the customer and increase the number of products available for purchase.
 
 #### Definition of done for Sprint 2:
+The addition of filtering, merchandise and a user-friendly admin interface to the site.
 
 #### User stories covered in this sprint
 - As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.
-- As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.
 - As a **member **, I can **create an account to save my details**, in order to **checkout faster in the future**.
 - As a **member**, I can **have the site remember my allergen preferences**, in order **to automatically filter products for me**.
 - As a **member**, I can **purchase merchandise like mugs and coasters**, in order to **have branded items from my favourite fudge shop**.
 - As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**.
+- As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**.
 
 #### Breakdown of goals to meet the sprint objectives
+Goal 1: Set-up the admin front-end for CRUD of products
+Goal 2: Set-up merchandise products and add a selection of these to the site
+Goal 3: Add the ability of the site to use the subscription status of the user to determine whether they pay delivery fee or not
+Goal 4: Add all the initial edible products
+Goal 5: Set-up filtering according to allergens and dietary preference of 'plant-based' diets
+Goal 6: Set-up auto-filering with user profile details and login
+Goal 7: Set-up basket and checkout procedures for the new products 
+
+#### Sprint analysis and lessons learned
+The admin dashboard was added, and after a few minor bugs, was sorted to allow products to be added, removed and edited in a user-friendly fashion for the business owner. Only accounts designated as 'staff' have access to the dashboard 'business management' pages. This went fairly smoothly and allowed far more edible products to be added to the site.
+The linking of the the subscription status to the delivery charge and some of the associated site messages was completed, and verified that toggling the status also toggled the application of the delivery charge.
+The addition of the merchandise products to the site proved to be more challenging than had been expected in a number of ways. A new app was set up, and the models needed to be formatted differently. There was no need for the weight and differing prices like the fudge products, but there needed to be the choice of slogan on all the items and colour for some of the items. The items will now all go through to checkout, but there are a number of persistent bugs with the code for both edible and non-edible products which are an artifact of adding these products. There is also some functionality which may get added in the future, but was left for this sprint. The webhooks are still not fully functional, even though the checkout success page is shown and the test payments are seen in Stripe.
+The site filtering is now working, but the CSS will need to be addressed to improve the site's UX/UI. The site continues to filter for the session, but the ability to add the same choices and automatic filtering was not completed in this sprint due to issues with the merchandise and needing to prioritise time and resources. 
+
+### Sprint 3: Objectives
+To add information to the site to help the potential customers to make informed decisions, including the ability of signed in users to ask questions through the inquiry form and to detail the benefits of membership to the site. To add functionality to the admin 'dashboard', so that inquiries can be found easily, and the business owner can make a note of which they have answered, and also so that they can track order progress through this (giving a good customer experience and helping the business owner to run their business more smoothly).
+
+#### Definition of done for sprint 3:
+Completed 'about us', 'FAQs', 'Enquiry form' and admin backend to track order progress and see entries to the enquiry form.
+
+#### User stories covered in this sprint
+- As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.
+- As a **member**, I can **submit enquiries through a form**, in order to **get answers to questions not covered in the FAQs**.
+- As a **member**, I can **log in to my account to view past orders and update my details**, in order to **manage my purchases and account information easily**.
+- As a **site admin**, I can **view and manage customer orders**, in order to **ensure timely processing and delivery**.
+As a **site admin**, I can **receive and respond to customer enquiries submitted through the website**, in order to **provide assistance and information as needed**.
+
+#### Breakdown of goals to meet the sprint objectives
+Goal 1: Create and style a FAQs and enquiries page. Only signed in customers can use the inquires form.
+Goal 2: Add photos and details to 'Our Story'
+Goal 3: Skeleton outline of subscription benefits
+Goal 4: Create custom 404 and 500 pages to deal with uneexpected user actions and handle errors gracefully.
+Goal 5: Set-up admin views and management of the ordering system: orders need to be tracked automatically from checkout to this page, where the business owner can then tick these off when the product is made, and when the order is dispatched. Dispatch should trigger an email  to the customer.
 
 #### Sprint analysis and lessons learned
 
+
+### Sprint 4: Objectives
+
+
+#### Definition of done for sprint 4:
+
+
+#### User stories covered in this sprint
+
+
+#### Breakdown of goals to meet the sprint objectives
+
+
+#### Sprint analysis and lessons learned
 
 ## Manual testing (overview)
 ### Responsiveness
