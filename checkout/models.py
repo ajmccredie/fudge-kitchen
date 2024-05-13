@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.db.models import Sum
 from django.conf import settings
+from decimal import Decimal
 
 from django_countries.fields import CountryField
 
@@ -72,17 +73,21 @@ class OrderLineItem(models.Model):
     quantity = models.IntegerField(null=False, blank=False, default=0)
     lineitem_total = models.DecimalField(max_digits=6, decimal_places=2, null=False, blank=False, editable=False)
 
-    # def save(self, *args, **kwargs):
-    #     if not self.id:
-    #         if self.weight:
-    #             weight_price = self.product.weight_prices.get(weight=self.weight)
-    #             self.lineitem_total = weight_price.price * self.quantity
-    #         else:
-    #             self.lineitem_total = self.product.price * self.quantity
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        if not self.id:
+            if self.product_type == 'edible' and self.weight:
+                price_per_unit = self.edible_product.get_price_for_weight(self.weight)
+                print(price_per_unit)
+                if price_per_unit is None:
+                    price_per_unit = Decimal('7.00')
+                self.lineitem_total = price_per_unit * Decimal(self.quantity)
+            elif self.product_type == 'merch':
+                self.lineitem_total = self.merch_product.price * Decimal(self.quantity)
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         if self.product_type == 'edible':
-            return f'{self.edible_product.flavour} ({self.weight}) on order {self.order.order_number}'
+            return f'{self.edible_product.flavour} ({self.weight}g) on order {self.order.order_number}'
         else:
             return f'{self.merch_product.name} on order {self.order.order_number}'

@@ -18,7 +18,7 @@
         <h3>Order Details</h3>
         {% for item in order.lineitems.all %}
         {% if item.product_type == 'edible' %}
-            <p>{{ item.edible_product.flavour }} ({{ item.quantity }} @ £{{ item.edible_product.price }})</p>
+            <p>{{ item.edible_product.flavour }} - {{ item.weight }}g ({{ item.quantity }} @ £{{ item.edible_product.price }})</p>
         {% elif item.product_type == 'merch' %}
             <p>{{ item.merch_product.name }} ({{ item.quantity }} @ £{{ item.merch_product.price }})</p>
         {% endif %}

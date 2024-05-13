@@ -55,12 +55,14 @@ class EdibleProduct(models.Model):
     def __str__(self):
         return f"{self.name} - {self.flavour}"
 
-    def save(self, *args, **kwargs):
-        is_new = self._state.adding
-        super().save(*args, **kwargs)
-        if is_new:
-            for weight, price in self.DEFAULT_WEIGHT_PRICES.items():
-                ProductWeightPrice.objects.create(product=self, weight=weight, price=price)
+    def get_price_for_weight(self, weight):
+        """Retrieve price for a specific weight from the ProductWeightPrice model."""
+        try:
+            price_record = self.weight_prices.get(weight=weight)
+            print(price_record)
+            return price_record.price
+        except ProductWeightPrice.DoesNotExist:
+            return None
 
     def list_allergens(self):
         """Returns a list of allergens present in the product based on boolean fields."""
@@ -95,6 +97,13 @@ class EdibleProduct(models.Model):
                 })
 
         return allergens_info
+
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super().save(*args, **kwargs)
+        if is_new:
+            for weight, price in self.DEFAULT_WEIGHT_PRICES.items():
+                ProductWeightPrice.objects.create(product=self, weight=weight, price=price)
 
 class ProductWeightPrice(models.Model):
     product = models.ForeignKey(EdibleProduct, related_name='weight_prices', on_delete=models.CASCADE)

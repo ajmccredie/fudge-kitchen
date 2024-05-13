@@ -19,25 +19,53 @@ from django.core.serializers import serialize
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
+# @require_POST
+# def cache_checkout_data(request):
+#     try:
+#         client_secret = request.POST.get('client_secret')
+#         print("Client secret:")
+#         print(client_secret)
+#         order_number = request.POST.get('order_number')
+#         print("Order number:")
+#         print(order_number)
+#         if not client_secret or not order_number:
+#             print("Missing data: client_secret or order_number is None.")
+#             return JsonResponse({'error': 'Missing data!'}, status=400)
+
+#         pid = client_secret.split('_secret')[0]
+#         stripe.api_key = settings.STRIPE_SECRET_KEY
+
+#         stripe.PaymentIntent.modify(
+#             pid,
+#             metadata={
+#                 'order_number': order_number,
+#                 'username': request.user.username if request.user.is_authenticated else 'Guest'
+#             }
+#         )
+#         return HttpResponse(status=200)
+#     except Exception as e:
+#         messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
+#         return HttpResponse(content=e, status=400)
+
 @require_POST
 def cache_checkout_data(request):
     try:
         client_secret = request.POST.get('client_secret')
         order_number = request.POST.get('order_number')
-        if not client_secret or not order_number:
-            return JsonResponse({'error': 'Missing data!'}, status=400)
-
-        pid = client_secret.split('_secret')[0]
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-
-        stripe.PaymentIntent.modify(
-            pid,
-            metadata={
-                'order_number': order_number,
-                'username': request.user.username if request.user.is_authenticated else 'Guest'
-            }
-        )
-        return HttpResponse(status=200)
+        if client_secret:
+            pid = client_secret.split('_secret')[0]
+            print("Cache pid: ", pid)
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            print('basket in cache checkout data', json.dumps(request.session.get('basket', {})))
+            stripe.PaymentIntent.modify(pid, metadata={
+                # 'basket': json.dumps(request.session.get('basket', {})),
+                'order_number': order_number, 
+                # 'save_info': request.POST.get('save_info'),
+                'username': request.user,
+            })
+            return HttpResponse(status=200)
+        else:
+            raise ValueError('Client secret not found in the request.')
     except Exception as e:
         messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
         return HttpResponse(content=e, status=400)
@@ -87,9 +115,19 @@ class CheckoutView(View):
 
         order_form = OrderForm(initial=initial_data)
 
+        # Create Stripe PaymentIntent
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        total = int(context['grand_total'] * 100)
+        intent = stripe.PaymentIntent.create(
+            amount=total,
+            currency='gbp',
+            metadata={'user_id': request.user.id if request.user.is_authenticated else 'guest'}
+        )
+
         context.update({
             'order_form': order_form,
-            'stripe_public_key': settings.STRIPE_PUBLIC_KEY
+            'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
+            'client_secret': intent.client_secret
         })
 
         return render(request, 'checkout/checkout.html', context)
@@ -140,9 +178,10 @@ class CheckoutView(View):
         if order_form.is_valid():
             order = order_form.save(commit=False)
             order.user_profile = request.user.profile if request.user.is_authenticated else None
-            print(user_profile)
+            print(order.user_profile)
             order.stripe_pid = request.POST.get('client_secret').split('_secret')[0]
             order.save()
+
             self.handle_line_items(order, request.session.get('basket', {}))
 
             # Setup Stripe payment intent with metadata
@@ -154,8 +193,9 @@ class CheckoutView(View):
                 metadata={'order_reference': order.order_number}
             )
 
-            request.session['basket'] = {}
-            messages.success(request, f'Order successfully processed! Your order number is {order.order_number}.')
+            if 'basket' in request.session:
+                del request.session['basket']
+
             return redirect('checkout_success', order.order_number)
         else:
             messages.error(request, "There was an error with your form. Please double-check your information.")
@@ -163,22 +203,26 @@ class CheckoutView(View):
 
     def handle_line_items(self, order, basket):
         for item_id, item_details in basket.items():
-
             quantity = Decimal(item_details['quantity'])
-            lineitem_total = Decimal(item_details['price']) * Decimal(quantity)
-            
+      
             if item_details['product_type'] == 'edible':
                 edible_product = get_object_or_404(EdibleProduct, pk=int(item_details['product_id']))
+                price_per_unit = edible_product.get_price_for_weight(item_details['weight'])
+                lineitem_total = price_per_unit * quantity
+            
                 OrderLineItem.objects.create(
-                order=order,
-                edible_product=edible_product,
-                product_type='edible',
-                weight=item_details.get('weight', None),
-                quantity=quantity,
-                lineitem_total=lineitem_total
-            )
+                    order=order,
+                    edible_product=edible_product,
+                    product_type='edible',
+                    weight=item_details['weight'],
+                    quantity=quantity,
+                    lineitem_total=lineitem_total
+                )
+
             elif item_details['product_type'] == 'merch':
                 merch_product = get_object_or_404(MerchProduct, pk=int(item_details['product_id']))
+                lineitem_total = merch_product.price * quantity
+                
                 OrderLineItem.objects.create(
                     order=order,
                     merch_product=merch_product,
