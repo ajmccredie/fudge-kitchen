@@ -4,18 +4,56 @@
 
 {% block content %}
 <h2>Order List</h2>
-{% for order in object_list %}
-    <div>
-        <p>Order #: {{ order.order_number }} - Dispatched: {{ order.dispatched }}</p>
-        <a href="">Mark as Dispatched</a>
-        <ul>
-        {% for item in order.lineitems.all %}
-            <li>
-                {{ item }} - Made: {{ item.made }}
-                <a href="">Mark as Made</a>
-            </li>
-        {% endfor %}
-        </ul>
-    </div>
-{% endfor %}
+
+<form method="get" action="{% url 'dashboard:order_list' %}" class="mb-3">
+    <label for="filter_dispatch">Show only orders needing dispatch:</label>
+    <input type="checkbox" id="filter_dispatch" name="filter_dispatch" {% if request.GET.filter_dispatch %}checked{% endif %}>
+    <br>
+    <label for="filter_type">Filter items by type:</label>
+    <select id="filter_type" name="filter_type">
+        <option value="">All</option>
+        <option value="edible" {% if request.GET.filter_type == 'edible' %}selected{% endif %}>Edible</option>
+        <option value="merch" {% if request.GET.filter_type == 'merch' %}selected{% endif %}>Merch</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in object_list %}
+            <tr class="{% if order.dispatched %}text-muted{% else %}font-weight-bold{% endif %}">
+                <td>{{ order.order_number }}</td>
+                <td>{{ order.date }}</td>
+                <td>
+                    <a href="{% url 'dashboard:mark_order_dispatched' order.id %}">Mark as Dispatched</a> |
+                    <a href="{% url 'dashboard:order_details' order.id %}">View Details</a> |
+                    <a href="{% url 'dashboard:delete_order' order.id %}" onclick="return confirm('Are you sure you want to delete this order?');">Delete Order</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <ul class="small">
+                        {% for item in order.lineitems.all %}
+                            {% if not request.GET.filter_type or item.product_type == request.GET.filter_type %}
+                            <li>
+                                {{ item }} - Made: {{ item.made }}
+                                <a href="{% url 'dashboard:mark_item_made' item.id %}">Mark as Made</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

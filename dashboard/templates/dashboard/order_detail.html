@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Order Details</h2>
+    <p>Order #: {{ order.order_number }}</p>
+    <p>Dispatched: {{ order.dispatched }}</p>
+    <p>Full Name: {{ order.full_name }}</p>
+    <p>Email: {{ order.email }}</p>
+    <p>Phone Number: {{ order.phone_number }}</p>
+    <p>Address 1: {{ order.street_address1 }}</p>
+    {% if order.street_address2 %}
+    <p>Address 2: {{ order.street_address2 }}</p>
+    {% endif %}
+    {% if order.county %}
+    <p>County: {{ order.county }}</p>
+    {% endif %}
+    <p>Town or City: {{ order.town_or_city }}</p>
+    {% if order.postcode %}
+    <p>Postal Code: {{ order.postcode }}</p>
+    {% endif %}
+    <p>Country: {{ order.country }}</p>
+
+    <h3>Items</h3>
+    <ul>
+        {% for item in order.lineitems.all %}
+        <li>
+            {{ item }} - Made: {{ item.made }}
+            <p>Text: {{ item.selected_text.text }}</p>
+            <a href="{% url 'dashboard:mark_item_made' item.id %}">Mark as Made</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'dashboard:order_list' %}">Back to Order List</a>
+</div>
+{% endblock %}

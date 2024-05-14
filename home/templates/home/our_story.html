@@ -3,6 +3,7 @@
 
 {% block content %}
 <div class="container">
+    <a href="{% url 'home:faqs' %}" class="btn btn-primary">FAQs and Contact Us</a>
     <h1>Our Story</h1>
     <img class="icon" src="{{ MEDIA_URL }}logo-no-words-no-bg.png" alt="Roo's Fudge Kitchen Logo">
     {% if story.image %}

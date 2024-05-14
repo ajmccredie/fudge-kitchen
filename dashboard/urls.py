@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView
+from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView, OrderDetailView, mark_order_dispatched, mark_item_made, delete_order
 
 app_name = 'dashboard'
 
@@ -14,5 +14,9 @@ urlpatterns = [
     path('merch/new/', MerchProductCreateView.as_view(), name='merch_product_create'),
     path('merch/<int:pk>/edit/', MerchProductUpdateView.as_view(), name='merch_product_update'),
     path('merch/<int:pk>/delete/', MerchProductDeleteView.as_view(), name='merch_product_delete'),
-    path('order_list', OrderListView.as_view(), name='order_list'),
+    path('order_list/', OrderListView.as_view(), name='order_list'),
+    path('order_list/<int:pk>/', OrderDetailView.as_view(), name='order_details'),
+    path('order_list/<int:order_id>/dispatched/', mark_order_dispatched, name='mark_order_dispatched'),
+    path('order_list/items/<int:item_id>/made/', mark_item_made, name='mark_item_made'),
+    path('order_list/<int:order_id>/delete/', delete_order, name='delete_order'),
 ]

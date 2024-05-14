@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Frequently Asked Questions (FAQs)</h2>
+    <div class="faq-section">
+        <h3>Allergen Safety</h3>
+        <p>Q: How do you ensure allergen safety in your processing?</p>
+        <p>A: We take allergen safety very seriously. All our products are processed in a facility that handles various
+            allergens. We ensure thorough cleaning and separation of equipment used for allergen-containing products.
+            However, we cannot guarantee the complete absence of allergens.</p>
+
+        <h3>Delivery Times</h3>
+        <p>Q: How long does delivery take?</p>
+        <p>A: Our standard delivery time is 3-5 business days. For express delivery options, please refer to our
+            shipping policies.</p>
+
+        <h3>Missed Deliveries</h3>
+        <p>Q: What happens if I miss my delivery?</p>
+        <p>A: If you miss your delivery, the courier will leave a notice with instructions on how to reschedule or
+            collect your package from a nearby location.</p>
+    </div>
+
+    {% if user.is_authenticated %}
+    <h2>Contact Us</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% else %}
+    <p>Please <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-primary">Login</a> or <a
+            href="{% url 'account_signup' %}?next={{ request.path }}" class="btn btn-primary">Register</a> to use the
+        contact form.</p>
+    {% endif %}
+</div>
+{% endblock %}

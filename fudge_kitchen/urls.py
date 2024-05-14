@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', home_views.index, name='index'),  # Map root URL directly to 'index' view
+    path('', include('home.urls', namespace='home')),
     path('our_story/', home_views.our_story, name='our_story'),
     path('edible_products/', include('edible_products.urls')),
     path('profiles/', include('profiles.urls')),
