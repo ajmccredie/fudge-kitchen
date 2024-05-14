@@ -85,7 +85,7 @@
                             <p class="my-0 small">Weight: {{ item.weight }}g</p>
                             {% elif item.product_type == 'merch' %}
                             <p class="my-0"><strong>{{ item.merch_product.name }}
-                            <p class="my-0 small text-muted">Text: {{ item.merch_product.text_option }}</p>
+                            <p class="my-0 small text-muted">Text: {{ item.selected_text.text }}</p>
                             {% endif %}
                             <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
                         </div>
