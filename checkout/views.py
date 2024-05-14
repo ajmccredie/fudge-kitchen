@@ -58,9 +58,9 @@ def cache_checkout_data(request):
             stripe.api_key = settings.STRIPE_SECRET_KEY
             print('basket in cache checkout data', json.dumps(request.session.get('basket', {})))
             stripe.PaymentIntent.modify(pid, metadata={
-                # 'basket': json.dumps(request.session.get('basket', {})),
+                'basket': json.dumps(request.session.get('basket', {})),
                 'order_number': order_number, 
-                # 'save_info': request.POST.get('save_info'),
+                'save_info': request.POST.get('save_info'),
                 'username': request.user,
             })
             return HttpResponse(status=200)
