@@ -9,7 +9,7 @@ from django_countries.fields import CountryField
 
 from profiles.models import Profile
 from edible_products.models import EdibleProduct, ProductWeightPrice
-from merch.models import MerchProduct
+from merch.models import MerchProduct, TextOption
 
 
 class Order(models.Model):
@@ -30,6 +30,7 @@ class Order(models.Model):
     grand_total = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
     original_basket = models.TextField(null=False, blank=False, default='')
     stripe_pid = models.CharField(max_length=254, null=False, blank=False, default='')
+    dispatched = models.BooleanField(default=False)
 
     def _generate_order_number(self):
         """
@@ -71,7 +72,9 @@ class OrderLineItem(models.Model):
 
     weight = models.IntegerField(null=True, blank=True)  # Stores the selected weight
     quantity = models.IntegerField(null=False, blank=False, default=0)
+    selected_text = models.ForeignKey(TextOption, null=True, blank=True, on_delete=models.SET_NULL)
     lineitem_total = models.DecimalField(max_digits=6, decimal_places=2, null=False, blank=False, editable=False)
+    made = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -89,5 +92,8 @@ class OrderLineItem(models.Model):
     def __str__(self):
         if self.product_type == 'edible':
             return f'{self.edible_product.flavour} ({self.weight}g) on order {self.order.order_number}'
+        elif self.product_type == 'merch':
+            text = f" - {self.selected_text.text}" if self.selected_text else ""
+            return f'{self.merch_product.name}{text} on order {self.order.order_number}'
         else:
-            return f'{self.merch_product.name} on order {self.order.order_number}'
+            return f'Product on order {self.order.order_number}'

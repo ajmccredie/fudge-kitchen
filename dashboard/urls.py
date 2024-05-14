@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView
+from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView
 
 app_name = 'dashboard'
 
@@ -14,4 +14,5 @@ urlpatterns = [
     path('merch/new/', MerchProductCreateView.as_view(), name='merch_product_create'),
     path('merch/<int:pk>/edit/', MerchProductUpdateView.as_view(), name='merch_product_update'),
     path('merch/<int:pk>/delete/', MerchProductDeleteView.as_view(), name='merch_product_delete'),
+    path('order_list', OrderListView.as_view(), name='order_list'),
 ]

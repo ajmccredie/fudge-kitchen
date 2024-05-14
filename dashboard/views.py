@@ -1,10 +1,12 @@
 from django.shortcuts import render, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct
-from .forms import EdibleProductForm, MerchProductForm
+from checkout.models import Order, OrderLineItem
+from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm
 
 # Create your views here.
 
@@ -112,3 +114,8 @@ class MerchProductDeleteView(StaffRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('dashboard:merch_product_list')
+
+
+class OrderListView(ListView):
+    model = Order
+    template_name = 'dashboard/order_list.html'

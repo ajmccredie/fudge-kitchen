@@ -2,6 +2,8 @@ from django import forms
 from django.forms import inlineformset_factory
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct, ColourVariation, TextOption
+from checkout.models import Order, OrderLineItem
+
 
 class EdibleProductForm(forms.ModelForm):
     plant_based = forms.BooleanField(label='Plant-based', required=False)
@@ -63,3 +65,14 @@ class TextOptionForm(forms.ModelForm):
     class Meta:
         model = TextOption
         fields = ['text']
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['dispatched']
+
+class OrderLineItemForm(forms.ModelForm):
+    class Meta:
+        model = OrderLineItem
+        fields = ['made']

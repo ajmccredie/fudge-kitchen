@@ -132,74 +132,74 @@ class CheckoutView(View):
 
         return render(request, 'checkout/checkout.html', context)
 
-    # def post(self, request, *args, **kwargs):
-    #     context = basket_contents(request)
-    #     form_data = {
-    #         'full_name': request.POST['full_name'],
-    #         'email': request.POST['email'],
-    #         'phone_number': request.POST['phone_number'],
-    #         'country': request.POST['country'],
-    #         'postcode': request.POST['postcode'],
-    #         'town_or_city': request.POST['town_or_city'],
-    #         'street_address1': request.POST['street_address1'],
-    #         'street_address2': request.POST['street_address2'],
-    #         'county': request.POST['county'],
-    #     }
-
-    #     order_form = OrderForm(form_data)
-    #     if order_form.is_valid():
-    #         order = order_form.save(commit=False)
-    #         pid = request.POST.get('client_secret').split('_secret')[0]
-    #         order.stripe_pid = pid
-    #         order.save()
-
-    #         # Handle different types of products
-    #         for item_key, item_data in context['basket_items'].items():
-    #             product = get_object_or_404(EdibleProduct if 'edible' in item_key else MerchProduct, pk=item_data['product_id'])
-    #             quantity = item_data['quantity']
-    #             price = Decimal(item_data['price'])
-
-    #             OrderLineItem.objects.create(
-    #                 order=order,
-    #                 product=product,
-    #                 quantity=quantity,
-    #                 weight=item_data.get('weight', None),  # Only for edible products
-    #                 lineitem_total=price * quantity
-    #             )
-
-    #         order.update_total()  # Update the order total
-    #         return redirect(reverse('checkout_success', args=[order.order_number]))
-    #     else:
-    #         messages.error(request, "There was an error with your form submission.")
-    #         return render(request, 'checkout/checkout.html', {'order_form': order_form, **context})
-    
     def post(self, request, *args, **kwargs):
-        order_form = OrderForm(request.POST)
+        context = basket_contents(request)
+        form_data = {
+            'full_name': request.POST['full_name'],
+            'email': request.POST['email'],
+            'phone_number': request.POST['phone_number'],
+            'country': request.POST['country'],
+            'postcode': request.POST['postcode'],
+            'town_or_city': request.POST['town_or_city'],
+            'street_address1': request.POST['street_address1'],
+            'street_address2': request.POST['street_address2'],
+            'county': request.POST['county'],
+        }
+
+        order_form = OrderForm(form_data)
         if order_form.is_valid():
             order = order_form.save(commit=False)
-            order.user_profile = request.user.profile if request.user.is_authenticated else None
-            print(order.user_profile)
-            order.stripe_pid = request.POST.get('client_secret').split('_secret')[0]
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
             order.save()
 
-            self.handle_line_items(order, request.session.get('basket', {}))
+            # Handle different types of products
+            for item_key, item_data in context['basket_items'].items():
+                product = get_object_or_404(EdibleProduct if 'edible' in item_key else MerchProduct, pk=item_data['product_id'])
+                quantity = item_data['quantity']
+                price = Decimal(item_data['price'])
 
-            # Setup Stripe payment intent with metadata
-            stripe.api_key = settings.STRIPE_SECRET_KEY
-            total = int(order.grand_total * 100)
-            intent = stripe.PaymentIntent.create(
-                amount=total,
-                currency='gbp',
-                metadata={'order_reference': order.order_number}
-            )
+                OrderLineItem.objects.create(
+                    order=order,
+                    product=product,
+                    quantity=quantity,
+                    weight=item_data.get('weight', None),  # Only for edible products
+                    lineitem_total=price * quantity
+                )
 
-            if 'basket' in request.session:
-                del request.session['basket']
-
-            return redirect('checkout_success', order.order_number)
+            order.update_total()  # Update the order total
+            return redirect(reverse('checkout_success', args=[order.order_number]))
         else:
-            messages.error(request, "There was an error with your form. Please double-check your information.")
-            return render(request, self.template_name, {'order_form': order_form})
+            messages.error(request, "There was an error with your form submission.")
+            return render(request, 'checkout/checkout.html', {'order_form': order_form, **context})
+    
+    # def post(self, request, *args, **kwargs):
+    #     order_form = OrderForm(request.POST)
+    #     if order_form.is_valid():
+    #         order = order_form.save(commit=False)
+    #         order.user_profile = request.user.profile if request.user.is_authenticated else None
+    #         print(order.user_profile)
+    #         order.stripe_pid = request.POST.get('client_secret').split('_secret')[0]
+    #         order.save()
+
+    #         self.handle_line_items(order, request.session.get('basket', {}))
+
+    #         # Setup Stripe payment intent with metadata
+    #         stripe.api_key = settings.STRIPE_SECRET_KEY
+    #         total = int(order.grand_total * 100)
+    #         intent = stripe.PaymentIntent.create(
+    #             amount=total,
+    #             currency='gbp',
+    #             metadata={'order_reference': order.order_number}
+    #         )
+
+    #         if 'basket' in request.session:
+    #             del request.session['basket']
+
+    #         return redirect('checkout_success', order.order_number)
+    #     else:
+    #         messages.error(request, "There was an error with your form. Please double-check your information.")
+    #         return render(request, self.template_name, {'order_form': order_form})
 
     def handle_line_items(self, order, basket):
         for item_id, item_details in basket.items():

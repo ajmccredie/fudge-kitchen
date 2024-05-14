@@ -18,18 +18,26 @@
             <p class="text-muted">Order Summary ({{ line_items.count }} items)</p>
             {% for item in line_items %}
             <div class="row mb-3">
+                {% if item.product_type == 'edible' %}
                 <div class="col-2">
-                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+                    {% if item.edible_product.image %}
+                    <img src="{{ item.edible_product.image.url }}" alt="{{ item.edible_product.name }}" class="img-fluid">
+                    {% endif %}
                 </div>
                 <div class="col-7">
-                    <p><strong>{{ item.product.name }}</strong></p>
-                    {% if item.product.flavour %}
-                        <p>Flavour: {{ item.product.flavour }}</p>
-                        <p>Weight: {{ item.weight }}g</p>
+                    <p><strong>{{ item.edible_product.name }}</strong></p>
+                    <p>Flavour: {{ item.edible_product.flavour }}</p>
+                    <p>Weight: {{ item.weight }}g</p>
+                {% elif item.product_type == 'merch' %}
+                <div class="col-2">
+                    {% if item.merch_product.image %}
+                    <img src="{{ item.merch_product.image.url }}" alt="{{ item.merch_product.name }}" class="img-fluid">
                     {% endif %}
-                    {% if item.product.text_option %}
-                        <p>Text: {{ item.product.text_option }}</p>
-                    {% endif %}
+                </div>
+                <div class="col-7">
+                    <p><strong>{{ item.merch_product.name }}</strong></p>
+                    <p>Text: {{ item.merch_product.text_option }}</p>
+                {% endif %}
                     <p>Qty: {{ item.quantity }}</p>
                 </div>
                 <div class="col-3 text-right">
@@ -40,9 +48,9 @@
             <hr>
             <div class="row text-black text-right">
                 <div class="col-7 offset-2">
-                    <p>Order Total: </p>
-                    <p>Delivery: </p>
-                    <p><strong>Grand Total: </strong></p>
+                    <p>Order Total:</p>
+                    <p>Delivery:</p>
+                    <p><strong>Grand Total:</strong></p>
                 </div>
                 <div class="col-3">
                     <p>£{{ order.order_total | floatformat:2 }}</p>

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<h2>Order List</h2>
+{% for order in object_list %}
+    <div>
+        <p>Order #: {{ order.order_number }} - Dispatched: {{ order.dispatched }}</p>
+        <a href="">Mark as Dispatched</a>
+        <ul>
+        {% for item in order.lineitems.all %}
+            <li>
+                {{ item }} - Made: {{ item.made }}
+                <a href="">Mark as Made</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endfor %}
+{% endblock %}
