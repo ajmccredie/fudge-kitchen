@@ -19,7 +19,7 @@ def our_story(request):
     return render(request, 'home/our_story.html', context)
 
 
-class FAQsView(LoginRequiredMixin, TemplateView):
+class FAQsView(TemplateView):
     template_name = 'home/faqs.html'
 
     def get_context_data(self, **kwargs):
