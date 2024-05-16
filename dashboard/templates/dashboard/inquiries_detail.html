@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Inquiry Details</h2>
+    <p><strong>Email:</strong> {{ inquiry.email }}</p>
+    <p><strong>Message:</strong> {{ inquiry.message }}</p>
+    <p><strong>Submitted At:</strong> {{ inquiry.created_at }}</p>
+
+    {% if not inquiry.is_dealt_with %}
+        <form method="post" action="{% url 'dashboard:mark_inquiry_dealt_with' inquiry.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Mark as Dealt With</button>
+        </form>
+    {% else %}
+        <span class="badge badge-success">This inquiry has been dealt with.</span>
+    {% endif %}
+    <a href="{% url 'dashboard:inquiries_list' %}" class="btn btn-secondary">Back to Inquiries</a>
+</div>
+{% endblock %}
