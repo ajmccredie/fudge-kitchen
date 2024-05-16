@@ -9,17 +9,17 @@ from .models import Profile
 from checkout.models import Order
 from .forms import ProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Max
 
 class ProfileView(View):
     """ Display the user's profile. """
     template_name = 'profiles/profile.html'
     form_class = ProfileForm
-    model = Order
 
     def get(self, request, *args, **kwargs):
         profile = get_object_or_404(Profile, user=request.user)
         form = self.form_class(instance=profile)
-        orders = profile.orders.all()
+        orders = profile.orders.order_by('-date')  # Order by date in descending order
         context = {
             'form': form,
             'orders': orders,
@@ -32,10 +32,21 @@ class ProfileView(View):
         form = self.form_class(request.POST, instance=profile)
         if form.is_valid():
             form.save()
+            latest_order = profile.orders.aggregate(Max('date')).get('date__max')
+            if latest_order:
+                latest_order = profile.orders.get(date=latest_order)
+                profile.default_phone_number = latest_order.phone_number
+                profile.default_country = latest_order.country
+                profile.default_postcode = latest_order.postcode
+                profile.default_town_or_city = latest_order.town_or_city
+                profile.default_street_address1 = latest_order.street_address1
+                profile.default_street_address2 = latest_order.street_address2
+                profile.default_county = latest_order.county
+                profile.save()
             messages.success(request, 'Profile updated successfully')
         else:
-            print(form.errors)
-        orders = profile.orders.all()
+            messages.error(request, 'Error updating your profile. Please check the form for errors.')
+        orders = profile.orders.order_by('-date') 
         context = {
             'form': form,
             'orders': orders,

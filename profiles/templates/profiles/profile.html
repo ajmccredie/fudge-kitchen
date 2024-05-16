@@ -34,7 +34,10 @@
             <div class="list-group">
                 {% for order in orders %}
                     <a href="{% url 'order_detail' order.id %}" class="list-group-item list-group-item-action">
-                        Order #{{ order.order_number }} - {{ order.date }} - £{{ order.grand_total }}
+                        <strong>Order #{{ order.order_number }} - {{ order.date }}</strong>
+                        <span class="badge {% if order.dispatched %}badge-success{% else %}badge-secondary{% endif %}">
+                            {% if order.dispatched %}Dispatched{% else %}Pending{% endif %}
+                        </span>
                     </a>
                 {% empty %}
                     <p>No orders yet.</p>

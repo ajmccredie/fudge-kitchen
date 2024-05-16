@@ -175,11 +175,13 @@ class CheckoutView(View):
     
     def post(self, request, *args, **kwargs):
         order_form = OrderForm(request.POST)
+        basket = request.session.get('basket', {})
         if order_form.is_valid():
             order = order_form.save(commit=False)
             order.user_profile = request.user.profile if request.user.is_authenticated else None
             print(order.user_profile)
             order.stripe_pid = request.POST.get('client_secret').split('_secret')[0]
+            order.original_basket = json.dumps(basket)
             order.save()
 
             self.handle_line_items(order, request.session.get('basket', {}))
