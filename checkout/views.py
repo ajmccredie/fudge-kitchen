@@ -254,7 +254,7 @@ class CheckoutSuccessView(View):
         message = render_to_string('emails/order_confirmation.html', {'order': order})
         email = EmailMessage(subject, message, to=[order.email])
         email.content_subtype = 'html'  # (set to send the html contents
-        email.send()
+        # email.send()
 
         if 'basket' in request.session:
             del request.session['basket']

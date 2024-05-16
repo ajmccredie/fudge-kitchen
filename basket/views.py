@@ -50,7 +50,8 @@ class AddToBasketView(View):
             price = product.price
 
         basket = request.session.get('basket', {})
-        item_key = f"edible-{item_id}-{flavour}-{weight}"
+        # item_key = f"edible-{item_id}-{flavour}-{weight}"
+        item_key = f"{item_id}"
 
         if item_key in basket:
             basket[item_key]['quantity'] += quantity
@@ -60,7 +61,6 @@ class AddToBasketView(View):
                 'product_type': 'edible',
                 'flavour': flavour,
                 'weight': weight,
-                # 'quantity': quantity,
                 'quantity': basket.get(item_key, {}).get('quantity', 0) + quantity,
                 'price': str(price),
                 'image_url': product.image.url if product.image else None,
@@ -68,6 +68,7 @@ class AddToBasketView(View):
             }
 
         request.session['basket'] = basket
+        print("basket from session_,",basket)
         request.session.modified = True
         messages.success(request, f'Added "{product.flavour}" to your basket.')
         return redirect(redirect_url)
@@ -86,7 +87,8 @@ class AddMerchToBasketView(View):
         image_url = merch.image.url if merch.image else None
 
         basket = request.session.get('basket', {})
-        item_key = f"merch-{item_id}-{colour_id}-{text_option_id if text_option_id else ''}"
+        # item_key = f"merch-{item_id}-{colour_id}-{text_option_id if text_option_id else ''}"
+        item_key = f"{item_id}"
         
         if item_key in basket:
             basket[item_key]['quantity'] += quantity
