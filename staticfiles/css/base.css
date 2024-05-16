@@ -1,5 +1,3 @@
-/* static/css/style.css */
-
 @font-face {
     font-family: 'Terrapin';
     src: url('../fonts/Terrapin[1].ttf') format('truetype');
@@ -9,7 +7,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
 
-/* Example of using the font in your CSS */
 html {
     height: 100%;
 }
@@ -195,7 +192,6 @@ header {
 #text-display {
     font-family: 'Terrapin', sans-serif;
 }
-
 
 
 /* Buttons */

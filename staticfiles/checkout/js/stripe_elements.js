@@ -9,10 +9,6 @@
 var stripePublicKey = $('#id_stripe_public_key').text().slice(1, -1);
 var clientSecret = $('#id_client_secret').text().slice(1, -1);
 var stripe = Stripe(stripePublicKey);
-// Debugging statements:
-console.log("Public key", stripePublicKey);
-console.log("Client Secret:", clientSecret);
-console.log("Stripe:", stripe);
 var elements = stripe.elements();
 var style = {
     base: {
@@ -61,10 +57,6 @@ form.addEventListener('submit', function(ev) {
     var saveInfo = Boolean($('#id-save-info').attr('checked'));
     // From using {% csrf_token %} in the form
     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-    // Debugging statements:
-    console.log("CSRF Token:", csrfToken);
-    console.log("Client Secret:", clientSecret);
-    console.log("Save Info:", saveInfo);
     var postData = {
         'csrfmiddlewaretoken': csrfToken,
         'client_secret': clientSecret,

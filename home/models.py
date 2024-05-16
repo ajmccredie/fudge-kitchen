@@ -19,6 +19,7 @@ class Inquiry(models.Model):
     email = models.EmailField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_new = models.BooleanField(default=True)
+    is_dealt_with = models.BooleanField(default=False)
 
     def __str__(self):
         return f'Inquiry from {self.user.email} on {self.created_at}'

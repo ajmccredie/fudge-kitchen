@@ -2,10 +2,12 @@ from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView, DetailView
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct
 from checkout.models import Order, OrderLineItem
+from home.models import Inquiry
 from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm
 
 # Create your views here.
@@ -116,7 +118,7 @@ class MerchProductDeleteView(StaffRequiredMixin, DeleteView):
         return reverse('dashboard:merch_product_list')
 
 
-class OrderListView(ListView):
+class OrderListView(StaffRequiredMixin, ListView):
     model = Order
     template_name = 'dashboard/order_list.html'
     context_object_name = 'object_list'
@@ -135,7 +137,7 @@ class OrderListView(ListView):
         context['filter_type'] = self.request.GET.get('filter_type', '')
         return context
 
-class OrderDetailView(DetailView):
+class OrderDetailView(StaffRequiredMixin, DetailView):
     model = Order
     template_name = 'dashboard/order_detail.html'
     context_object_name = 'order'
@@ -157,3 +159,35 @@ def delete_order(request, order_id):
     order.delete()
     messages.success(request, "Order has been successfully deleted.")
     return redirect('dashboard:order_list')
+
+
+class InquiryListView(StaffRequiredMixin, View):
+    template_name = 'dashboard/inquiries_list.html'
+
+    def get(self, request, *args, **kwargs):
+        inquiries = Inquiry.objects.all().order_by('-created_at')
+        context = {
+            'inquiries': inquiries,
+        }
+        return render(request, self.template_name, context)
+
+class InquiryDetailView(StaffRequiredMixin, View):
+    template_name = 'dashboard/inquiries_detail.html'
+
+    def get(self, request, pk, *args, **kwargs):
+        inquiry = get_object_or_404(Inquiry, pk=pk)
+        if inquiry.is_new:
+            inquiry.is_new = False
+            inquiry.save()
+        context = {
+            'inquiry': inquiry,
+        }
+        return render(request, self.template_name, context)
+
+class MarkInquiryDealtWithView(StaffRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        inquiry = get_object_or_404(Inquiry, pk=pk)
+        inquiry.is_dealt_with = True
+        inquiry.save()
+        messages.success(request, 'Inquiry marked as dealt with.')
+        return redirect('dashboard:inquiries_detail', pk=pk)

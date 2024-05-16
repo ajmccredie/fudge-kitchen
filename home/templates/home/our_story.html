@@ -6,10 +6,20 @@
     <a href="{% url 'home:faqs' %}" class="btn btn-primary">FAQs and Contact Us</a>
     <h1>Our Story</h1>
     <img class="icon" src="{{ MEDIA_URL }}logo-no-words-no-bg.png" alt="Roo's Fudge Kitchen Logo">
-    {% if story.image %}
-        <img src="{{ story.image.url }}" alt="Our Story Image" class="img-fluid">
-    {% endif %}
-    <p>{{ story.content }}</p>
+    <p>{{ story.content|linebreaks }}</p>
+    <div class="row">
+        {% if story.image %}
+            <div class="col-12 col-md-6 mb-3">
+                <img src="{{ story.image.url }}" alt="Our Story Image" class="img-fluid">
+            </div>
+        {% endif %}
+        
+        {% for image in story.additional_images.all %}
+            <div class="col-12 col-md-6 mb-3">
+                <img src="{{ image.url }}" alt="Our Story Additional Image" class="img-fluid">
+            </div>
+        {% endfor %}
+    </div>
     <div class="centre-flex">
         <a href="{% url 'product_list' %}" class="btn btn-primary">See the fudge!</a>
         <a href="{% url 'merch_product_list' %}" class="btn btn-primary">See the merch!</a>

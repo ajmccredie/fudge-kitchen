@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView, OrderDetailView, mark_order_dispatched, mark_item_made, delete_order
+from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView, OrderDetailView, mark_order_dispatched, mark_item_made, delete_order, InquiryListView, InquiryDetailView, MarkInquiryDealtWithView
 
 app_name = 'dashboard'
 
@@ -19,4 +19,7 @@ urlpatterns = [
     path('order_list/<int:order_id>/dispatched/', mark_order_dispatched, name='mark_order_dispatched'),
     path('order_list/items/<int:item_id>/made/', mark_item_made, name='mark_item_made'),
     path('order_list/<int:order_id>/delete/', delete_order, name='delete_order'),
+    path('inquiries/', InquiryListView.as_view(), name='inquiries_list'),
+    path('inquiries/<int:pk>/', InquiryDetailView.as_view(), name='inquiries_detail'),
+    path('inquiries/<int:pk>/dealt_with/', MarkInquiryDealtWithView.as_view(), name='mark_inquiry_dealt_with'),
 ]
