@@ -1,22 +1,38 @@
 Hello {{ order.full_name }}!
 
-This is a confirmation of your order at Boutique Ado. Your order information is below:
+Good news! Good things are coming your way...
 
-Order Number: {{ order.order_number }}
-Order Date: {{ order.date }}
+Your order number is: {{ order.order_number }}
 
-Order Total: ${{ order.order_total }}
-Delivery: ${{ order.delivery_cost }}
-Grand Total: ${{ order.grand_total }}
+We are currently processing your order and will send you another email once your items have shipped.
 
-Your order will be shipped to {{ order.street_address1 }} in {{ order.town_or_city }}, {{ order.country }}.
+Order Details:
+{% for item in order.lineitems.all %}
+    {% if item.product_type == 'edible' %}
+        - {{ item.edible_product.flavour }} - {{ item.weight }}g ({{ item.quantity }} @ £{{ item.edible_product.price }})
+    {% elif item.product_type == 'merch' %}
+        - {{ item.merch_product.name }} ({{ item.quantity }} @ £{{ item.merch_product.price }})
+    {% endif %}
+{% endfor %}
 
-We've got your phone number on file as {{ order.phone_number }}.
+Shipping Details:
+Your order will be shipped to:
+{{ order.street_address1 }}{% if order.street_address2 %}, {{ order.street_address2 }}{% endif %}
+{{ order.town_or_city }}
+{{ order.county }}
+{{ order.postcode }}
+{{ order.country }}
+
+We have your contact number on file as: {{ order.phone_number }}
+
+Order Summary:
+Order Total: £{{ order.order_total }}
+Delivery: £{{ order.delivery_cost }}
+Grand Total: £{{ order.grand_total }}
 
 If you have any questions, feel free to contact us at {{ contact_email }}.
 
 Thank you for your order!
 
 Sincerely,
-
-Fudge
+Roo xx

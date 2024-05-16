@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block content %}
@@ -7,18 +6,21 @@
     <h2>Order List</h2>
 
     <form method="get" action="{% url 'dashboard:order_list' %}" class="mb-3">
-        <label for="filter_dispatch">Show only orders needing dispatch:</label>
-        <input type="checkbox" id="filter_dispatch" name="filter_dispatch"
-            {% if request.GET.filter_dispatch %}checked{% endif %}>
-        <br>
-        <label for="filter_type">Filter items by type:</label>
-        <select id="filter_type" name="filter_type">
-            <option value="">All</option>
-            <option value="edible" {% if request.GET.filter_type == 'edible' %}selected{% endif %}>Edible</option>
-            <option value="merch" {% if request.GET.filter_type == 'merch' %}selected{% endif %}>Merch</option>
-        </select>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="filter_dispatch" name="filter_dispatch" {% if request.GET.filter_dispatch %}checked{% endif %}>
+            <label class="form-check-label" for="filter_dispatch">Show only orders needing dispatch</label>
+        </div>
+        <div class="form-group">
+            <label for="filter_type">Filter items by type:</label>
+            <select id="filter_type" name="filter_type" class="form-control">
+                <option value="">All</option>
+                <option value="edible" {% if request.GET.filter_type == 'edible' %}selected{% endif %}>Edible</option>
+                <option value="merch" {% if request.GET.filter_type == 'merch' %}selected{% endif %}>Merch</option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -33,20 +35,26 @@
                 <td>{{ order.order_number }}</td>
                 <td>{{ order.date }}</td>
                 <td>
-                    <a href="{% url 'dashboard:mark_order_dispatched' order.id %}">Mark as Dispatched</a> |
-                    <a href="{% url 'dashboard:order_details' order.id %}">View Details</a> |
-                    <a href="{% url 'dashboard:delete_order' order.id %}"
-                        onclick="return confirm('Are you sure you want to delete this order?');">Delete Order</a>
+                    {% if order.dispatched %}
+                    <span class="badge badge-success">Dispatched</span>
+                    {% else %}
+                    <a href="{% url 'dashboard:mark_order_dispatched' order.id %}" class="btn btn-outline-success btn-sm">Mark as Dispatched</a>
+                    {% endif %}
+                    <a href="{% url 'dashboard:order_details' order.id %}" class="btn btn-outline-info btn-sm">View Details</a>
+                    <a href="{% url 'dashboard:delete_order' order.id %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this order?');">Delete Order</a>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <ul class="small">
+                    <ul class="list-group small">
                         {% for item in order.lineitems.all %}
                         {% if not request.GET.filter_type or item.product_type == request.GET.filter_type %}
-                        <li>
-                            {{ item }} - Made: {{ item.made }}
-                            <a href="{% url 'dashboard:mark_item_made' item.id %}">Mark as Made</a>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ item }} 
+                            <span class="badge badge-secondary">Made: {{ item.made|yesno:"Yes,No" }}</span>
+                            {% if not item.made %}
+                            <a href="{% url 'dashboard:mark_item_made' item.id %}" class="btn btn-outline-primary btn-sm">Mark as Made</a>
+                            {% endif %}
                         </li>
                         {% endif %}
                         {% endfor %}

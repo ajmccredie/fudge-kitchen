@@ -19,14 +19,14 @@
         </div>
         {% if grand_total and not on_profile_page and not on_checkout_success and not on_checkout %}
         {% if basket_items %}
-            <p class="logo-font bg-white text-black py-1">Your Basket ({{ basket_items|length }})</p>
-            <div class="basket-notification-wrapper">
-                {% for item_key, item in basket_items.items %}
-            <div class="row mb-3">
-                <div class="col-2">
-                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="img-fluid">
+        <p class="logo-font bg-white text-black py-1">Your Basket ({{ basket_items|length }})</p>
+        <div class="basket-notification-wrapper">
+            {% for item_key, item in basket_items.items %}
+            <div class="row">
+                <div class="col-3 my-1">
+                    <img class="w-100" src="{{ item.product.image.url }}">
                 </div>
-                <div class="col-7">
+                <div class="col-9">
                     <p><strong>{{ item.name }}</strong></p>
                     {% if item.product_type == 'edible' %}
                     <p>Flavour: {{ item.flavour }}</p>
@@ -41,27 +41,29 @@
                 </div>
             </div>
             {% endfor %}
-            </div>
-            <div class="row">
-                <div class="col">
-                    <strong><p class="mt-3 mb-1 text-black">
-                        Total: 
+        </div>
+        <div class="row">
+            <div class="col">
+                <strong>
+                    <p class="mt-3 mb-1 text-black">
+                        Total:
                         <span class="float-right">£{{ grand_total|floatformat:2 }}</span>
-                    </p></strong>
-                    <a href="{% url 'checkout' %}" class="btn btn-black btn-block rounded-0">
-                        <span class="text-uppercase">Go To Secure Checkout</span>
-                        <span class="icon">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </a>
-                </div>
+                    </p>
+                </strong>
+                <a href="{% url 'checkout' %}" class="btn btn-black btn-block rounded-0">
+                    <span class="text-uppercase">Go To Secure Checkout</span>
+                    <span class="icon">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                </a>
             </div>
+        </div>
         {% else %}
-            <div class="row">
-                <div class="col">
-                    <p class="lead my-3">Your basket is currently empty.</p>
-                </div>
+        <div class="row">
+            <div class="col">
+                <p class="lead my-3">Your basket is currently empty.</p>
             </div>
+        </div>
         {% endif %}
         {% endif %}
     </div>

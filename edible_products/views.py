@@ -25,9 +25,12 @@ class EdibleProductListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        edible_products = self.get_queryset()
+        for product in edible_products:
+            product.price_400g = product.get_price_for_weight(400)
+        context['edible_products'] = edible_products
         context['allergen_form'] = AllergenFilterForm(self.request.GET)
         return context
-
 
 class PlantBasedListView(EdibleProductListView):
     template_name = 'edible_products/product_list_plant.html'
@@ -43,7 +46,6 @@ class PlantBasedListView(EdibleProductListView):
         context['title'] = 'Plant Based Deliciousness'
         return context
 
-
 class TraditionalListView(EdibleProductListView):
     template_name = 'edible_products/product_list_trad.html'
 
@@ -58,11 +60,16 @@ class TraditionalListView(EdibleProductListView):
         context['title'] = 'Traditional Delights'
         return context
 
-
 class EdibleProductDetailView(DetailView):
     model = EdibleProduct
     context_object_name = 'edible_product'
     template_name = 'edible_products/product_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = self.get_object()
+        context['price_400g'] = product.get_price_for_weight(400)
+        return context
 
 class GetPriceView(View):
     def get(self, request, *args, **kwargs):
