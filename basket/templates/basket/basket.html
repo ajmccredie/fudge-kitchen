@@ -39,7 +39,7 @@
                                 {% if item.product_type == 'edible' %}
                                         <tr>
                                             <td class="p-3 w-25">
-                                                <img class="img-fluid rounded" src="{{ product.image.url }}">
+                                                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="img-fluid">
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0"><strong>{{ item.flavour }}</strong></p>
@@ -86,7 +86,7 @@
                                 {% elif item.product_type == 'merch' %}
                                         <tr>
                                             <td class="p-3 w-25">
-                                                <img class="img-fluid rounded" src="{{ product.image.url }}">
+                                                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="img-fluid">
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0"><strong>{{ product.name }}</strong></p>
