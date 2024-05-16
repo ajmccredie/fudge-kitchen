@@ -35,18 +35,19 @@
                                 </tr>
                             </thead>
 
-                            {% for item_key, item in basket_items.items %}
-                                {% if item.product_type == 'edible' %}
+                            {% for item_key, item_data in basket_items.items %}
+                                {% if 'edible' in item_key %}
+                                    {% with item_data.product as product %}
                                         <tr>
                                             <td class="p-3 w-25">
                                                 <img class="img-fluid rounded" src="{{ product.image.url }}">
                                             </td>
                                             <td class="py-3">
-                                                <p class="my-0"><strong>{{ item.flavour }}</strong></p>
-                                                <p class="my-0"><strong>{{ item.weight }}g</strong></p>
+                                                <p class="my-0"><strong>{{ product.flavour }}</strong></p>
+                                                <p class="my-0"><strong>{{ item_data.weight }}g</strong></p>
                                             </td>
                                             <td class="py-3">
-                                                <p class="my-0">£{{ item.price }}</p>
+                                                <p class="my-0">£{{ item_data.price }}</p>
                                             </td>
                                             <td class="py-3 w-25">
                                                 <form class="form update-form" method="POST" action="{% url 'adjust_basket' item_id=item_key %}">
@@ -60,7 +61,7 @@
                                                                 </button>
                                                             </div>
                                                             <input class="form-control form-control-sm qty_input" type="number"
-                                                                name="quantity" value="{{ item.quantity }}" min="1" max="99"
+                                                                name="quantity" value="{{ item_data.quantity }}" min="1" max="99"
                                                                 data-item_key="{{ item_key }}"
                                                                 id="id_qty_{{ item_key }}">
                                                             <div class="input-group-append">
@@ -69,7 +70,7 @@
                                                                     <span><i class="fa-regular fa-circle-up"></i></span>
                                                                 </button>
                                                             </div>
-                                                            <input type="hidden" name="weight" value="{{ item.weight }}">
+                                                            <input type="hidden" name="weight" value="{{ item_data.weight }}">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -80,22 +81,24 @@
                                                 </form>
                                             </td>
                                             <td class="py-3">
-                                                <p class="my-0">£{{ item.price | calc_subtotal:item.quantity }}</p>
+                                                <p class="my-0">£{{ item_data.price | calc_subtotal:item_data.quantity }}</p>
                                             </td>
                                         </tr>
-                                {% elif item.product_type == 'merch' %}
+                                    {% endwith %}
+                                {% elif 'merch' in item_key %}
+                                    {% with item_data.product as product %}
                                         <tr>
                                             <td class="p-3 w-25">
                                                 <img class="img-fluid rounded" src="{{ product.image.url }}">
                                             </td>
                                             <td class="py-3">
                                                 <p class="my-0"><strong>{{ product.name }}</strong></p>
-                                                {% if item.text_option %}
-                                                    <p class="text-muted" style="font-size: smaller;">{{ item.text_option }}</p>
+                                                {% if item_data.text_option %}
+                                                    <p class="text-muted" style="font-size: smaller;">{{ item_data.text_option }}</p>
                                                 {% endif %}
                                             </td>
                                             <td class="py-3">
-                                                <p class="my-0">£{{ item.price }}</p>
+                                                <p class="my-0">£{{ item_data.price }}</p>
                                             </td>
                                             <td class="py-3 w-25">
                                                 <form class="form update-form" method="POST" action="{% url 'adjust_basket' item_key %}">
@@ -109,7 +112,7 @@
                                                                 </button>
                                                             </div>
                                                             <input class="form-control form-control-sm qty_input" type="number"
-                                                                name="quantity" value="{{ item.quantity }}" min="1" max="99"
+                                                                name="quantity" value="{{ item_data.quantity }}" min="1" max="99"
                                                                 data-item_key="{{ item_key }}"
                                                                 id="id_qty_{{ item_key }}">
                                                             <div class="input-group-append">
@@ -118,7 +121,7 @@
                                                                     <span><i class="fa-regular fa-circle-up"></i></span>
                                                                 </button>
                                                             </div>
-                                                            <input type="hidden" name="weight" value="{{ item.weight }}">
+                                                            <input type="hidden" name="weight" value="{{ item_data.weight }}">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -129,9 +132,10 @@
                                                 </form>
                                             </td>
                                             <td class="py-3">
-                                                <p class="my-0">£{{ item.price | calc_subtotal:item.quantity }}</p>
+                                                <p class="my-0">£{{ item_data.price | calc_subtotal:item_data.quantity }}</p>
                                             </td>
                                         </tr>
+                                    {% endwith %}
                                 {% endif %}
                             {% endfor %}
                             <tr>

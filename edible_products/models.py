@@ -59,7 +59,6 @@ class EdibleProduct(models.Model):
         """Retrieve price for a specific weight from the ProductWeightPrice model."""
         try:
             price_record = self.weight_prices.get(weight=weight)
-            print(price_record)
             return price_record.price
         except ProductWeightPrice.DoesNotExist:
             return None
