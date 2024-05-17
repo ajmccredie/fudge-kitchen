@@ -2,10 +2,10 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
+<div class="container text-center">
     <a href="{% url 'home:faqs' %}" class="btn btn-primary">FAQs and Contact Us</a>
     <h1>Our Story</h1>
-    <img class="icon" src="{{ MEDIA_URL }}logo-no-words-no-bg.png" alt="Roo's Fudge Kitchen Logo">
+    <img class="icon img-responsive my-3" src="{{ MEDIA_URL }}logo-no-words-no-bg.png" alt="Roo's Fudge Kitchen Logo">
     <p>{{ story.content|linebreaks }}</p>
     <div class="row">
         {% if story.image %}
@@ -20,7 +20,7 @@
             </div>
         {% endfor %}
     </div>
-    <div class="centre-flex">
+    <div class="centre-flex my-3">
         <a href="{% url 'product_list' %}" class="btn btn-primary">See the fudge!</a>
         <a href="{% url 'merch_product_list' %}" class="btn btn-primary">See the merch!</a>
     </div>

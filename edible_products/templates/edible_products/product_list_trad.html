@@ -12,11 +12,19 @@
         <a href="{% url 'plant_based_products' %}">Plant Based</a>
     </div>
     <!-- Product List -->
-    <div class="allergen-filters">
-        <form method="GET" action="">
-            {{ allergen_form.as_p }}
-            <button type="submit" class="btn btn-primary">Filter</button>
-        </form>
+    <div class="allergen-filters mb-3">
+        <button class="btn btn-secondary" type="button" id="allergenToggle" aria-expanded="false">
+            Allergens
+        </button>
+        <div class="collapse" id="allergenForm">
+            <form method="GET" action="">
+                <div class="form-group">
+                    {{ allergen_form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <button type="button" class="btn btn-secondary" id="closeAllergenForm">Close</button>
+            </form>
+        </div>
     </div>
     <div class="row">
         {% for product in edible_products %}
@@ -56,4 +64,25 @@
         {% endfor %}
     </div>
 </div>
+{% endblock %}
+
+{% block postloadjs %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var allergenButton = document.getElementById('allergenToggle');
+        var closeButton = document.getElementById('closeAllergenForm');
+        var form = document.getElementById('allergenForm');
+
+        allergenButton.addEventListener('click', function () {
+            var isExpanded = allergenButton.getAttribute('aria-expanded') === 'true';
+            allergenButton.setAttribute('aria-expanded', !isExpanded);
+            form.classList.toggle('show');
+        });
+
+        closeButton.addEventListener('click', function () {
+            form.classList.remove('show');
+            allergenButton.setAttribute('aria-expanded', 'false');
+        });
+    });
+</script>
 {% endblock %}

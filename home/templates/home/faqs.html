@@ -2,24 +2,52 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-5 pt-7">
     <h2>Frequently Asked Questions (FAQs)</h2>
     <div class="faq-section">
-        <h3>Allergen Safety</h3>
-        <p>Q: How do you ensure allergen safety in your processing?</p>
-        <p>A: We take allergen safety very seriously. All our products are processed in a facility that handles various
-            allergens. We ensure thorough cleaning and separation of equipment used for allergen-containing products.
-            However, we cannot guarantee the complete absence of allergens.</p>
+        <div class="faq-item mb-3">
+            <button class="btn btn-secondary w-100 text-left" type="button" data-toggle="collapse"
+                data-target="#allergenSafety" aria-expanded="false" aria-controls="allergenSafety">
+                Allergen Safety
+            </button>
+            <div class="collapse" id="allergenSafety">
+                <div class="card card-body">
+                    <p><strong>Q: How do you ensure allergen safety in your processing?</strong></p>
+                    <p>A: We take allergen safety very seriously. All our products are processed in a facility that
+                        handles various allergens. We ensure thorough cleaning and separation of equipment used for
+                        allergen-containing products. However, we cannot guarantee the complete absence of allergens.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-        <h3>Delivery Times</h3>
-        <p>Q: How long does delivery take?</p>
-        <p>A: Our standard delivery time is 3-5 business days. For express delivery options, please refer to our
-            shipping policies.</p>
+        <div class="faq-item mb-3">
+            <button class="btn btn-secondary w-100 text-left" type="button" data-toggle="collapse"
+                data-target="#deliveryTimes" aria-expanded="false" aria-controls="deliveryTimes">
+                Delivery Times
+            </button>
+            <div class="collapse" id="deliveryTimes">
+                <div class="card card-body">
+                    <p><strong>Q: How long does delivery take?</strong></p>
+                    <p>A: Our standard delivery time is 3-5 business days. For express delivery options, please refer to
+                        our shipping policies.</p>
+                </div>
+            </div>
+        </div>
 
-        <h3>Missed Deliveries</h3>
-        <p>Q: What happens if I miss my delivery?</p>
-        <p>A: If you miss your delivery, the courier will leave a notice with instructions on how to reschedule or
-            collect your package from a nearby location.</p>
+        <div class="faq-item mb-3">
+            <button class="btn btn-secondary w-100 text-left" type="button" data-toggle="collapse"
+                data-target="#missedDeliveries" aria-expanded="false" aria-controls="missedDeliveries">
+                Missed Deliveries
+            </button>
+            <div class="collapse" id="missedDeliveries">
+                <div class="card card-body">
+                    <p><strong>Q: What happens if I miss my delivery?</strong></p>
+                    <p>A: If you miss your delivery, the courier will leave a notice with instructions on how to
+                        reschedule or collect your package from a nearby location.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     {% if user.is_authenticated %}
@@ -35,4 +63,35 @@
         contact form.</p>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block postloadjs %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var faqButtons = document.querySelectorAll('.faq-item button');
+        faqButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var target = document.querySelector(button.getAttribute('data-bs-target'));
+                var isExpanded = button.getAttribute('aria-expanded') === 'true';
+                button.setAttribute('aria-expanded', !isExpanded);
+                if (isExpanded) {
+                    target.classList.remove('show');
+                } else {
+                    target.classList.add('show');
+                }
+            });
+        });
+
+        // Ensure the initial state is set correctly for all collapse elements
+        var collapses = document.querySelectorAll('.collapse');
+        collapses.forEach(function (collapse) {
+            if (collapse.classList.contains('show')) {
+                var button = document.querySelector('[data-bs-target="#' + collapse.id + '"]');
+                if (button) {
+                    button.setAttribute('aria-expanded', 'true');
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}
