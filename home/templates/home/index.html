@@ -4,20 +4,20 @@
 {% block content %}
 <div class="container">
     <div class="centre-flex">
-      <h1>Welcome to Roo's Fudge Kitchen</h1>
+        <h1>Welcome to Roo's Fudge Kitchen</h1>
     </div>
     <div class="centre-flex">
-      <img class="cartoon-fudge" src="{{ MEDIA_URL }}logo-no-words-no-bg.png" alt="Roo's Fudge Kitchen Logo">
+        <img class="cartoon-fudge" src="{{ MEDIA_URL }}logo-no-words-no-bg.png" alt="Roo's Fudge Kitchen Logo">
     </div>
-      <div class="row">
+    <div class="row">
         <div class="col-lg-6 col-md-12 mb-4">
             <div class="card">
                 <img src="{% static 'images/coming_soon.jpg' %}" class="card-img-top" alt="Image 1">
                 <div class="card-body">
                     <h5 class="card-title">Delicious Fudge</h5>
-                  <div class="centre-flex">
-                    <a href="{% url 'product_list' %}" class="btn btn-primary">See the products!</a>
-                  </div>
+                    <div class="centre-flex">
+                        <a href="{% url 'product_list' %}" class="btn btn-primary">See the products!</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -27,8 +27,8 @@
                 <div class="card-body">
                     <h5 class="card-title">Sweet Merchandise</h5>
                     <div class="centre-flex">
-                    <a href="{% url 'merch_product_list' %}" class="btn btn-primary">Get the gear!</a>
-                </div>
+                        <a href="{% url 'merch_product_list' %}" class="btn btn-primary">Get the gear!</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,7 +37,9 @@
                 <img src="{% static 'images/coming_soon.jpg' %}" class="card-img-top" alt="Image 3">
                 <div class="card-body">
                     <h5 class="card-title">Our Story</h5>
-                    <a href="{% url 'our_story' %}" class="btn btn-primary">Where it all began</a>
+                    <div class="centre-flex">
+                        <a href="{% url 'our_story' %}" class="btn btn-primary">Where it all began</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -46,10 +48,12 @@
                 <img src="{% static 'images/coming_soon.jpg' %}" class="card-img-top" alt="Image 4">
                 <div class="card-body">
                     <h5 class="card-title">Subscription Details</h5>
+                    <div class="centre-flex"></div>
                     <a href="#" class="btn btn-primary">Make life sweeter...</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}

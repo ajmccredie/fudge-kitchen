@@ -20,11 +20,14 @@ class ColourVariation(models.Model):
     product = models.ForeignKey(MerchProduct, related_name='colours', on_delete=models.CASCADE)
     colour_name = models.CharField(max_length=100)
     image = models.ImageField(blank=True, null=True)
+    url_product = models.ForeignKey(MerchProduct, related_name='url_products', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.product.name} - {self.colour_name}"
 
     def get_absolute_url(self):
+        if self.url_product:
+            return reverse('merch_product_detail', args=[self.url_product.id])
         return reverse('merch_product_detail', args=[self.product.id, self.id])
 
 

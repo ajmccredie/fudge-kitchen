@@ -84,10 +84,25 @@ class MerchProductCreateView(StaffRequiredMixin, CreateView):
     form_class = MerchProductForm
     template_name = 'dashboard/merch_product_form.html'
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data['formset'] = ColourVariationFormSet(self.request.POST, self.request.FILES)
+        else:
+            data['formset'] = ColourVariationFormSet()
+        return data
+
     def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, 'Merch product created successfully!')
-        return response
+        context = self.get_context_data()
+        formset = context['formset']
+        if form.is_valid() and formset.is_valid():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()
+            messages.success(self.request, 'Merch product created successfully!')
+            return redirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
         return reverse('dashboard:merch_product_list')
@@ -97,10 +112,25 @@ class MerchProductUpdateView(StaffRequiredMixin, UpdateView):
     form_class = MerchProductForm
     template_name = 'dashboard/merch_product_form.html'
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data['formset'] = ColourVariationFormSet(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            data['formset'] = ColourVariationFormSet(instance=self.object)
+        return data
+
     def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, 'Merch product updated successfully!')
-        return response
+        context = self.get_context_data()
+        formset = context['formset']
+        if form.is_valid() and formset.is_valid():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()
+            messages.success(self.request, 'Merch product updated successfully!')
+            return redirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
         return reverse('dashboard:merch_product_list')

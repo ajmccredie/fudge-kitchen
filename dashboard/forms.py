@@ -52,13 +52,14 @@ class MerchProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(MerchProductForm, self).__init__(*args, **kwargs)
 
-
+# Specify the fk_name attribute
 ColourVariationFormSet = inlineformset_factory(
-    MerchProduct, 
-    ColourVariation, 
-    fields=('colour_name', 'image'), 
-    extra=1, 
-    can_delete=True
+    MerchProduct,
+    ColourVariation,
+    fields=('colour_name', 'image', 'url_product'),
+    extra=1,
+    can_delete=True,
+    fk_name='product'
 )
 
 class TextOptionForm(forms.ModelForm):

@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block header %}Add Merch Product{% endblock %}
 {% block content %}
 <div class="container">
     <h2>{% if object %}Edit{% else %}Add{% endif %} Product</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        {{ colour_formset.management_form }}
-        {% for form in colour_formset %}
-            <div class="inline-fields">
+        <h2>Colour Variations</h2>
+        {{ formset.management_form }}
+        {% for form in formset %}
+            <div class="formset-form">
                 {{ form.as_p }}
             </div>
         {% endfor %}
