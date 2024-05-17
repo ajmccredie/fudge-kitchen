@@ -15,9 +15,8 @@
   <div class="row mt-3">
     {% for colour in object.colours.all %}
     <div class="col-auto mb-2">
-      <a href="#" onclick="changeMainImage('{{ colour.image.url }}'); return false;">
-        <img src="{{ colour.image.url }}" alt="{{ colour.colour_name }} Image" class="img-thumbnail"
-          style="width: 100px; height: 100px;">
+      <a href="{{ colour.get_absolute_url }}">
+        <img src="{{ colour.image.url }}" alt="{{ colour.colour_name }} Image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
       </a>
     </div>
     {% endfor %}
