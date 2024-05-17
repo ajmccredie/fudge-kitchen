@@ -59,6 +59,10 @@
 </div>
 
 <script>
+  function changeMainImage(url) {
+    document.getElementById('main-product-image').src = url;
+  }
+  
   function updateTextDisplay() {
     var selectElement = document.getElementById('text-select');
     var textImage = document.getElementById('text-display-image');

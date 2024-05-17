@@ -5,7 +5,7 @@ class MerchProduct(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    type = models.CharField(max_length=50) # 'coaster', 'mug', 'water bottle', 'tote bag'
+    type = models.CharField(max_length=50)  # 'coaster', 'mug', 'water bottle', 'tote bag'
     colour = models.CharField(max_length=15, blank=True, null=True)
     image = models.ImageField(blank=True, null=True)
 
@@ -13,8 +13,7 @@ class MerchProduct(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('merch_product_detail', args=[str(self.id)])
-
+        return reverse('merch_product_detail', args=[self.pk])
 
 class ColourVariation(models.Model):
     product = models.ForeignKey(MerchProduct, related_name='colours', on_delete=models.CASCADE)
@@ -27,8 +26,8 @@ class ColourVariation(models.Model):
 
     def get_absolute_url(self):
         if self.url_product:
-            return reverse('merch_product_detail', args=[self.url_product.id])
-        return reverse('merch_product_detail', args=[self.product.id, self.id])
+            return reverse('merch_product_detail', args=[self.url_product.pk])
+        return reverse('merch_product_detail', args=[self.product.pk])
 
 
 class TextOption(models.Model):
