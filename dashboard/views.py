@@ -8,7 +8,7 @@ from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct
 from checkout.models import Order, OrderLineItem
 from home.models import Inquiry
-from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm
+from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm, ColourVariationFormSet
 
 # Create your views here.
 
