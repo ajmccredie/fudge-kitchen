@@ -5,34 +5,72 @@
 {% block content %}
 <div class="container">
     <h2>Order Details</h2>
-    <p>Order #: {{ order.order_number }}</p>
-    <p>Dispatched: {{ order.dispatched }}</p>
-    <p>Full Name: {{ order.full_name }}</p>
-    <p>Email: {{ order.email }}</p>
-    <p>Phone Number: {{ order.phone_number }}</p>
-    <p>Address 1: {{ order.street_address1 }}</p>
-    {% if order.street_address2 %}
-    <p>Address 2: {{ order.street_address2 }}</p>
-    {% endif %}
-    {% if order.county %}
-    <p>County: {{ order.county }}</p>
-    {% endif %}
-    <p>Town or City: {{ order.town_or_city }}</p>
-    {% if order.postcode %}
-    <p>Postal Code: {{ order.postcode }}</p>
-    {% endif %}
-    <p>Country: {{ order.country }}</p>
+    <div class="mb-3">
+        <span class="d-block"><strong>Order #:</strong> {{ order.order_number }}</span>
+        <span class="d-block"><strong>Dispatched:</strong> {% if order.dispatched %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-warning">No</span>{% endif %}</span>
+    </div>
+
+    <h3>Customer Details</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Full Name</th>
+                    <td>{{ order.full_name }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ order.email }}</td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td>{{ order.phone_number }}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>
+                        {{ order.street_address1 }}<br>
+                        {% if order.street_address2 %}
+                        {{ order.street_address2 }}<br>
+                        {% endif %}
+                        {% if order.county %}
+                        {{ order.county }}<br>
+                        {% endif %}
+                        {{ order.town_or_city }}<br>
+                        {% if order.postcode %}
+                        {{ order.postcode }}<br>
+                        {% endif %}
+                        {{ order.country }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <h3>Items</h3>
-    <ul>
-        {% for item in order.lineitems.all %}
-        <li>
-            {{ item }} - Made: {{ item.made }}
-            <p>Text: {{ item.selected_text.text }}</p>
-            <a href="{% url 'dashboard:mark_item_made' item.id %}">Mark as Made</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'dashboard:order_list' %}">Back to Order List</a>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Made</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.lineitems.all %}
+                <tr>
+                    <td>{{ item }}<br><small>Text: {{ item.selected_text.text }}</small></td>
+                    <td>{% if item.made %}<span class="badge bg-success">Made</span>{% else %}<span class="badge bg-warning">Not Made</span>{% endif %}</td>
+                    <td>
+                        <a href="{% url 'dashboard:mark_item_made' item.id %}" class="btn btn-sm btn-primary">Mark as Made</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{% url 'dashboard:order_list' %}" class="btn btn-secondary">Back to Order List</a>
 </div>
 {% endblock %}
