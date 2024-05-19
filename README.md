@@ -10,14 +10,67 @@ CVC: 242
 Postcode: 42424
 
 
+## Table of Contents
+- [Project Rationale](#project-rationale)
+- [Business and Customer Goals](#business-and-customer-goals)
+- [UX/UI](#uxui)
+  - [Wireframes](#wireframes)
+  - [Colour Schemes](#colour-schemes)
+  - [Fonts](#fonts)
+  - [Mock-ups](#mock-ups)
+  - [Design Development and Consistency in Site Theming](#design-development-and-consistency-in-site-theming)
+  - [Structure Plane: Key Site Features](#structure-plane-key-site-features)
+- [Data Relationships](#data-relationships)
+- [Marketing](#marketing)
+  - [Business Model](#business-model)
+  - [Core Business Intent](#core-business-intent)
+  - [Search Engine Optimisation (SEO)](#search-engine-optimisation-seo)
+  - [Social Media](#social-media)
+- [Agile Project Planning and Methodology](#agile-project-planning-and-methodology)
+  - [Sprint 1: Objectives](#sprint-1-objectives)
+  - [Sprint 2: Objectives](#sprint-2-objectives)
+  - [Sprint 3: Objectives](#sprint-3-objectives)
+  - [Sprint 4: Objectives](#sprint-4-objectives)
+- [Manual Testing (Overview)](#manual-testing-overview)
+  - [Responsiveness](#responsiveness)
+  - [Browser Compatibility](#browser-compatability)
+  - [Bugs](#bugs)
+  - [Lighthouse Outcomes](#lighthouse-outcomes)
+  - [User Stories Tests](#user-stories-tests)
+  - [Features Tests](#features-tests)
+- [Technologies Used](#technologies-used)
+  - [Frameworks](#frameworks)
+  - [Libraries](#libraries)
+  - [Programmes](#programmes)
+- [References and Credits](#references-and-credits)
+- [Procedures](#procedures)
+  - [Prerequisites and Installs](#prerequisites-and-installs)
+  - [Forking and Cloning](#forking-and-cloning)
+  - [Heroku App Creation](#heroku-app-creation)
+  - [AWS S3 Bucket Creation and Setup](#aws-s3-bucket-creation-and-set-up)
+  - [Integrating AWS S3 with Django](#integrating-aws-s3-with-django)
+  - [Stripe Configuration](#stripe-configuration)
+
+
 ### Target audience:
-This site is aimed at the market for luxury snacks. The site's main marketing drives to set it apart from similar companies include the availability of both 'traditional' fudge and plant-based products, the ability to filter all the products to exclude allergens, and the ability to purchase merchandise of their 'favourite' fudge supplier.
+This site is aimed at the market for luxury snacks. The site's main marketing drives to set it apart from similar companies include the availability of both 'traditional' fudge and plant-based products, the ability to filter all the products to exclude allergens, and the ability to purchase merchandise of their 'favourite' fudge supplier.<br>
+Overall, the site targets discerning customers looking for gourmet fudge and a premium shopping experience.
 
 ## Business and customer goals
 ### User goals:
-Purpose and value
+- Seamless, user friendly interface to enable browsing, filtering and purchasing of products with no uneccessary complexity.
+- Allergen filtering to be able to remove undesired products quickly and easily.
+- Payments are processed securely.
+- Users receive order confirmations and are able to track their order, and contact the business for inquiries.
+
 ### Business goals:
-Purpose and value
+- Establishment of a robust e-commerce platform to support and expand the market reach of the fudge company.
+- EFficiently manage product listings, inquiries, and processing and tracking of orders.
+- Engagement of customers through newsletters and social media, and the encouragement of brand loyalty with merchandise.
+- Implementation of a subscription model with benefits to the customers and enhanced customer retention.
+- Implementation of effective SEO strategies and social media presence in order to attract more customers and increase sales.
+
+[Return to Top](#roos-fudge-kitchen)
 
 ### User stories and project goals
 A full list of user stories and the associated acceptance criteria are detailed in a later section. The main over-arching goals for this project were:
@@ -25,8 +78,22 @@ A full list of user stories and the associated acceptance criteria are detailed 
 - For the website to be easy to use, and a positive experience for both the customer (who has many other options for how and where to spend their money) and the owner of the small business (who has far better things to do than fight with a 'difficult' website)
 
 ## UX/UI
-### Wireframes
-(tablulate?)
+### Wireframe initial ideas
+| Page | Wireframes | Comments |
+| --- | --- | --- |
+|  Index/Home | ![Index wireframe](static/images/READMEImages/WF1-Index.png)  |  Page to provide links to fudge, merch, subscription and contact us |
+| Fudge product list page | ![Fudge list wireframe](static/images/READMEImages/WF2-FudgeProducts.png)  | Neatly displayed across the page for comparison.  |
+| Merchandise list page | ![Merch list wireframe](static/images/READMEImages/WF3-OtherProducts.png)  | Same layout as fudge page for consistency.  |
+| Product detail page | ![Product detail wireframe](static/images/READMEImages/WF12-ProductDetails.png) | Fudge products include further information regarding allergens. Product reviews could be added to these? |
+| Subscription benefits page | ![Subscription benefits wireframe](static/images/READMEImages/WF4-SubscriptionBenefits.png)  | Some nice images and a good list of benefits, with the ability to click a link to join the service.  |
+| Basket page | ![Basket wireframe](static/images/READMEImages/WF5-Basket.png)  | Checkout page to look fairly similar, but with sign-in and Stripe element, and no ability to make further changes to the order.  |
+| Order confirmation page | ![Order confirmation wireframe](static/images/READMEImages/WF6-OrderConfirmation.png)  | Again, a very similar look and feel to the basket and checkout pages  |
+| Sign-up page | ![Sign-up wireframe](static/images/READMEImages/WF7-SignUpForm.png)  | This is just an idea, but used the all-auth in-built designs instead and personalised with CSS  |
+| Our Story page | !![Our Story wireframe](static/images/READMEImages/WF8-BackgroundStory.png)  | An idea for how to layout images and text for this page.  |
+| FAQs and Inquiries page | ![FAQs and inquiries wireframe](static/images/READMEImages/WF9-FAQsInquiries.png)  | This will be accessed from 'Our Story' but only allow the inquiry form to be rendered for logged in users.  |
+| Custom 404 page | ![Custom 404 wireframe](static/images/READMEImages/WF10-CustomError.png)  | A similar look will be used for a custom 500 page too.  |
+| Administration dashboard 'home' | ![Administrative dashboard wireframe](static/images/READMEImages/WF11-AdminInterface.png) | This page will lead to a number of administrative lists and ways to CRUD products and track orders and inquiries. Only accessible to users designated as 'staff'. |
+
 ### Colour schemes
 
 ### Fonts
@@ -34,6 +101,9 @@ A full list of user stories and the associated acceptance criteria are detailed 
 ### Mock-ups
 
 ### Design development and consistency in site theming
+
+
+[Return to Top](#roos-fudge-kitchen)
 
 ### Structure Plane: Key site features
 #### Home page
@@ -52,9 +122,43 @@ A full list of user stories and the associated acceptance criteria are detailed 
 #### Admin dashboard features
 #### Future features
 
+[Return to Top](#roos-fudge-kitchen)
+
 ## Data relationships
 ### ERD
 
+### Explanation of relationships
+1. Users/Profile
+- One-to-Many with OrderModel/Payments (users can submit multiple orders and payments)
+- One-to-Many with Inquiries (users can submit multiple inquiries)
+- One-to-One with Subscription (each user may have a subscription)
+- One-to-Many with NewsLetterModel (each user could be subscribed to receive multiple newletters)
+
+2. Inquiries
+- Many-to-One with Users/Profile
+
+3. Payments
+- Many-to-One with Users/Profile 
+- One-to-One with OrderModel (each order has a single payment associated with it)
+
+4. OrderModel
+- One-to-One with Payments
+- Many-to-One with Users/Profile (multiple orders can be placed by one user)
+
+5. SubscriptionModel
+- One-to-One with Users/Profile
+
+6. NewsletterModel
+- Many-to-One with Users/Profile
+
+7. ProductModel
+(was not used independently in the end)
+
+8. FudgeModel
+- Many-to-One with PaymentModel (a required payment can include multiple fudge items)
+
+9. MerchandiseModel
+- Many-to-One with PaymentModel (a required payment can include multiple merchandise items)
 
 ## Marketing
 ### Business model
@@ -70,6 +174,8 @@ A full list of user stories and the associated acceptance criteria are detailed 
 {create a robots.txt file to determine what should be looked at in SEO}
 
 
+[Return to Top](#roos-fudge-kitchen)
+
 ### Social media
 #### Facebook business page (mockup)
 Facebook business pages are used to allow followers to see and share up to date information about the brands that interest them. The page is used to inform about new products and promotions, place targeted advertising and to link users to the main product site.
@@ -81,6 +187,7 @@ Humorous merchandise and pictures with people and their bought products are enco
 Users sign up with an email address. Those who do not opt out of marketing will receive emails detailing flavours of the month and other new and exciting products. 
 This process is managed by {XXX}, and site users who have not yet signed
 
+[Return to Top](#roos-fudge-kitchen)
 
 ## Agile project planning and methodology
 An initail collection of user stories were determined at the start. These were then analysed for prioritisation and  the first sprint planned in terms of goals. 
@@ -93,14 +200,14 @@ Each sprint was conducted the extent to which the goals were met was analysed, t
 | As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.   | Should        | - Find filtering options prominently displayed on the fudge products page <br> - Select either plant-based or tradition for preferences <br> - Select allergens to exlclude from recipes <br> - See the available product list update dynamically based on the selected filter <br> - Be able to clear filters and return to full product list | 8 <br> This involves complex filtering logic on both front and backend, drawing in information from across a number of the Django apps. |
 | As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.  | Should        | - Locate the subscription section of the website <br> - Read clear descriptions of the benefits offered to subscribers <br> - Understand the benefits of paid subscription compared to non-subscribers | 2 <br> Simple frontend development. |
 | As a **member**, I can **select fudge sizes and packaging options**, in order **to customise my order**. | Should | - During the selection process allow different sizes to be chosen <br> - During the checkout process allow customisation of packaging. <br> - See the chosen options reflected in the order summary before purchase | 3 <br> Requires front and backend development for order customisation. |
-|As a **member**, I can **checkout**, in order to **complete my purchase**. | Must | - Add desired items to the shopping basket <br> - Proceed to the checkout page with the same selected items <br> - Enter necessary shipping and payment information <br> - Receive a confirmation emssage upon successful completion of the order | 5 <br> Requires front and backend development for order processing |
+| As a **member**, I can **checkout**, in order to **complete my purchase**. | Must | - Add desired items to the shopping basket <br> - Proceed to the checkout page with the same selected items <br> - Enter necessary shipping and payment information <br> - Receive a confirmation emssage upon successful completion of the order | 5 <br> Requires front and backend development for order processing |
 | As a **member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**. | Must  | - Use a secure link to Stripe's payment services <br> - Enter payment details securely <br> - Receive confirmation of successful payment processing | 8 <br> Integration of the Stripe payment gateway including webhooks |
 | As a **member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**. | Must | - Receive an email confirmation shortly after completing the purchase <br> - Email contains details of the items purchased, the amount spent, and the shipping address | 3 <br> Backend development for sending email notifications (initially just to the terminal) |
-| As a **member**, I can **submit enquiries through a form**, in order to **get answers to questions not covered in the FAQs**. | Could | - Locate the contact form on the website <br> - Fill out the form with relevant details and questions <br> Submit the form and receive a confirmation message | 3 <br> Backend and front end development for the form and handling of submissions |
+| As a **member**, I can **submit inquiries through a form**, in order to **get answers to questions not covered in the FAQs**. | Could | - Locate the contact form on the website <br> - Fill out the form with relevant details and questions <br> Submit the form and receive a confirmation message | 3 <br> Backend and front end development for the form and handling of submissions |
 | As a **member**, I can **create an account to save my details**, in order to **checkout faster in the future**. | Must | - Access the registration page from the website's naviation menu <br> - Fill out the required fields such as email and password <br> - Receive a verification email email to activate the account | 3 <br> Backend development for user authentication and frontend for account creation |
 | As a **member**, I can **log in to my account to view past orders and update my details**, in order to **manage my purchases and account information easily**. | Must | - Log in using registered credentials <br> - Access an 'account' page with past orders and relevant account information <br> - Be able to update personal details such as address information | 3 <br> Backend development for user authentication and frontend for account management |
 | As a **member**, I can **receive promotional emails**, in order to **be informed about new flavours and special offers**. | Could | - Opt-in to receive promotional emails during account creation or account settings page <br> - Receive periodic emails about new flavours, special offers, and promotions | 5 <br> Backend development for email subscription feature |
-| As a **member**, I can **have the site remember my allergen preferences**, in order **to automatically filter products for me**. | Could | - Set allergen preferences in the account settings <br> - See products filtered based on allergen preferences during browsing | 5 <br> Backend development required for storing and managing preferences |
+| As a **member**, I can **have the site remember my dietary preferences**, in order **to automatically filter products for me**. | Could | - Set allergen preferences in the account settings <br> - See products filtered based on allergen preferences during browsing | 5 <br> Backend development required for storing and managing preferences |
 | As a **member**, I can **purchase merchandise like mugs and coasters**, in order to **have branded items from my favourite fudge shop**. | Should | - Find merchandise products alongside fudge products <br>  - Add merchandise items to the shopping cart <br> - Proceed with the checkout process in the same manner as for fudge products | 3 <br> Frontend and backend development required for merchandise display and purchase |
 | As a **subscribing customer**, I can **choose a subscription plan**, in order **to best fit my needs**. | Should | - Access the subscription page from the website's main menu <br> - Choose from available subscription plans <br> - Proceed with the subscription process, including payment | 5 <br> Frontend and backend development for subscription plan details and sign up processes |
 | As a **subscribing customer**, I can **receive free delivery and monthly 'flavour of the month' samples**, in order to **enjoy my subscription benefits**. | Should | - Receive free delivery on all orders <br> - Have 'flavour of the month' samples auto-allocated to the business' work flow | 5 <br> Backend development required for handling subscription benefits |
@@ -113,8 +220,10 @@ Each sprint was conducted the extent to which the goals were met was analysed, t
 | As a **site admin**, I can **manage user accounts, including subscription details**, in order to **provide customer support and manage subscriptions**. | Must | - Access a list of all user accounts and subscription details <br> - Manage user accounts by updating account information, resetting passwords, and handling account-related issues <br> - Manage subscriptions by updating subscription preferences, renewing subscriptions, or cancelling subscriptions | 5 <br> Backend development for user and subscription management |
 | As a **site admin**, I can **send out monthly promotional emails to subscribers**, in order to **engage with my customers and promote new flavours and offers**. | Should | - Access the email marketing platform from the admin dashboard <br> - Create and schedule monthly promotional emais containing information about new flavours, special offers and promotions <br> - Ensure that emails are sent to all subscribed users (who haven't opted out) | 5 <br> Backend development of email marketing feature |
 | As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**. | Must | - Log in to the dashboard with secure credentials <br> - Prevent unauthorised access <br> - Navigate the admin interface easily with intuitive menus and options <br> - Access all necessary tools and features for managing the website effectively | 3 <br> Front and backend development to display as much of the backend administrative details as the business owner needs |
-| As a **site admin**, I can **receive and respond to customer enquiries submitted through the website**, in order to **provide assistance and information as needed**. | Should | - Access the customer support section from the admin dashboard <br> - View incoming customer enquiries submitted through the website's contact form <br> - Respond to customer enquiries promptly and effectively | 3 <br> Backend development for handling enquiries |
+| As a **site admin**, I can **receive and respond to customer inquiries submitted through the website**, in order to **provide assistance and information as needed**. | Should | - Access the customer support section from the admin dashboard <br> - View incoming customer inquiries submitted through the website's contact form <br> - Respond to customer inquiries promptly and effectively | 3 <br> Backend development for handling inquiries |
 | As a **site admin**, I can **implement and manage SEO strategies and tools on the website**, in order to **improve the site's visibility and ranking on search engines, thereby attracting more potential customers to our fudge products and increasing sales**. | Must | - Access SEO tools and settings <br> - Implement on-page strategies such as meta tags, keywords and content optimisation <br> - Create and maintain a social media presence | 5 <br> Backend development and ongoing management. Use of a variety of programmes and tools beyond django |
+
+[Return to Top](#roos-fudge-kitchen)
 
 ### Sprint 1: Objectives
 
@@ -132,19 +241,21 @@ A MVP site deployed to Heroku where customers can select and purchase products.
 - As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**.
 
 #### Breakdown of the work goals to meet the objectives:
-Goal 1: Set-up Django project, launch on Heroky and set-up basic homepage view.
-Goal 2: Set-up "EdibleProducts" and a basic view of a single product (including database links and AWS, and linking these to Heroku)
-Goal 3: Set-up checkout including views
-Goal 4: Set-up Stripe payments and link these (including the webhooks) to both the development site and the Heroku site
-Goal 5: Set-up account sign-up and sign-in views
-Goal 6: Set-up email confirmation of purchase (to run to the terminal)
-Goal 7: Basic CSS and JavaScript to ensure reasonable UI/UX
+Goal 1: Set-up Django project, launch on Heroky and set-up basic homepage view. <br>
+Goal 2: Set-up "EdibleProducts" and a basic view of a single product (including database links and AWS, and linking these to Heroku) <br>
+Goal 3: Set-up checkout including views <br>
+Goal 4: Set-up Stripe payments and link these (including the webhooks) to both the development site and the Heroku site <br>
+Goal 5: Set-up account sign-up and sign-in views <br>
+Goal 6: Set-up email confirmation of purchase (to run to the terminal) <br>
+Goal 7: Basic CSS and JavaScript to ensure reasonable UI/UX <br>
 
 #### Analysis of the sprint (and lessons learned):
-There were some major issues with the time-boxing, in particular with linking the site effectively with Stripe. The goals were met, with the exception of one of the webhooks which is still suffering with a persistent bug relating to 'charges'. 
+There were some major issues with the time-boxing, in particular with linking the site effectively with Stripe. The goals were met, with the exception of one of the webhooks which is still suffering with a persistent bug relating to 'charges'. <br>
 The webhook issue will require tackling in a future Sprint, but setting up the admin dashboard capabilities and a large portion of other site functionality will be the focus of sprint 2.
-Packaging options were not covered from the user stories, but will hopefully be added into a later sprint (that user story was split into two parts). 
+Packaging options were not covered from the user stories, but will hopefully be added into a later sprint (that user story was split into two parts). <br>
 Testing has identified some UX/UI bugs related to where the information appears on the screen and the 'toasts'. Some of these (such as removing the 'secure payment' option from confirmation screens) were tackled immediately, others will be dealt with later. The loading screen does not work as intended (no image of the packed fudge is showing currently).
+
+[Return to Top](#roos-fudge-kitchen)
 
 ### Sprint 2: Objectives
 To make the site useable by a business owner with little-to-no coding experience or confidence. To improve site functionality for the customer and increase the number of products available for purchase.
@@ -154,85 +265,183 @@ The addition of filtering, merchandise and a user-friendly admin interface to th
 
 #### User stories covered in this sprint
 - As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.
-- As a **member **, I can **create an account to save my details**, in order to **checkout faster in the future**.
-- As a **member**, I can **have the site remember my allergen preferences**, in order **to automatically filter products for me**.
+- As a **member**, I can **create an account to save my details**, in order to **checkout faster in the future**.
+- As a **member**, I can **have the site remember my dietary preferences**, in order **to automatically filter products for me**.
 - As a **member**, I can **purchase merchandise like mugs and coasters**, in order to **have branded items from my favourite fudge shop**.
 - As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**.
 - As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**.
 
 #### Breakdown of goals to meet the sprint objectives
-Goal 1: Set-up the admin front-end for CRUD of products
-Goal 2: Set-up merchandise products and add a selection of these to the site
-Goal 3: Add the ability of the site to use the subscription status of the user to determine whether they pay delivery fee or not
-Goal 4: Add all the initial edible products
-Goal 5: Set-up filtering according to allergens and dietary preference of 'plant-based' diets
-Goal 6: Set-up auto-filering with user profile details and login
-Goal 7: Set-up basket and checkout procedures for the new products 
+Goal 1: Set-up the admin front-end for CRUD of products <br>
+Goal 2: Set-up merchandise products and add a selection of these to the site <br>
+Goal 3: Add the ability of the site to use the subscription status of the user to determine whether they pay delivery fee or not <br>
+Goal 4: Add all the initial edible products <br>
+Goal 5: Set-up filtering according to allergens and dietary preference of 'plant-based' diets <br>
+Goal 6: Set-up auto-filering with user profile details and login <br>
+Goal 7: Set-up basket and checkout procedures for the new products
 
 #### Sprint analysis and lessons learned
-The admin dashboard was added, and after a few minor bugs, was sorted to allow products to be added, removed and edited in a user-friendly fashion for the business owner. Only accounts designated as 'staff' have access to the dashboard 'business management' pages. This went fairly smoothly and allowed far more edible products to be added to the site.
-The linking of the the subscription status to the delivery charge and some of the associated site messages was completed, and verified that toggling the status also toggled the application of the delivery charge.
-The addition of the merchandise products to the site proved to be more challenging than had been expected in a number of ways. A new app was set up, and the models needed to be formatted differently. There was no need for the weight and differing prices like the fudge products, but there needed to be the choice of slogan on all the items and colour for some of the items. The items will now all go through to checkout, but there are a number of persistent bugs with the code for both edible and non-edible products which are an artifact of adding these products. There is also some functionality which may get added in the future, but was left for this sprint. The webhooks are still not fully functional, even though the checkout success page is shown and the test payments are seen in Stripe.
-The site filtering is now working, but the CSS will need to be addressed to improve the site's UX/UI. The site continues to filter for the session, but the ability to add the same choices and automatic filtering was not completed in this sprint due to issues with the merchandise and needing to prioritise time and resources. 
+The admin dashboard was added, and after a few minor bugs, was sorted to allow products to be added, removed and edited in a user-friendly fashion for the business owner. Only accounts designated as 'staff' have access to the dashboard 'business management' pages. This went fairly smoothly and allowed far more edible products to be added to the site. <br>
+The linking of the the subscription status to the delivery charge and some of the associated site messages was completed, and verified that toggling the status also toggled the application of the delivery charge. <br>
+The addition of the merchandise products to the site proved to be more challenging than had been expected in a number of ways. A new app was set up, and the models needed to be formatted differently. There was no need for the weight and differing prices like the fudge products, but there needed to be the choice of slogan on all the items and colour for some of the items. The items will now all go through to checkout, but there are a number of persistent bugs with the code for both edible and non-edible products which are an artifact of adding these products. There is also some functionality which may get added in the future, but was left for this sprint. The webhooks are still not fully functional, even though the checkout success page is shown and the test payments are seen in Stripe. <br>
+The site filtering is now working, but the CSS will need to be addressed to improve the site's UX/UI. The site continues to filter for the session, but the ability to add the same choices and automatic filtering was not completed in this sprint due to issues with the merchandise and needing to prioritise time and resources. This means that the user story regarding the site remembering the dietary preferences will be moved to a later sprint.
+
+[Return to Top](#roos-fudge-kitchen)
 
 ### Sprint 3: Objectives
 To add information to the site to help the potential customers to make informed decisions, including the ability of signed in users to ask questions through the inquiry form and to detail the benefits of membership to the site. To add functionality to the admin 'dashboard', so that inquiries can be found easily, and the business owner can make a note of which they have answered, and also so that they can track order progress through this (giving a good customer experience and helping the business owner to run their business more smoothly).
 
 #### Definition of done for sprint 3:
-Completed 'about us', 'FAQs', 'Enquiry form' and admin backend to track order progress and see entries to the enquiry form.
+Completed 'about us', 'FAQs', 'Inquiry form' and admin backend to track order progress and see entries to the inquiry form.
 
 #### User stories covered in this sprint
 - As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.
-- As a **member**, I can **submit enquiries through a form**, in order to **get answers to questions not covered in the FAQs**.
+- As a **member**, I can **submit inquiries through a form**, in order to **get answers to questions not covered in the FAQs**.
 - As a **member**, I can **log in to my account to view past orders and update my details**, in order to **manage my purchases and account information easily**.
 - As a **site admin**, I can **view and manage customer orders**, in order to **ensure timely processing and delivery**.
-As a **site admin**, I can **receive and respond to customer enquiries submitted through the website**, in order to **provide assistance and information as needed**.
+- As a **site admin**, I can **receive and respond to customer enquiries submitted through the website**, in order to **provide assistance and information as needed**.
 
 #### Breakdown of goals to meet the sprint objectives
-Goal 1: Create and style a FAQs and enquiries page. Only signed in customers can use the inquires form.
-Goal 2: Add photos and details to 'Our Story'
-Goal 3: Skeleton outline of subscription benefits
-Goal 4: Create custom 404 and 500 pages to deal with uneexpected user actions and handle errors gracefully.
+Goal 1: Create and style a FAQs and inquiries page. Only signed in customers can use the inquires form. <br>
+Goal 2: Add photos and details to 'Our Story' <br>
+Goal 3: Skeleton outline of subscription benefits <br>
+Goal 4: Create custom 404 and 500 pages to deal with uneexpected user actions and handle errors gracefully. <br>
 Goal 5: Set-up admin views and management of the ordering system: orders need to be tracked automatically from checkout to this page, where the business owner can then tick these off when the product is made, and when the order is dispatched. Dispatch should trigger an email  to the customer.
 
 #### Sprint analysis and lessons learned
+This sprint was largely successful in meeting the goals and the user stories. The FAQs and inquiries page was created and the messages from the inquiries/comments can be seen in the business owner's 'dashboard' (created in Sprint 2). A signed in site user can submit queries and these can be responded to using the queries and the email address attached, the responses can be managed by the business owner. Photos and details were added to 'Our Story', with possible further styling still to be developed here if time allows. The 'Subscription Benefits' page was not dealt with within this sprint, mainly due to time-keeping issues and on-going bugs with Stripe webhooks and deployment of the site to Heroku. This will be moved into the next sprint and dealt with at the same time as setting up the ability to add the subscription to the basket.<br>
+Custom 404 and 500 pages were set up fairly quickly and easily. These were tested and return the user to the Homepage as required. <br>
+The admin management of the ordering system was set up and tested. This provides feedback to the users within their order history (dispatched orders are marked as 'dispatched' and they can also see their full order details). As yet, no email template or triggering has been set-up to provide a better UX, but this could be added in the next sprint when the emails are fully set-up and made live. All of the intended user stories were tackled within this sprint with the exception of the one relating to viewing the subscription plans.
+Some lessons have been learned regarding solving the webhook issues, and also into starting to solve problems encountered from deployment.
 
+
+[Return to Top](#roos-fudge-kitchen)
 
 ### Sprint 4: Objectives
-
+To complete and enhance the functionality of Roo's Fudge Kitchen as an effective e-commerce site.
 
 #### Definition of done for sprint 4:
-
+To have created a subscription plan which a customer can add to their basket and allocate to their account. To have completed all necessary steps for SEO and business strategies such as newsletters and social media marketing. Many of the user stories relating to the subscription benefits are 'could' or 'should' designated from MoSCoW, so will be treated as lower priority in the Sprint workflow. 
 
 #### User stories covered in this sprint
-
+- As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.
+- As a **member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase** (already complete to Terminal)
+- As a **member**, I can **receive promotional emails**, in order to **be informed about new flavours and special offers**
+- As a **member**, I can **have the site remember my dietary preferences**, in order **to automatically filter products for me**.
+- As a **member**, I can **create an account to save my details**, in order to **checkout faster in the future** (partially completed previously, but could have address saved)
+- As a **subscribing customer**, I can **choose a subscription plan**, in order **to best fit my needs**.
+- As a **subscribing customer**, I can **receive free delivery and monthly 'flavour of the month' samples**, in order to **enjoy my subscription benefits**. 
+- As a **subscribing customer**, I can **update or cancel my subscription**, in order to **have control over my subscription choices**.
+- As a **subscribing customer**, I can **receive a monthly email about the 'flavour of the month' and other promotions**, in order to **stay informed about new and special offers**.
+- As a **subscribing customer**, I can **set my allergen/dietary preferences for the 'guest flavour' samples**, in order to **ensure they are always suitable for me to consume**. 
+- As a **subscribing customer**, I can **have my billing and shipping details remembered**, in order to **ensure smooth subscription renewals**
+- As a **site admin**, I can **manage user accounts, including subscription details**, in order to **provide customer support and manage subscriptions**. 
+- As a **site admin**, I can **send out monthly promotional emails to subscribers**, in order to **engage with my customers and promote new flavours and offers**.
+- As a **site admin**, I can **implement and manage SEO strategies and tools on the website**, in order to **improve the site's visibility and ranking on search engines, thereby attracting more potential customers to our fudge products and increasing sales**.
 
 #### Breakdown of goals to meet the sprint objectives
-
+Goal 1: Set-up a 'Subscription' product, which is recognised in the basket and removes the delivery charge (reinstating the charge if it (as an item) is removed from the basket). <br>
+Goal 2: Set-up user and admin ability to cancel subscriptions (non-refundable) and the ability for admin to track when subscriptions will expire. <br>
+Goal 3: Link up the site emails to a live email service <br>
+Goal 4: SEO and social media implementation and documentation <br>
+Goal 5: Newsletter implementation <br>
+Goal 6: General bug fixing for address details and updating <br>
+Goal 7: 'Flavour of the month' products (automatically ordered for subscribed customers, and optional additions for other customers)?
 
 #### Sprint analysis and lessons learned
 
 ## Manual testing (overview)
-### Responsiveness
+### Testing of User Stories
+|  User Story | MoSCow | Screenshot | Comments |
+| ---- | --- | --- | --- |
+| As a **site visitor** I can **browse fudge products and merchandise without creating an account**, in order to **decide whether to purchase from the site**.      | Must    |  |  |
+| As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.   | Should    |  |  |
+| As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.  | Should   |  |  |
+| As a **member**, I can **select fudge sizes and packaging options**, in order **to customise my order**. | Should |  |
+| As a **member**, I can **checkout**, in order to **complete my purchase**. | Must |  |
+| As a **member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**. | Must |  |  |
+| As a **member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**. | Must |  |  |
+| As a **member**, I can **submit enquiries through a form**, in order to **get answers to questions not covered in the FAQs**. | Could |  |  |
+| As a **member**, I can **create an account to save my details**, in order to **checkout faster in the future**. | Must |  |  |
+| As a **member**, I can **log in to my account to view past orders and update my details**, in order to **manage my purchases and account information easily**. | Must |  |  |
+| As a **member**, I can **receive promotional emails**, in order to **be informed about new flavours and special offers**. | Could |  |
+| As a **member**, I can **have the site remember my dietary preferences**, in order **to automatically filter products for me**. | Could |  |  |
+| As a **member**, I can **purchase merchandise like mugs and coasters**, in order to **have branded items from my favourite fudge shop**. | Should |  |  |
+| s a **subscribing customer**, I can **choose a subscription plan**, in order **to best fit my needs**. | Should |  |  |
+| As a **subscribing customer**, I can **receive free delivery and monthly 'flavour of the month' samples**, in order to **enjoy my subscription benefits**. | Should |  |  |
+| As a **subscribing customer**, I can **update or cancel my subscription**, in order to **have control over my subscription choices**. | Should |  |  |
+| As a **subscribing customer**, I can **receive a monthly email about the 'flavour of the month' and other promotions**, in order to **stay informed about new and special offers**. | Could |  |  |
+| As a **subscribing customer**, I can **set my allergen/dietary preferences for the 'guest flavour' samples**, in order to **ensure they are always suitable for me to consume**. | Should |  |  |
+| As a **subscribing customer**, I can **have my billing and shipping details remembered**, in order to **ensure smooth subscription renewals**. | Should |  |  |
+| As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**. | Must  |  |  |
+| As a **site admin**, I can **view and manage customer orders**, in order to **ensure timely processing and delivery**. | Must  |  |  |
+| As a **site admin**, I can **manage user accounts, including subscription details**, in order to **provide customer support and manage subscriptions**. | Must |  |  |
+| As a **site admin**, I can **send out monthly promotional emails to subscribers**, in order to **engage with my customers and promote new flavours and offers**. | Should |  |  |
+| As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**. | Must |  |  |
+| As a **site admin**, I can **receive and respond to customer inquiries submitted through the website**, in order to **provide assistance and information as needed**. | Should |  |  |
+| As a **site admin**, I can **implement and manage SEO strategies and tools on the website**, in order to **improve the site's visibility and ranking on search engines, thereby attracting more potential customers to our fudge products and increasing sales**. | Must |  |  |
 
-### Browser compatability
+
+Full test details and results can be found in TESTING.md.
 
 ### Bugs
 #### Resolved
+- Issues caused by single product id but multiple available weights and flavours to Stripe
+- Issues then caused to the basket and adding different weights of the same products
+- Deployment issues (images and adding links in admin or 'dashboard', orders not being saved or properly managed whenever a redeployment was made)
+
+- Not producing address information where required
+- Allergen filtering set-up and the use of the forms
+- Urls between merch items
+- Images not showing in basket or checkout
+- Toast bugs
+
+
 #### Unresolved
+- Unable to get the allergen symbols to render with the allergens in the list filtering
 
 ### Lighthouse outcomes
-
-### User stories tests
 
 ### Features tests
 
 ## Technologies used
+### Languages
+- HTML5
+- CSS3
+- JavaScript
+- Python
+
 ### Frameworks
-### Libraries
+- Django
+- Bootstrap
+
+### Libraries and Packages
+- **Boto3** allows the link between Python code and the Amazon Web Services
+- **dj-database-url** configures the database connection in Django
+- **django-allauth** deals with authentication, registration and account management in Django
+- **django-crispy-forms** a Django app to improve form fields
+- **Gunicorn** Python WSGI server for deploying Python web applications
+- **Pillow** adds image processing capabilities and saving in different file formats
+- **PsycoPG2** a PostgreSQL adapter for Python
+- **s3transfer** a Python library for managing Amazon S3 transfers
+- **sqlparse** a SQL parser for Python
+- **Stripe** the Python library for interactions with the Stripe payment system API
+
 ### Programmes
+- GitPod
+- GitHub
+- Heroku
+- Amazon Web Services S3 Bucket
+- ElephantSQL
+- Stripe
 
 ## References and credits
+- Walkthrough projects of XXX
+- Mentor 
+- Learning Support, in particular Roman
+- Sam 
+- Previous Hackathon projects of XXX for assistance with headers, menus and some script tricks
+- References for particular features or inspiration...
 
 ## Procedures
 ### Prerequisites and installs

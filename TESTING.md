@@ -3,6 +3,12 @@
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
 |  |  |   |
+
+|  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
+| ---- | ---- | ---- | ---- | ---- |
+|  |  |  |  |  |
+
+
 #### Main nav menu
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
@@ -10,6 +16,11 @@
 #### Search bar
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
+|  |  |  |  |  |
+
+Page returning general search results
+|  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
+| ---- | ---- | ---- | ---- | ---- |
 |  |  |  |  |  |
 
 #### Other tests of possible user actions
@@ -20,6 +31,17 @@
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
 |  |  |   |
+
+Our Story
+|  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
+| ---- | ---- | ---- | ---- | ---- |
+|  |  |  |  |  |
+
+FAQs and Contact Us
+|  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
+| ---- | ---- | ---- | ---- | ---- |
+|  |  |  |  |  |
+
 #### Restricted pages
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
@@ -34,10 +56,19 @@
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
 |  |  |   |
+
+|  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
+| ---- | ---- | ---- | ---- | ---- |
+|  |  |  |  |  |
+
 #### Edible product detail page
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
 |  |  |   |
+
+|  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
+| ---- | ---- | ---- | ---- | ---- |
+|  |  |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
