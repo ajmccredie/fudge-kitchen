@@ -36,11 +36,11 @@ class BasketView(View):
 
 class AddToBasketView(View):
     def post(self, request: HttpRequest, item_id):
-        quantity = int(request.POST.get('quantity', 1)) 
+        quantity = int(request.POST.get('quantity', 1))
         flavour = request.POST.get('flavour')
         redirect_url = request.POST.get('redirect_url', reverse('view_basket'))
         product = get_object_or_404(EdibleProduct, pk=item_id)
-        weight = int(request.POST.get('weight', '100')) 
+        weight = int(request.POST.get('weight', '100'))
 
         try:
             weight_price_obj = product.weight_prices.get(weight=weight)
@@ -51,16 +51,21 @@ class AddToBasketView(View):
         basket = request.session.get('basket', {})
         if item_id not in basket:
             basket[item_id] = {'details': {}}
-        
+
         if weight in basket[item_id]['details']:
             basket[item_id]['details'][weight] += quantity
         else:
             basket[item_id]['details'][weight] = quantity
 
+        basket[item_id]['product_id'] = item_id
+        basket[item_id]['product_type'] = 'edible'
+        basket[item_id]['details'][weight] = quantity
+
         request.session['basket'] = basket
         request.session.modified = True
         messages.success(request, f'Added "{product.flavour}" to your basket.')
         return redirect(redirect_url)
+
 
 class AddMerchToBasketView(View):
     def post(self, request, item_id):
@@ -72,16 +77,21 @@ class AddMerchToBasketView(View):
         basket = request.session.get('basket', {})
         if item_id not in basket:
             basket[item_id] = {'details': {}}
-        
+
         if text_option_id in basket[item_id]['details']:
             basket[item_id]['details'][text_option_id] += quantity
         else:
             basket[item_id]['details'][text_option_id] = quantity
 
+        basket[item_id]['product_id'] = item_id
+        basket[item_id]['product_type'] = 'merch'
+        basket[item_id]['details'][text_option_id] = quantity
+
         request.session['basket'] = basket
         request.session.modified = True
         messages.success(request, f'Added {quantity} {merch.name} to your basket.')
         return redirect(reverse('view_basket'))
+
 
 class ClearBasketView(View):
     def post(self, request, *args, **kwargs):

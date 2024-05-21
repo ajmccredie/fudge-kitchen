@@ -4,9 +4,9 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView, DetailView
-from core.models import Product
+from core.models import CommonProduct
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
-from merch.models import MerchProduct
+from merch.models import MerchProduct, ColourVariation, TextOption
 from checkout.models import Order, OrderLineItem
 from home.models import Inquiry
 from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm, ColourVariationFormSet, TextOptionFormSet
@@ -18,7 +18,6 @@ class StaffRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_staff
 
-
 class DashboardView(StaffRequiredMixin, TemplateView):
     template_name = 'dashboard/home.html'
 
@@ -26,12 +25,10 @@ class DashboardView(StaffRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         return context
 
-
 class EdibleProductListView(StaffRequiredMixin, ListView):
     model = EdibleProduct
     template_name = 'dashboard/edible_product_list.html'
     context_object_name = 'products'
-
 
 class EdibleProductCreateView(StaffRequiredMixin, CreateView):
     model = EdibleProduct
@@ -46,7 +43,6 @@ class EdibleProductCreateView(StaffRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('dashboard:edible_product_list')
 
-
 class EdibleProductUpdateView(StaffRequiredMixin, UpdateView):
     model = EdibleProduct
     form_class = EdibleProductForm
@@ -60,7 +56,6 @@ class EdibleProductUpdateView(StaffRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('dashboard:edible_product_list')
 
-
 class EdibleProductDeleteView(StaffRequiredMixin, DeleteView):
     model = EdibleProduct
     template_name = 'dashboard/product_confirm_delete.html'
@@ -71,9 +66,7 @@ class EdibleProductDeleteView(StaffRequiredMixin, DeleteView):
         return response
 
     def get_success_url(self):
-        # Redirect to the product list view after a successful delete
         return reverse('dashboard:edible_product_list')
-
 
 class MerchProductListView(StaffRequiredMixin, ListView):
     model = MerchProduct
@@ -88,18 +81,24 @@ class MerchProductCreateView(StaffRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         if self.request.POST:
-            data['formset'] = ColourVariationFormSet(self.request.POST, self.request.FILES)
+            data['colour_formset'] = ColourVariationFormSet(self.request.POST, self.request.FILES)
+            data['text_option_formset'] = TextOptionFormSet(self.request.POST, self.request.FILES)
         else:
-            data['formset'] = ColourVariationFormSet()
+            data['colour_formset'] = ColourVariationFormSet()
+            data['text_option_formset'] = TextOptionFormSet()
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
-        formset = context['formset']
-        if form.is_valid() and formset.is_valid():
+        colour_formset = context['colour_formset']
+        text_option_formset = context['text_option_formset']
+        if form.is_valid() and colour_formset.is_valid() and text_option_formset.is_valid():
             self.object = form.save()
-            formset.instance = self.object
-            formset.save()
+            colour_formset.instance = self.object
+            colour_formset.save()
+            text_option_formset.instance = self.object
+            text_option_formset.save()
+            CommonProduct.objects.get_or_create(product_type='merch', product_id=self.object.id)
             messages.success(self.request, 'Merch product created successfully!')
             return redirect(self.get_success_url())
         else:
@@ -133,6 +132,10 @@ class MerchProductUpdateView(StaffRequiredMixin, UpdateView):
             colour_formset.save()
             text_option_formset.instance = self.object
             text_option_formset.save()
+            common_product, created = CommonProduct.objects.get_or_create(product_id=self.object.id)
+            if not created:
+                common_product.product_type = 'merch'
+                common_product.save()
             messages.success(self.request, 'Merch product updated successfully!')
             return redirect(self.get_success_url())
         else:
@@ -153,7 +156,6 @@ class MerchProductDeleteView(StaffRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse('dashboard:merch_product_list')
 
-
 class OrderListView(StaffRequiredMixin, ListView):
     model = Order
     template_name = 'dashboard/order_list.html'
@@ -162,7 +164,6 @@ class OrderListView(StaffRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        # Filter by dispatch status
         if self.request.GET.get('filter_dispatch'):
             queryset = queryset.filter(dispatched=False)
         return queryset
@@ -196,7 +197,6 @@ def delete_order(request, order_id):
     messages.success(request, "Order has been successfully deleted.")
     return redirect('dashboard:order_list')
 
-
 class InquiryListView(StaffRequiredMixin, View):
     template_name = 'dashboard/inquiries_list.html'
 
@@ -227,7 +227,6 @@ class MarkInquiryDealtWithView(StaffRequiredMixin, View):
         inquiry.save()
         messages.success(request, 'Inquiry marked as dealt with.')
         return redirect('dashboard:inquiries_detail', pk=pk)
-
 
 def product_list(request):
     products = Product.objects.all()
