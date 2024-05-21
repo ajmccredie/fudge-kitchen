@@ -11,7 +11,7 @@ class EdibleProductForm(forms.ModelForm):
 
     class Meta:
         model = EdibleProduct
-        fields = ['name', 'flavour', 'details', 'ingredients', 'image', 'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts', 'soybeans', 'milk', 'nuts', 'celery', 'mustard', 'sesame_seeds', 'sulphur_dioxide_and_sulphites', 'lupin', 'molluscs', 'plant_based']
+        fields = ['name', 'flavour', 'description', 'ingredients', 'image', 'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts', 'soybeans', 'milk', 'nuts', 'celery', 'mustard', 'sesame_seeds', 'sulphur_dioxide_and_sulphites', 'lupin', 'molluscs', 'plant_based']
 
     def __init__(self, *args, **kwargs):
         super(EdibleProductForm, self).__init__(*args, **kwargs)
@@ -62,10 +62,14 @@ ColourVariationFormSet = inlineformset_factory(
     fk_name='product'
 )
 
-class TextOptionForm(forms.ModelForm):
-    class Meta:
-        model = TextOption
-        fields = ['text']
+TextOptionFormSet = inlineformset_factory(
+    MerchProduct,
+    TextOption,
+    fields=('text', 'image'),
+    extra=1,
+    can_delete=True,
+    fk_name='product'
+)
 
 
 class OrderForm(forms.ModelForm):

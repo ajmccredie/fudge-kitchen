@@ -1,4 +1,5 @@
 from django.db import models
+from core.models import Product
 
 class Allergen(models.Model):
     name = models.CharField(max_length=100)
@@ -8,7 +9,7 @@ class Allergen(models.Model):
     def __str__(self):
         return self.name
 
-class EdibleProduct(models.Model):
+class EdibleProduct(Product):
     WEIGHT_CHOICES = [
         (100, '100g'),
         (400, '400g'),
@@ -22,17 +23,13 @@ class EdibleProduct(models.Model):
     }
 
     plant_based = models.BooleanField(default=False)
-    name = models.CharField(max_length=20, null=True, blank=True)
+    description = models.TextField(blank=True, null=True)
+    details = models.TextField(blank=True, null=True)
     flavour = models.CharField(max_length=254, null=True, blank=True)
     guest_flavour = models.BooleanField(default=False)
-    details = models.TextField()
     ingredients = models.TextField()
-    quantity = models.IntegerField(null=True, blank=True)
     weight = models.PositiveIntegerField(default=400, choices=WEIGHT_CHOICES, help_text="Weight in grams")
-    price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     image_url = models.URLField(max_length=1024, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
 
     # Allergen boolean fields
     gluten = models.BooleanField(default=False, verbose_name='Gluten')
@@ -52,8 +49,11 @@ class EdibleProduct(models.Model):
 
     allergens = models.ManyToManyField(Allergen, blank=True)
 
+    def get_prefixed_id(self):
+        return f"20{self.id}"
+    
     def __str__(self):
-        return f"{self.name} - {self.flavour}"
+        return f"{self.get_prefixed_id()} - {self.name} - {self.flavour}"
 
     def get_price_for_weight(self, weight):
         """Retrieve price for a specific weight from the ProductWeightPrice model."""

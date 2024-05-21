@@ -8,7 +8,7 @@ from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct
 from checkout.models import Order, OrderLineItem
 from home.models import Inquiry
-from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm, ColourVariationFormSet
+from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm, ColourVariationFormSet, TextOptionFormSet
 
 # Create your views here.
 
@@ -115,18 +115,23 @@ class MerchProductUpdateView(StaffRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         if self.request.POST:
-            data['formset'] = ColourVariationFormSet(self.request.POST, self.request.FILES, instance=self.object)
+            data['colour_formset'] = ColourVariationFormSet(self.request.POST, self.request.FILES, instance=self.object)
+            data['text_option_formset'] = TextOptionFormSet(self.request.POST, self.request.FILES, instance=self.object)
         else:
-            data['formset'] = ColourVariationFormSet(instance=self.object)
+            data['colour_formset'] = ColourVariationFormSet(instance=self.object)
+            data['text_option_formset'] = TextOptionFormSet(instance=self.object)
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
-        formset = context['formset']
-        if form.is_valid() and formset.is_valid():
+        colour_formset = context['colour_formset']
+        text_option_formset = context['text_option_formset']
+        if form.is_valid() and colour_formset.is_valid() and text_option_formset.is_valid():
             self.object = form.save()
-            formset.instance = self.object
-            formset.save()
+            colour_formset.instance = self.object
+            colour_formset.save()
+            text_option_formset.instance = self.object
+            text_option_formset.save()
             messages.success(self.request, 'Merch product updated successfully!')
             return redirect(self.get_success_url())
         else:
@@ -221,3 +226,11 @@ class MarkInquiryDealtWithView(StaffRequiredMixin, View):
         inquiry.save()
         messages.success(request, 'Inquiry marked as dealt with.')
         return redirect('dashboard:inquiries_detail', pk=pk)
+
+
+def product_list(request):
+    products = Product.objects.all()
+    context = {
+        'products': products,
+    }
+    return render(request, 'product_list.html', context)

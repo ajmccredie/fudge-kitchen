@@ -1,13 +1,11 @@
 from django.db import models
 from django.urls import reverse
+from core.models import Product
+from django.core.exceptions import ValidationError
 
-class MerchProduct(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+class MerchProduct(Product):
     type = models.CharField(max_length=50)  # 'coaster', 'mug', 'water bottle', 'tote bag'
     colour = models.CharField(max_length=15, blank=True, null=True)
-    image = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -38,4 +36,14 @@ class TextOption(models.Model):
 
     def __str__(self):
         return f"{self.text}"
+
+    def clean(self):
+        if self.is_default:
+            other_defaults = TextOption.objects.filter(product=self.product, is_default=True).exclude(pk=self.pk)
+            if other_defaults.exists():
+                raise ValidationError('There can be only one default text option per product.')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 

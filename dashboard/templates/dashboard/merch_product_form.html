@@ -8,12 +8,15 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <h2>Colour Variations</h2>
-        {{ formset.management_form }}
-        {% for form in formset %}
-            <div class="formset-form">
-                {{ form.as_p }}
-            </div>
+        <h3>Colour Variations</h3>
+        {{ colour_formset.management_form }}
+        {% for form in colour_formset %}
+        {{ form.as_p }}
+        {% endfor %}
+        <h3>Text Options</h3>
+        {{ text_option_formset.management_form }}
+        {% for form in text_option_formset %}
+        {{ form.as_p }}
         {% endfor %}
         <button type="submit" class="btn btn-primary">Save</button>
         <a href="{% url 'dashboard:merch_product_list' %}" class="btn btn-secondary">Return to list with no changes</a>

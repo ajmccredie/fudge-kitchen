@@ -10,7 +10,7 @@ class EdibleProductAdmin(admin.ModelAdmin):
     inlines = [ProductWeightPriceInline]
     list_display = (
         'name', 'flavour', 'plant_based', 'guest_flavour',
-        'list_allergens', 'quantity', 'weight', 'price'
+        'list_allergens', 'weight', 'price'
     )
     fieldsets = (
         (None, {
