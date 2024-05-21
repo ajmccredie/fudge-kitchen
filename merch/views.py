@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from .models import MerchProduct
+from core.models import Product
 
 # Create your views here.
 

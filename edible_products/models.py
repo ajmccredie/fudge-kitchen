@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import Product
+from core.models import Product, CommonProduct
 
 class Allergen(models.Model):
     name = models.CharField(max_length=100)
@@ -49,11 +49,8 @@ class EdibleProduct(Product):
 
     allergens = models.ManyToManyField(Allergen, blank=True)
 
-    def get_prefixed_id(self):
-        return f"20{self.id}"
-    
     def __str__(self):
-        return f"{self.get_prefixed_id()} - {self.name} - {self.flavour}"
+        return f"{self.name} - {self.flavour} ({self.weight}g)"
 
     def get_price_for_weight(self, weight):
         """Retrieve price for a specific weight from the ProductWeightPrice model."""
@@ -103,6 +100,14 @@ class EdibleProduct(Product):
         if is_new:
             for weight, price in self.DEFAULT_WEIGHT_PRICES.items():
                 ProductWeightPrice.objects.create(product=self, weight=weight, price=price)
+            CommonProduct.objects.create(product_type='edible', product_id=self.id)
+        else:
+            common_product = CommonProduct.objects.filter(product_type='edible', product_id=self.id).first()
+            if common_product:
+                common_product.save()
+            else:
+                CommonProduct.objects.create(product_type='edible', product_id=self.id)
+
 
 class ProductWeightPrice(models.Model):
     product = models.ForeignKey(EdibleProduct, related_name='weight_prices', on_delete=models.CASCADE)

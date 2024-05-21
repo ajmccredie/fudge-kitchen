@@ -10,6 +10,7 @@ import stripe
 import json
 
 from .models import Order, OrderLineItem
+from core.models import Product
 from edible_products.models import EdibleProduct
 from merch.models import MerchProduct, TextOption
 from basket.contexts import basket_contents

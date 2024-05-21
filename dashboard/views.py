@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView, DetailView
+from core.models import Product
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct
 from checkout.models import Order, OrderLineItem

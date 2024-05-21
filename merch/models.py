@@ -1,17 +1,19 @@
 from django.db import models
 from django.urls import reverse
-from core.models import Product
+from core.models import Product, CommonProduct
 from django.core.exceptions import ValidationError
 
 class MerchProduct(Product):
     type = models.CharField(max_length=50)  # 'coaster', 'mug', 'water bottle', 'tote bag'
     colour = models.CharField(max_length=15, blank=True, null=True)
+    text_options = models.ManyToManyField('TextOption', blank=True, related_name='merch_products')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        CommonProduct.objects.get_or_create(product_type='merch', product_id=self.id)
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse('merch_product_detail', args=[self.pk])
 
 class ColourVariation(models.Model):
     product = models.ForeignKey(MerchProduct, related_name='colours', on_delete=models.CASCADE)
@@ -27,9 +29,8 @@ class ColourVariation(models.Model):
             return reverse('merch_product_detail', args=[self.url_product.pk])
         return reverse('merch_product_detail', args=[self.product.pk])
 
-
 class TextOption(models.Model):
-    product = models.ForeignKey(MerchProduct, related_name='text_options', on_delete=models.CASCADE)
+    product = models.ForeignKey(MerchProduct, related_name='text_option_set', on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     image = models.ImageField(blank=True, null=True)
     is_default = models.BooleanField(default=False, help_text="This will be the default phrase for this product")
@@ -46,4 +47,3 @@ class TextOption(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
-

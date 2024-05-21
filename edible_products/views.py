@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from decimal import Decimal, InvalidOperation
 from django.db.models import Q
+from core.models import Product
 from .models import EdibleProduct, ProductWeightPrice, Allergen
 from .forms import AllergenFilterForm
 
