@@ -44,7 +44,7 @@
                                     <p class="my-0">£{{ item.price }}</p>
                                 </td>
                                 <td class="py-3 w-25">
-                                    <form class="form update-form" method="POST" action="{% url 'adjust_basket' item_id=item.product_id %}">
+                                    <form class="form update-form" method="POST" action="{% url 'adjust_basket' item_id=item.item_id %}">
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <div class="input-group">
@@ -68,7 +68,7 @@
                                         </div>
                                     </form>
                                     <a class="update-link text-info"><small>Update</small></a>
-                                    <form method="POST" action="{% url 'remove_from_basket' item.product_id %}">
+                                    <form method="POST" action="{% url 'remove_from_basket' item.item_id %}">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-link p-0 text-danger">Remove</button>
                                     </form>

@@ -13,45 +13,49 @@ def basket_contents(request):
     basket = request.session.get('basket', {})
 
     for item_id, item_data in basket.items():
-        print(f"Item ID: {item_id}, Item Data: {item_data}")
         try:
-            common_product = get_object_or_404(CommonProduct, product_id=item_id)
+            common_product = get_object_or_404(CommonProduct, pk=item_id)
             product_type = common_product.product_type
-            print(f"Product Type: {product_type}")
+            product = None
 
             if product_type == 'edible':
-                product = get_object_or_404(EdibleProduct, pk=item_id)
+                product = get_object_or_404(EdibleProduct, pk=common_product.product_id)
                 if 'details' in item_data:
                     weight_data = item_data['details']
                     for weight, quantity in weight_data.items():
                         price = product.get_price_for_weight(int(weight))
                         subtotal = Decimal(quantity) * Decimal(price) if (quantity and price) else Decimal('0.00')
                         basket_items.append({
+                            'item_id': item_id,
                             'product': product,
                             'quantity': quantity,
                             'price': price,
                             'subtotal': subtotal,
                             'weight': weight,
+                            'product_type': 'edible',
                         })
                         total += subtotal
                         product_count += quantity
 
             elif product_type == 'merch':
-                product = get_object_or_404(MerchProduct, pk=item_id)
+                product = get_object_or_404(MerchProduct, pk=common_product.product_id)
                 if 'details' in item_data:
                     text_option_data = item_data['details']
                     for text_option_id, quantity in text_option_data.items():
                         text_option = get_object_or_404(TextOption, pk=text_option_id)
                         subtotal = Decimal(quantity) * Decimal(product.price)
                         basket_items.append({
+                            'item_id': item_id,
                             'product': product,
                             'quantity': quantity,
                             'price': product.price,
                             'subtotal': subtotal,
                             'text_option': text_option,
+                            'product_type': 'merch',
                         })
                         total += subtotal
                         product_count += quantity
+
         except Exception as e:
             print(f"Error processing item ID {item_id}: {e}")
 

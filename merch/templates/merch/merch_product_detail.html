@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block extra_title %} - Merchandise details{% endblock %}
@@ -13,7 +12,7 @@
   <img id="main-product-image" src="{{ object.image.url }}" alt="{{ object.name }} Image" class="img-fluid mb-3">
 
   <div class="row mt-3">
-    {% for colour in object.colours.all %}
+    {% for colour in colours %}
     <div class="col-auto mb-2">
       <a href="{{ colour.get_absolute_url }}">
         <img src="{{ colour.image.url }}" alt="{{ colour.colour_name }} Image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
@@ -25,7 +24,7 @@
   <!-- Text options display and selection -->
   <label for="text-select">Text options:</label>
   <select id="text-select" name="text_option" onchange="updateTextDisplay();">
-    {% for text in object.text_options.all %}
+    {% for text in text_options %}
     <option value="{{ text.id }}" data-img="{{ text.image.url }}" {% if text.is_default %}selected{% endif %}>
       {{ text.text }}</option>
     {% endfor %}
@@ -33,17 +32,17 @@
 
   <!-- Image display based on selected text option -->
   <img id="text-display-image"
-    src="{% for text in object.text_options.all %}{% if text.is_default %}{{ text.image.url }}{% endif %}{% endfor %}"
+    src="{% for text in text_options %}{% if text.is_default %}{{ text.image.url }}{% endif %}{% endfor %}"
     alt="Selected Text Image" class="img-fluid mt-3">
 
-
   <!-- Add to basket form -->
-  <form method="post" action="{% url 'add_merch_to_basket' object.id %}">
+  <form method="post" action="{% url 'add_to_basket' object.id %}">
     {% csrf_token %}
     <input type="hidden" name="product_id" value="{{ object.id }}">
+    <input type="hidden" name="product_type" value="merch">
     <input type="hidden" name="text_option_id" id="text-option-id"
-      value="{% for text in object.text_options.all %}{% if text.is_default %}{{ text.id }}{% endif %}{% endfor %}">
-    <input type="hidden" name="colour" value="{% if object.colours.first %}{{ object.colours.first.id }}{% endif %}">
+      value="{% for text in text_options %}{% if text.is_default %}{{ text.id }}{% endif %}{% endfor %}">
+    <input type="hidden" name="colour" value="{% if colours.first %}{{ colours.first.id }}{% endif %}">
 
     <div class="form-group w-50">
       <label for="quantity">Quantity:</label>
@@ -62,7 +61,7 @@
   function changeMainImage(url) {
     document.getElementById('main-product-image').src = url;
   }
-  
+
   function updateTextDisplay() {
     var selectElement = document.getElementById('text-select');
     var textImage = document.getElementById('text-display-image');

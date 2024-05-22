@@ -40,6 +40,8 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <div class="form-group">
+                            <input type="hidden" name="product_id" value="{{ object.id }}">
+                            <input type="hidden" name="product_type" value="edible">
                             <input type="hidden" name="flavour" value="{{ edible_product.flavour }}">
                             <label for="weight">Weight:</label>
                             <select name="weight" id="weight" class="form-control" onchange="updatePrice()" data-product-id="{{ edible_product.id }}">

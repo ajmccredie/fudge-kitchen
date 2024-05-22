@@ -22,7 +22,7 @@ class ColourVariation(models.Model):
     url_product = models.ForeignKey(MerchProduct, related_name='url_products', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.product.name} - {self.colour_name}"
+        return self.name
 
     def get_absolute_url(self):
         if self.url_product:
@@ -30,7 +30,7 @@ class ColourVariation(models.Model):
         return reverse('merch_product_detail', args=[self.product.pk])
 
 class TextOption(models.Model):
-    product = models.ForeignKey(MerchProduct, related_name='text_option_set', on_delete=models.CASCADE)
+    product = models.ForeignKey(MerchProduct, related_name='text_option', on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     image = models.ImageField(blank=True, null=True)
     is_default = models.BooleanField(default=False, help_text="This will be the default phrase for this product")

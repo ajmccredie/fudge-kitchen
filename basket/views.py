@@ -35,62 +35,126 @@ class BasketView(View):
         return render(request, 'basket/basket.html', context)
 
 class AddToBasketView(View):
-    def post(self, request: HttpRequest, item_id):
-        quantity = int(request.POST.get('quantity', 1))
-        flavour = request.POST.get('flavour')
-        redirect_url = request.POST.get('redirect_url', reverse('view_basket'))
-        product = get_object_or_404(EdibleProduct, pk=item_id)
-        weight = int(request.POST.get('weight', '100'))
-
-        try:
-            weight_price_obj = product.weight_prices.get(weight=weight)
-            price = weight_price_obj.price
-        except ProductWeightPrice.DoesNotExist:
-            price = product.price
-
-        basket = request.session.get('basket', {})
-        if item_id not in basket:
-            basket[item_id] = {'details': {}}
-
-        if weight in basket[item_id]['details']:
-            basket[item_id]['details'][weight] += quantity
-        else:
-            basket[item_id]['details'][weight] = quantity
-
-        basket[item_id]['product_id'] = item_id
-        basket[item_id]['product_type'] = 'edible'
-        basket[item_id]['details'][weight] = quantity
-
-        request.session['basket'] = basket
-        request.session.modified = True
-        messages.success(request, f'Added "{product.flavour}" to your basket.')
-        return redirect(redirect_url)
-
-
-class AddMerchToBasketView(View):
     def post(self, request, item_id):
-        merch = get_object_or_404(MerchProduct, pk=item_id)
-        text_option_id = request.POST.get('text_option_id')
-        text_option = get_object_or_404(TextOption, pk=text_option_id) if text_option_id else None
-        quantity = int(request.POST.get('quantity'))
+        print("Received data:", request.POST)  # Debug statement
 
-        basket = request.session.get('basket', {})
-        if item_id not in basket:
-            basket[item_id] = {'details': {}}
-
-        if text_option_id in basket[item_id]['details']:
-            basket[item_id]['details'][text_option_id] += quantity
+        # Determine the type of product based on `item_id`
+        product_type = request.POST.get('product_type')
+        
+        if product_type == 'edible':
+            product = get_object_or_404(EdibleProduct, pk=item_id)
+            product_id = product.id
+        elif product_type == 'merch':
+            product = get_object_or_404(MerchProduct, pk=item_id)
+            product_id = product.id
         else:
-            basket[item_id]['details'][text_option_id] = quantity
+            messages.error(request, 'Invalid product type.')
+            return redirect(reverse('view_basket'))
 
-        basket[item_id]['product_id'] = item_id
-        basket[item_id]['product_type'] = 'merch'
-        basket[item_id]['details'][text_option_id] = quantity
+        # Retrieve the corresponding CommonProduct
+        try:
+            common_product = CommonProduct.objects.get(product_id=product_id, product_type=product_type)
+            print("CommonProduct found:", common_product)  # Debug statement
+        except CommonProduct.DoesNotExist:
+            print(f"CommonProduct with Product ID {product_id} and type {product_type} does not exist.")
+            messages.error(request, f"Product with ID {product_id} not found.")
+            return redirect(reverse('view_basket'))
+
+        # Process the product addition based on the type
+        if product_type == 'edible':
+            quantity = int(request.POST.get('quantity', 1))
+            weight = int(request.POST.get('weight', 100))
+
+            try:
+                weight_price_obj = product.weight_prices.get(weight=weight)
+                price = weight_price_obj.price
+            except ProductWeightPrice.DoesNotExist:
+                price = product.price
+
+            basket = request.session.get('basket', {})
+            if str(common_product.id) not in basket:
+                basket[str(common_product.id)] = {'details': {}}
+
+            if weight in basket[str(common_product.id)]['details']:
+                basket[str(common_product.id)]['details'][weight] += quantity
+            else:
+                basket[str(common_product.id)]['details'][weight] = quantity
+
+        elif product_type == 'merch':
+            text_option_id = request.POST.get('text_option_id')
+            quantity = int(request.POST.get('quantity', 1))
+
+            basket = request.session.get('basket', {})
+            if str(common_product.id) not in basket:
+                basket[str(common_product.id)] = {'details': {}}
+
+            if text_option_id in basket[str(common_product.id)]['details']:
+                basket[str(common_product.id)]['details'][text_option_id] += quantity
+            else:
+                basket[str(common_product.id)]['details'][text_option_id] = quantity
 
         request.session['basket'] = basket
         request.session.modified = True
-        messages.success(request, f'Added {quantity} {merch.name} to your basket.')
+        messages.success(request, f'Added "{product.name}" to your basket.')
         return redirect(reverse('view_basket'))
+
+# class AddToBasketView(View):
+#     def post(self, request: HttpRequest, item_id):
+#         quantity = int(request.POST.get('quantity', 1))
+#         flavour = request.POST.get('flavour')
+#         redirect_url = request.POST.get('redirect_url', reverse('view_basket'))
+#         product = get_object_or_404(EdibleProduct, pk=item_id)
+#         weight = int(request.POST.get('weight', '100'))
+
+#         try:
+#             weight_price_obj = product.weight_prices.get(weight=weight)
+#             price = weight_price_obj.price
+#         except ProductWeightPrice.DoesNotExist:
+#             price = product.price
+
+#         basket = request.session.get('basket', {})
+#         if item_id not in basket:
+#             basket[item_id] = {'details': {}}
+
+#         if weight in basket[item_id]['details']:
+#             basket[item_id]['details'][weight] += quantity
+#         else:
+#             basket[item_id]['details'][weight] = quantity
+
+#         basket[item_id]['product_id'] = item_id
+#         basket[item_id]['product_type'] = 'edible'
+#         basket[item_id]['details'][weight] = quantity
+
+#         request.session['basket'] = basket
+#         request.session.modified = True
+#         messages.success(request, f'Added "{product.flavour}" to your basket.')
+#         return redirect(redirect_url)
+
+
+# class AddMerchToBasketView(View):
+#     def post(self, request, item_id):
+#         merch = get_object_or_404(MerchProduct, pk=item_id)
+#         text_option_id = request.POST.get('text_option_id')
+#         text_option = get_object_or_404(TextOption, pk=text_option_id) if text_option_id else None
+#         quantity = int(request.POST.get('quantity'))
+
+#         basket = request.session.get('basket', {})
+#         if item_id not in basket:
+#             basket[item_id] = {'details': {}}
+
+#         if text_option_id in basket[item_id]['details']:
+#             basket[item_id]['details'][text_option_id] += quantity
+#         else:
+#             basket[item_id]['details'][text_option_id] = quantity
+
+#         basket[item_id]['product_id'] = item_id
+#         basket[item_id]['product_type'] = 'merch'
+#         basket[item_id]['details'][text_option_id] = quantity
+
+#         request.session['basket'] = basket
+#         request.session.modified = True
+#         messages.success(request, f'Added {quantity} {merch.name} to your basket.')
+#         return redirect(reverse('view_basket'))
 
 
 class ClearBasketView(View):
