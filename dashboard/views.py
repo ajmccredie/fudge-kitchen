@@ -234,3 +234,11 @@ def product_list(request):
         'products': products,
     }
     return render(request, 'product_list.html', context)
+
+
+class ClearBasketCacheView(View):
+    def post(self, request, *args, **kwargs):
+        if 'basket' in request.session:
+            del request.session['basket']
+            request.session.modified = True
+        return redirect('/')

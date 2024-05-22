@@ -11,6 +11,10 @@
             <li><a href="{% url 'dashboard:order_list' %}">Order Management</a></li>
             <li><a href="{% url 'dashboard:inquiries_list' %}">Customer Inquiries</a></li>            
         </ul>
+        <form method="post" action="{% url 'dashboard:clear_basket_cache' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning">Clear Basket Cache</button>
+        </form>
     </div>
 </div>
 {% endblock %}

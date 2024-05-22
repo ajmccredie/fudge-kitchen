@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView, OrderDetailView, mark_order_dispatched, mark_item_made, delete_order, InquiryListView, InquiryDetailView, MarkInquiryDealtWithView
+from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView, OrderDetailView, mark_order_dispatched, mark_item_made, delete_order, InquiryListView, InquiryDetailView, MarkInquiryDealtWithView, ClearBasketCacheView
 
 app_name = 'dashboard'
 
@@ -22,4 +22,5 @@ urlpatterns = [
     path('inquiries/', InquiryListView.as_view(), name='inquiries_list'),
     path('inquiries/<int:pk>/', InquiryDetailView.as_view(), name='inquiries_detail'),
     path('inquiries/<int:pk>/dealt_with/', MarkInquiryDealtWithView.as_view(), name='mark_inquiry_dealt_with'),
+    path('clear_basket_cache/', ClearBasketCacheView.as_view(), name='clear_basket_cache'),
 ]
