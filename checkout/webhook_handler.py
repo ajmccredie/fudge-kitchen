@@ -5,13 +5,12 @@ from django.conf import settings
 
 from .models import Order, OrderLineItem
 from edible_products.models import EdibleProduct
-from merch.models import MerchProduct
+from merch.models import MerchProduct, TextOption
 from profiles.models import Profile
 
 import json
 import time
 import stripe
-
 
 class StripeWH_Handler:
     """Handle Stripe webhooks"""
@@ -58,9 +57,9 @@ class StripeWH_Handler:
             intent.latest_charge
         )
 
-        billing_details = stripe_charge.billing_details # updated
+        billing_details = stripe_charge.billing_details  # updated
         shipping_details = intent.shipping
-        grand_total = round(stripe_charge.amount / 100, 2) # updated
+        grand_total = round(stripe_charge.amount / 100, 2)  # updated
 
         # Clean data in the shipping details
         for field, value in shipping_details.address.items():
@@ -129,16 +128,34 @@ class StripeWH_Handler:
                     stripe_pid=pid,
                 )
                 for item_id, item_data in json.loads(basket).items():
-                    product = EdibleProduct.objects.get(id=item_id)
-                    if isinstance(item_data, int):
-                        order_line_item = OrderLineItem(
-                            order=order,
-                            product=product,
-                            quantity=item_data,
-                        )
-                        order_line_item.save()
+                    common_product = get_object_or_404(CommonProduct, id=item_id)
+                    product_type = common_product.product_type
+
+                    if product_type == 'edible':
+                        product = get_object_or_404(EdibleProduct, id=common_product.product_id)
+                        for weight, quantity in item_data['details'].items():
+                            OrderLineItem.objects.create(
+                                order=order,
+                                edible_product=product,
+                                product_type='edible',
+                                weight=weight,
+                                quantity=quantity,
+                                lineitem_total=product.get_price_for_weight(weight) * quantity
+                            )
+                    elif product_type == 'merch':
+                        product = get_object_or_404(MerchProduct, id=common_product.product_id)
+                        for text_option_id, quantity in item_data['details'].items():
+                            selected_text = get_object_or_404(TextOption, id=text_option_id)
+                            OrderLineItem.objects.create(
+                                order=order,
+                                merch_product=product,
+                                product_type='merch',
+                                quantity=quantity,
+                                lineitem_total=product.price * quantity,
+                                selected_text=selected_text
+                            )
+
             except Exception as e:
-                print("exception", e)
                 if order:
                     order.delete()
                 return HttpResponse(

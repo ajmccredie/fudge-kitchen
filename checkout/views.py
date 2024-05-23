@@ -10,7 +10,7 @@ import stripe
 import json
 
 from .models import Order, OrderLineItem
-from core.models import Product
+from core.models import CommonProduct
 from edible_products.models import EdibleProduct
 from merch.models import MerchProduct, TextOption
 from basket.contexts import basket_contents
@@ -105,43 +105,40 @@ class CheckoutView(View):
             return redirect('checkout_success', order.order_number)
         else:
             messages.error(request, "There was an error with your form. Please double-check your information.")
-            return render(request, self.template_name, {'order_form': order_form})
+            return render(request, 'checkout/checkout.html', {'order_form': order_form})
 
     def handle_line_items(self, order, basket):
-        for item_id, item_details in basket.items():
-            quantity = Decimal(item_details['quantity'])
-      
-            if item_details['product_type'] == 'edible':
-                edible_product = get_object_or_404(EdibleProduct, pk=int(item_details['product_id']))
-                price_per_unit = edible_product.get_price_for_weight(item_details['weight'])
-                lineitem_total = price_per_unit * quantity
-            
-                OrderLineItem.objects.create(
-                    order=order,
-                    edible_product=edible_product,
-                    product_type='edible',
-                    weight=item_details['weight'],
-                    quantity=quantity,
-                    lineitem_total=lineitem_total
-                )
-
-            elif item_details['product_type'] == 'merch':
-                merch_product = get_object_or_404(MerchProduct, pk=int(item_details['product_id']))
-                if 'text_option_id' not in item_details:
-                    raise ValueError("Selected text ID missing for merch product")
-                selected_text = get_object_or_404(TextOption, pk=int(item_details['text_option_id'])) 
-                lineitem_total = merch_product.price * quantity
-                
-                OrderLineItem.objects.create(
-                    order=order,
-                    merch_product=merch_product,
-                    product_type='merch',
-                    quantity=quantity,
-                    selected_text=selected_text,
-                    lineitem_total=lineitem_total
-                )
+        for item_id, item_data in basket.items():
+            common_product = get_object_or_404(CommonProduct, id=item_id)
+            product_type = common_product.product_type
+            if product_type == 'edible':
+                product = get_object_or_404(EdibleProduct, id=common_product.product_id)
+                for weight, quantity in item_data['details'].items():
+                    price_per_unit = product.get_price_for_weight(weight)
+                    lineitem_total = price_per_unit * quantity
+                    OrderLineItem.objects.create(
+                        order=order,
+                        edible_product=product,
+                        product_type='edible',
+                        weight=weight,
+                        quantity=quantity,
+                        lineitem_total=lineitem_total
+                    )
+            elif product_type == 'merch':
+                product = get_object_or_404(MerchProduct, id=common_product.product_id)
+                for text_option_id, quantity in item_data['details'].items():
+                    lineitem_total = product.price * quantity
+                    selected_text = get_object_or_404(TextOption, id=text_option_id)
+                    OrderLineItem.objects.create(
+                        order=order,
+                        merch_product=product,
+                        product_type='merch',
+                        quantity=quantity,
+                        lineitem_total=lineitem_total,
+                        selected_text=selected_text
+                    )
         order.update_total()
-            
+
 
 class CheckoutSuccessView(View):
     def get(self, request, order_number, *arg, **kwargs):

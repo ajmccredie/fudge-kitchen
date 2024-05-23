@@ -3,15 +3,15 @@
 {% load basket_tools %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
+<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
 {% endblock %}
 
 {% block page_header %}
-    <div class="container header-container">
-        <div class="row">
-            <div class="col"></div>
-        </div>
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
     </div>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -27,23 +27,23 @@
     <div class="row">
         <div class="col-12 col-lg-6 order-lg-last mb-5">
             <p class="text-muted">Order Summary ({{ product_count }} items)</p>
-            {% for item_key, item in basket_items.items %}
+            {% for item in basket_items %}
             <div class="row mb-3">
                 <div class="col-2">
-                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="img-fluid">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
                 </div>
                 <div class="col-7">
-                    <p><strong>{{ item.name }}</strong></p>
+                    <p><strong>{{ item.product.name }}</strong></p>
                     {% if item.product_type == 'edible' %}
-                    <p>Flavour: {{ item.flavour }}</p>
+                    <p>Flavour: {{ item.product.flavour }}</p>
                     <p>Weight: {{ item.weight }}g</p>
                     {% elif item.product_type == 'merch' %}
-                    <p>Text: {{ item.text_option }}</p>
+                    <p>Text: {{ item.text_option.text }}</p>
                     {% endif %}
                     <p>Qty: {{ item.quantity }}</p>
                 </div>
                 <div class="col-3 text-right">
-                    <p>£{{ item.price | calc_subtotal:item.quantity }}</p>
+                    <p>£{{ item.subtotal }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -66,15 +66,15 @@
             <form action="{% url 'checkout' %}" method="POST" id="payment-form">
                 {% csrf_token %}
                 <div class="form-group">
-                    {{ order_form.full_name | as_crispy_field }}
-                    {{ order_form.phone_number | as_crispy_field }}
-                    {{ order_form.email | as_crispy_field }}
-                    {{ order_form.street_address1 | as_crispy_field }}
-                    {{ order_form.street_address2 | as_crispy_field }}
-                    {{ order_form.town_or_city | as_crispy_field }}
-                    {{ order_form.county | as_crispy_field }}
-                    {{ order_form.postcode | as_crispy_field }}
-                    {{ order_form.country | as_crispy_field }}
+                    {{ order_form.full_name|as_crispy_field }}
+                    {{ order_form.phone_number|as_crispy_field }}
+                    {{ order_form.email|as_crispy_field }}
+                    {{ order_form.street_address1|as_crispy_field }}
+                    {{ order_form.street_address2|as_crispy_field }}
+                    {{ order_form.town_or_city|as_crispy_field }}
+                    {{ order_form.county|as_crispy_field }}
+                    {{ order_form.postcode|as_crispy_field }}
+                    {{ order_form.country|as_crispy_field }}
                 </div>
                 <fieldset class="px-3">
                     <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
@@ -88,23 +88,23 @@
                 <button type="submit" class="btn btn-primary">Complete Order</button>
             </form>
             {% else %}
-                <h2>Please Login or Register</h2>
-                <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-primary">Login</a>
-                <a href="{% url 'account_signup' %}?next={{ request.path }}" class="btn btn-primary">Register</a>
-                {% endif %}
-            </div>
+            <h2>Please Login or Register</h2>
+            <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-primary">Login</a>
+            <a href="{% url 'account_signup' %}?next={{ request.path }}" class="btn btn-primary">Register</a>
+            {% endif %}
         </div>
     </div>
-    <div id="loading-overlay" class="overlay">
-        <div class="loading-container">
-            <img src="{% static 'images/fudge_giftwrapped.png' %}" alt="Loading..." id="loadingLogo"/>
-        </div>
+</div>
+<div id="loading-overlay" class="overlay">
+    <div class="loading-container">
+        <img src="{% static 'images/fudge_giftwrapped.png' %}" alt="Loading..." id="loadingLogo"/>
     </div>
+</div>
 {% endblock %}
 
 {% block postloadjs %}
-    {{ block.super }}
-    {{ stripe_public_key|json_script:"id_stripe_public_key" }}
-    {{ client_secret|json_script:"id_client_secret" }}
-    <script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
+{{ block.super }}
+{{ stripe_public_key|json_script:"id_stripe_public_key" }}
+{{ client_secret|json_script:"id_client_secret" }}
+<script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
 {% endblock %}
