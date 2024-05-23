@@ -55,6 +55,22 @@ def basket_contents(request):
                         })
                         total += subtotal
                         product_count += quantity
+            
+            elif product_type == 'subscription':
+                product = get_object_or_404(SubscriptionProduct, pk=common_product.product_id)
+                quantity = item_data.get('quantity', 1)
+                price = product.price
+                subtotal = Decimal(quantity) * Decimal(price) if (quantity and price) else Decimal('0.00')
+                basket_items.append({
+                    'item_id': item_id,
+                    'product': product,
+                    'quantity': quantity,
+                    'price': price,
+                    'subtotal': subtotal,
+                    'product_type': 'subscription',
+                })
+                total += subtotal
+                product_count += quantity
 
         except Exception as e:
             print(f"Error processing item ID {item_id}: {e}")
