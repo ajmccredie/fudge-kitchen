@@ -37,24 +37,39 @@ class BasketView(View):
 
 class AddToBasketView(View):
     def post(self, request, item_id):
+        print("Received data:", request.POST)  # Debug statement
+
         product_type = request.POST.get('product_type')
+        print("Product type:", product_type)  # Debug statement
         
         if product_type == 'edible':
             product = get_object_or_404(EdibleProduct, pk=item_id)
             product_id = product.id
+            name = product.name
+            price = product.price
+            image_url = product.image.url
         elif product_type == 'merch':
             product = get_object_or_404(MerchProduct, pk=item_id)
             product_id = product.id
+            name = product.name
+            price = product.price
+            image_url = product.image.url
         elif product_type == 'subscription':
             product = get_object_or_404(SubscriptionProduct, pk=item_id)
             product_id = product.id
+            name = "Annual Subscription"
+            price = product.price
+            image_url = product.image.url
         else:
+            print("Invalid product type detected.")  # Debug statement
             messages.error(request, 'Invalid product type.')
             return redirect(reverse('basket:view_basket'))
 
         try:
             common_product = CommonProduct.objects.get(product_id=product_id, product_type=product_type)
+            print("CommonProduct found:", common_product)  # Debug statement
         except CommonProduct.DoesNotExist:
+            print(f"CommonProduct with Product ID {product_id} and type {product_type} does not exist.")
             messages.error(request, f"Product with ID {product_id} not found.")
             return redirect(reverse('basket:view_basket'))
 
@@ -111,9 +126,8 @@ class AddToBasketView(View):
 
         request.session['basket'] = basket
         request.session.modified = True
-        messages.success(request, f'Added "{product.name}" to your basket.')
+        messages.success(request, f'Added "{name}" to your basket.')
         return redirect(reverse('basket:view_basket'))
-
 
 class ClearBasketView(View):
     def post(self, request, *args, **kwargs):
@@ -124,7 +138,6 @@ class ClearBasketView(View):
         else:
             messages.info(request, 'Your basket is already empty.')
         return HttpResponseRedirect(reverse('basket:view_basket'))
-
 
 class RemoveFromBasketView(View):
     @method_decorator(require_POST)

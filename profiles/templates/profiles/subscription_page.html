@@ -27,8 +27,10 @@
                 <p>Time Remaining: {{ user.profile.get_subscription_time_remaining }}</p>
             {% else %}
                 <h3>Sign up now!</h3>
-                <form method="POST" action="{% url 'basket:add_to_basket' item_id=common_product.id %}">
+                <form method="POST" action="{% url 'basket:add_to_basket' subscription_product.id %}">
                     {% csrf_token %}
+                    <input type="hidden" name="product_type" value="subscription">
+                    <input type="hidden" name="name" value="Annual Subscription">
                     <button type="submit" class="btn btn-primary">Add Subscription to Basket</button>
                 </form>
             {% endif %}
