@@ -3,6 +3,7 @@ from django.forms import inlineformset_factory
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct, ColourVariation, TextOption
 from checkout.models import Order, OrderLineItem
+from profiles.models import SubscriptionProduct
 
 
 class EdibleProductForm(forms.ModelForm):
@@ -81,3 +82,9 @@ class OrderLineItemForm(forms.ModelForm):
     class Meta:
         model = OrderLineItem
         fields = ['made']
+
+
+class SubscriptionProductForm(forms.ModelForm):
+    class Meta:
+        model = SubscriptionProduct
+        fields = ['name', 'description', 'price', 'image']

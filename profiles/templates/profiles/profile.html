@@ -21,9 +21,21 @@
             <p><strong>Full Name:</strong> {{ profile.full_name }}</p>
             <p><strong>Phone Number:</strong> {{ profile.default_phone_number }}</p>
             <p><strong>Address:</strong> {{ profile.default_street_address1 }} {{ profile.default_street_address2 }},
-            {{ profile.default_town_or_city }}, {{ profile.default_county }}, {{ profile.default_country }}</p>
+                {{ profile.default_town_or_city }}, {{ profile.default_county }}, {{ profile.default_country }}</p>
             <p><strong>Postal Code:</strong> {{ profile.default_postcode }}</p>
-            <p><strong>Subscription Status:</strong> {{ profile.is_subscribed|yesno:"Subscribed,Not Subscribed" }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h3>Subscription Status</h3>
+            {% if user.profile.is_subscribed %}
+                <p>You are a subscriber!</p>
+                <p>Subscription Start Date: {{ user.profile.subscription_start_date }}</p>
+                <p>Time Remaining: {{ user.profile.get_subscription_time_remaining }}</p>
+            {% else %}
+                <p>You do not have an active subscription.</p>
+                <a href="{% url 'profiles:subscription_page' %}" class="btn btn-primary">Subscribe Now</a>
+            {% endif %}
         </div>
     </div>
 
@@ -33,14 +45,14 @@
             <h3>Order History</h3>
             <div class="list-group">
                 {% for order in orders %}
-                    <a href="{% url 'order_detail' order.id %}" class="list-group-item list-group-item-action">
-                        <strong>Order #{{ order.order_number }} - {{ order.date }}</strong>
-                        <span class="badge {% if order.dispatched %}badge-success{% else %}badge-secondary{% endif %}">
-                            {% if order.dispatched %}Dispatched{% else %}Pending{% endif %}
-                        </span>
-                    </a>
+                <a href="{% url 'profiles:order_detail' order.id %}" class="list-group-item list-group-item-action">
+                    <strong>Order #{{ order.order_number }} - {{ order.date }}</strong>
+                    <span class="badge {% if order.dispatched %}badge-success{% else %}badge-secondary{% endif %}">
+                        {% if order.dispatched %}Dispatched{% else %}Pending{% endif %}
+                    </span>
+                </a>
                 {% empty %}
-                    <p>No orders yet.</p>
+                <p>No orders yet.</p>
                 {% endfor %}
             </div>
         </div>
@@ -50,17 +62,17 @@
     <div class="row mt-4">
         <div class="col-12">
             <h3>Account Management</h3>
-            <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Details</a>
-            <a href="{% url 'delete_account' %}" class="btn btn-danger" id="delete-account-btn">Delete Account</a>
+            <a href="{% url 'profiles:edit_profile' %}" class="btn btn-primary">Edit Details</a>
+            <a href="{% url 'profiles:delete_account' %}" class="btn btn-danger" id="delete-account-btn">Delete Account</a>
         </div>
     </div>
 </div>
 
 <script>
     // Delete Account Confirmation
-    document.getElementById('delete-account-btn').addEventListener('click', function(event) {
+    document.getElementById('delete-account-btn').addEventListener('click', function (event) {
         event.preventDefault();
-        if(confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
             window.location.href = this.href;
         }
     });

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Subscription Management</h1>
+    <h2>Subscribed Users</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Subscription Start Date</th>
+                <th scope="col">Subscription End Date</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for profile in subscriptions %}
+            <tr>
+                <td>{{ profile.user.username }}</td>
+                <td>{{ profile.user.email }}</td>
+                <td>{{ profile.subscription_start_date|date:"d M Y" }}</td>
+                <td>{{ profile.subscription_end_date|date:"d M Y" }}</td>
+                <td>
+                    <a href="{% url 'dashboard:toggle_subscription_status' profile.id %}" class="btn btn-warning">Toggle Status</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Subscription Products</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in subscription_products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>£{{ product.price }}</td>
+                <td>
+                    <a href="{% url 'dashboard:subscription_product_edit' product.id %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'dashboard:subscription_product_delete' product.id %}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'dashboard:subscription_product_create' %}" class="btn btn-success">Add New Subscription Product</a>
+</div>
+{% endblock %}

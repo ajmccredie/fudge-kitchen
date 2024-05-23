@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Subscription Products</h1>
+    <a href="{% url 'dashboard:subscription_product_create' %}" class="btn btn-primary mb-3">Add New Subscription Product</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in subscription_products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>£{{ product.price }}</td>
+                <td>
+                    <a href="{% url 'dashboard:subscription_product_update' product.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="{% url 'dashboard:subscription_product_delete' product.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

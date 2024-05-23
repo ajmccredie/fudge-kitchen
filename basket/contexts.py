@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from decimal import Decimal
 from core.models import CommonProduct
 from edible_products.models import EdibleProduct, ProductWeightPrice
-from profiles.models import Profile
+from profiles.models import Profile, SubscriptionProduct
 from merch.models import MerchProduct, ColourVariation, TextOption
 
 def basket_contents(request):

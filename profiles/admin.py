@@ -1,14 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, CommonProduct, SubscriptionProduct
+
 
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     verbose_name_plural = 'profile'
     fk_name = 'user'
-    fields = ['allergen_preferences', 'default_phone_number', 'default_country', 'default_postcode', 'default_town_or_city', 'default_street_address1', 'default_street_address2', 'default_county', 'is_subscribed', 'newsletter_recipient']
+    fields = ['allergen_preferences', 'default_phone_number', 'default_country', 'default_postcode', 'default_town_or_city', 'default_street_address1', 'default_street_address2', 'default_county', 'is_subscribed', 'subscription_start_date', 'newsletter_recipient']
     extra = 0
 
 class UserAdmin(BaseUserAdmin):
@@ -30,5 +31,9 @@ class UserAdmin(BaseUserAdmin):
         if not hasattr(obj, 'profile'):
             Profile.objects.create(user=obj)
 
+class SubscriptionProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'duration_in_years')
+
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(SubscriptionProduct, SubscriptionProductAdmin)

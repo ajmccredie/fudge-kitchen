@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_title %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col">
+            <h1 class="logo-font my-4">Subscriptions</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container mt-5 pt-7">
+    <h1>Become a Subscription Member</h1>
+    <p>Join our subscription program for just £30 a year and enjoy these amazing benefits:</p>
+    <ul>
+        <li>Free delivery on all products for a year</li>
+        <li>Free samples of 'guest flavours'</li>
+    </ul>
+
+    {% if subscription_product %}
+        {% if user.is_authenticated %}
+            {% if user.profile.is_subscribed %}
+                <h3>You are already a subscriber!</h3>
+                <p>Subscription Start Date: {{ user.profile.subscription_start_date }}</p>
+                <p>Time Remaining: {{ user.profile.get_subscription_time_remaining }}</p>
+            {% else %}
+                <h3>Sign up now!</h3>
+                <form method="POST" action="{% url 'basket:add_to_basket' item_id=common_product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Add Subscription to Basket</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <h3>Please <a href="{% url 'account_login' %}?next={% url 'profiles:subscription_page' %}">login</a> or <a href="{% url 'account_signup' %}?next={% url 'profiles:subscription_page' %}">register</a> to sign up for a subscription.</h3>
+        {% endif %}
+    {% else %}
+        <h3>Subscription product is not available at the moment. Please check back later.</h3>
+    {% endif %}
+</div>
+{% endblock %}

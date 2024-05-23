@@ -36,7 +36,7 @@
     alt="Selected Text Image" class="img-fluid mt-3">
 
   <!-- Add to basket form -->
-  <form method="post" action="{% url 'add_to_basket' object.id %}">
+  <form method="post" action="{% url 'basket:add_to_basket' object.id %}">
     {% csrf_token %}
     <input type="hidden" name="product_id" value="{{ object.id }}">
     <input type="hidden" name="product_type" value="merch">

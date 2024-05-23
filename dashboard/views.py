@@ -4,12 +4,13 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView, DetailView
+from profiles.models import Profile, SubscriptionProduct
 from core.models import CommonProduct
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct, ColourVariation, TextOption
 from checkout.models import Order, OrderLineItem
 from home.models import Inquiry
-from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm, ColourVariationFormSet, TextOptionFormSet
+from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm, ColourVariationFormSet, TextOptionFormSet, SubscriptionProductForm
 
 # Create your views here.
 
@@ -242,3 +243,55 @@ class ClearBasketCacheView(View):
             del request.session['basket']
             request.session.modified = True
         return redirect('/')
+
+
+class SubscriptionManagementView(StaffRequiredMixin, View):
+    template_name = 'dashboard/subscription_management.html'
+
+    def get(self, request, *args, **kwargs):
+        subscriptions = Profile.objects.filter(is_subscribed=True)
+        subscription_products = SubscriptionProduct.objects.all()
+        return render(request, self.template_name, {
+            'subscriptions': subscriptions,
+            'subscription_products': subscription_products,
+        })
+
+class SubscriptionProductListView(StaffRequiredMixin, ListView):
+    model = SubscriptionProduct
+    template_name = 'dashboard/subscription_product_list.html'
+    context_object_name = 'subscription_products'
+
+
+class SubscriptionProductCreateView(StaffRequiredMixin, CreateView):
+    model = SubscriptionProduct
+    form_class = SubscriptionProductForm
+    template_name = 'dashboard/subscription_product_form.html'
+    success_url = reverse_lazy('dashboard:subscription_management')
+
+class SubscriptionProductUpdateView(StaffRequiredMixin, UpdateView):
+    model = SubscriptionProduct
+    form_class = SubscriptionProductForm
+    template_name = 'dashboard/subscription_product_form.html'
+    success_url = reverse_lazy('dashboard:subscription_management')
+
+class SubscriptionProductDeleteView(StaffRequiredMixin, DeleteView):
+    model = SubscriptionProduct
+    template_name = 'dashboard/subscription_product_confirm_delete.html'
+    success_url = reverse_lazy('dashboard:subscription_management')
+
+class SubscribedUsersListView(StaffRequiredMixin, ListView):
+    model = Profile
+    template_name = 'dashboard/subscribed_users_list.html'
+    context_object_name = 'profiles'
+
+    def get_queryset(self):
+        return Profile.objects.filter(is_subscribed=True)
+
+class UpdateSubscriptionStatusView(StaffRequiredMixin, View):
+    def post(self, request, pk):
+        profile = get_object_or_404(Profile, pk=pk)
+        profile.is_subscribed = not profile.is_subscribed
+        profile.subscription_start_date = None if not profile.is_subscribed else profile.subscription_start_date
+        profile.save()
+        messages.success(request, 'Subscription status updated successfully.')
+        return redirect('dashboard:subscribed_users_list')

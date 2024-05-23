@@ -13,6 +13,7 @@ from .models import Order, OrderLineItem
 from core.models import CommonProduct
 from edible_products.models import EdibleProduct
 from merch.models import MerchProduct, TextOption
+from profiles.models import SubscriptionProduct
 from basket.contexts import basket_contents
 from .forms import OrderForm
 from django.http import HttpResponseBadRequest, JsonResponse

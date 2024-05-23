@@ -36,7 +36,7 @@
                     {% endfor %}
                 </div>
                 
-                <form class="form" action="{% url 'add_to_basket' edible_product.id %}" method="POST">
+                <form class="form" action="{% url 'basket:add_to_basket' edible_product.id %}" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <div class="form-group">

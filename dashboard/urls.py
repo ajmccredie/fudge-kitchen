@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView, OrderDetailView, mark_order_dispatched, mark_item_made, delete_order, InquiryListView, InquiryDetailView, MarkInquiryDealtWithView, ClearBasketCacheView
+from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView, OrderDetailView, mark_order_dispatched, mark_item_made, delete_order, InquiryListView, InquiryDetailView, MarkInquiryDealtWithView, ClearBasketCacheView, SubscriptionProductListView, SubscriptionProductCreateView, SubscriptionProductUpdateView, SubscriptionProductDeleteView, SubscribedUsersListView, UpdateSubscriptionStatusView, SubscriptionManagementView
 
 app_name = 'dashboard'
 
@@ -23,4 +23,11 @@ urlpatterns = [
     path('inquiries/<int:pk>/', InquiryDetailView.as_view(), name='inquiries_detail'),
     path('inquiries/<int:pk>/dealt_with/', MarkInquiryDealtWithView.as_view(), name='mark_inquiry_dealt_with'),
     path('clear_basket_cache/', ClearBasketCacheView.as_view(), name='clear_basket_cache'),
+    path('subscriptions/', SubscriptionProductListView.as_view(), name='subscription_product_list'),
+    path('subscriptions/', SubscriptionManagementView.as_view(), name='subscription_management'),
+    path('subscriptions/new/', SubscriptionProductCreateView.as_view(), name='subscription_product_create'),
+    path('subscriptions/<int:pk>/edit/', SubscriptionProductUpdateView.as_view(), name='subscription_product_update'),
+    path('subscriptions/<int:pk>/delete/', SubscriptionProductDeleteView.as_view(), name='subscription_product_delete'),
+    path('subscribed_users/', SubscribedUsersListView.as_view(), name='subscribed_users_list'),
+    path('subscribed_users/<int:pk>/update_status/', UpdateSubscriptionStatusView.as_view(), name='update_subscription_status'),
 ]
