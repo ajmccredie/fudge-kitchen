@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Subscription Management</h1>
+    <h2>Subscribed Users</h2>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Subscription Start Date</th>
+                <th>Time Remaining</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for profile in subscriptions %}
+            <tr>
+                <td>{{ profile.user.username }}</td>
+                <td>{{ profile.user.email }}</td>
+                <td>{{ profile.subscription_start_date|date:"d M Y" }}</td>
+                <td>{{ profile.time_remaining }}</td>
+                <td>
+                    <form action="{% url 'dashboard:update_subscription_status' profile.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning">Toggle Status</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

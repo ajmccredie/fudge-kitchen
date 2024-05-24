@@ -1,4 +1,6 @@
 from django.shortcuts import render, reverse, get_object_or_404, redirect
+from django.utils import timezone
+from datetime import timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -282,10 +284,20 @@ class SubscriptionProductDeleteView(StaffRequiredMixin, DeleteView):
 class SubscribedUsersListView(StaffRequiredMixin, ListView):
     model = Profile
     template_name = 'dashboard/subscribed_users_list.html'
-    context_object_name = 'profiles'
+    context_object_name = 'subscriptions'
 
-    def get_queryset(self):
-        return Profile.objects.filter(is_subscribed=True)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        subscriptions = Profile.objects.filter(is_subscribed=True)
+        
+        for profile in subscriptions:
+            if profile.is_subscribed and profile.subscription_start_date:
+                expiration_date = profile.subscription_start_date + timedelta(days=365)
+                profile.time_remaining = expiration_date - timezone.now().date()
+            else:
+                profile.time_remaining = "No active subscription"
+        context['subscriptions'] = subscriptions
+        return context
 
 class UpdateSubscriptionStatusView(StaffRequiredMixin, View):
     def post(self, request, pk):
