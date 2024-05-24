@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Search Results for "{{ query }}"</h2>
+    
+    {% if not query %}
+        <p>Please enter a search query.</p>
+    {% elif not common_products and not edible_products and not merch_products and not subscription_products %}
+        <p>No results found.</p>
+    {% else %}
+        <div class="row">
+            {% if edible_products %}
+                <h3>Edible Products</h3>
+                <ul>
+                    {% for product in edible_products %}
+                        <li>
+                            <a href="{% url 'product_detail' product.id %}">
+                                {{ product.name }} - {{ product.flavour }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if merch_products %}
+                <h3>Merch Products</h3>
+                <ul>
+                    {% for product in merch_products %}
+                        <li>
+                            <a href="{% url 'merch_product_detail' product.id %}">
+                                {{ product.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if subscription_products %}
+                <h3>Subscription Products</h3>
+                <ul>
+                    {% for product in subscription_products %}
+                        <li>
+                            <a href="{% url 'profiles:subscription_page' %}">
+                                {{ product.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
