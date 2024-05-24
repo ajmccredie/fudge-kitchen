@@ -110,19 +110,12 @@ class AddToBasketView(View):
                 messages.error(request, 'You already have an active subscription.')
                 return redirect(reverse('basket:view_basket'))
 
-            price = product.price
-            name = "Annual Subscription"
-            image_url = product.image.url
+            if str(common_product.id) in basket:
+                messages.error(request, 'You cannot add more than one subscription to your basket.')
+                return redirect(reverse('basket:view_basket'))
 
             basket = {k: v for k, v in basket.items() if CommonProduct.objects.get(pk=k).product_type != 'subscription'}
-            basket[str(common_product.id)] = {
-                'product_id': product.id,
-                'product_type': 'subscription',
-                'quantity': 1,
-                'price': str(price),
-                'name': name,
-                'image_url': image_url
-            }
+            basket[str(common_product.id)] = 1
 
         request.session['basket'] = basket
         request.session.modified = True
@@ -173,4 +166,4 @@ class AdjustBasketView(View):
         else:
             messages.error(request, 'Item not found in your basket.')
 
-        return HttpResponseRedirect(reverse('basket:view_basket'))
+        return redirect(reverse('basket:view_basket'))

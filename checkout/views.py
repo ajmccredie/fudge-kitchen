@@ -5,6 +5,7 @@ from django.conf import settings
 from django.views.decorators.http import require_POST
 from django.core import serializers
 from decimal import Decimal
+from django.utils import timezone
 
 import stripe
 import json
@@ -139,7 +140,7 @@ class CheckoutView(View):
                     )
             elif product_type == 'subscription':
                 product = get_object_or_404(SubscriptionProduct, id=common_product.product_id)
-                quantity = item_data.get('quantity', 1)
+                quantity = item_data
                 price_per_unit = product.price
                 lineitem_total = price_per_unit * quantity
                 OrderLineItem.objects.create(
@@ -149,14 +150,12 @@ class CheckoutView(View):
                     quantity=quantity,
                     lineitem_total=lineitem_total
                 )
-                # Update the user's subscription status
                 if order.user_profile:
                     order.user_profile.is_subscribed = True
                     order.user_profile.subscription_start_date = timezone.now()
                     order.user_profile.save()
 
         order.update_total()
-
 
 
 class CheckoutSuccessView(View):

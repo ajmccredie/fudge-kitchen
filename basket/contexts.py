@@ -11,6 +11,7 @@ def basket_contents(request):
     total = Decimal('0.00')
     product_count = 0
     basket = request.session.get('basket', {})
+    has_subscription = False
 
     for item_id, item_data in basket.items():
         try:
@@ -58,9 +59,9 @@ def basket_contents(request):
             
             elif product_type == 'subscription':
                 product = get_object_or_404(SubscriptionProduct, pk=common_product.product_id)
-                quantity = item_data.get('quantity', 1)
+                quantity = item_data
                 price = product.price
-                subtotal = Decimal(quantity) * Decimal(price) if (quantity and price) else Decimal('0.00')
+                subtotal = Decimal(quantity) * Decimal(price)
                 basket_items.append({
                     'item_id': item_id,
                     'product': product,

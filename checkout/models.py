@@ -71,7 +71,7 @@ class OrderLineItem(models.Model):
     edible_product = models.ForeignKey(EdibleProduct, null=True, blank=True, on_delete=models.CASCADE)
     merch_product = models.ForeignKey(MerchProduct, null=True, blank=True, on_delete=models.CASCADE)
     subscription_product = models.ForeignKey(SubscriptionProduct, null=True, blank=True, on_delete=models.CASCADE)
-    product_type = models.CharField(max_length=10, null=True, blank=True)
+    product_type = models.CharField(max_length=20, null=True, blank=True)
 
     weight = models.IntegerField(null=True, blank=True)  # Stores the selected weight
     quantity = models.IntegerField(null=False, blank=False, default=0)

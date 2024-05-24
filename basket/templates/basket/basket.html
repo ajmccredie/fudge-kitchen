@@ -44,30 +44,32 @@
                                     <p class="my-0">£{{ item.price }}</p>
                                 </td>
                                 <td class="py-3 w-25">
-                                    <form class="form update-form" method="POST" action="{% url 'basket:adjust_basket' item_id=item.item_id %}">
-                                        {% csrf_token %}
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <button type="button" class="decrement-qty btn btn-sm btn-black rounded-0" 
-                                                        data-item_id="{{ item.item_id }}">
-                                                        <span><i class="fa-regular fa-circle-down"></i></span>
-                                                    </button>
-                                                </div>
-                                                <input class="form-control form-control-sm qty_input" type="number"
-                                                    name="quantity" value="{{ item.quantity }}" min="1" max="99"
-                                                    data-item_id="{{ item.item_id }}"
-                                                    id="id_qty_{{ item.item_id }}">
-                                                <div class="input-group-append">
-                                                    <button type="button" class="increment-qty btn btn-sm btn-black rounded-0"
-                                                        data-item_id="{{ item.item_id }}">
-                                                        <span><i class="fa-regular fa-circle-up"></i></span>
-                                                    </button>
+                                    {% if item.product_type != 'subscription' %}
+                                        <form class="form update-form" method="POST" action="{% url 'basket:adjust_basket' item_id=item.item_id %}">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <button type="button" class="decrement-qty btn btn-sm btn-black rounded-0" 
+                                                            data-item_id="{{ item.item_id }}">
+                                                            <span><i class="fa-regular fa-circle-down"></i></span>
+                                                        </button>
+                                                    </div>
+                                                    <input class="form-control form-control-sm qty_input" type="number"
+                                                        name="quantity" value="{{ item.quantity }}" min="1" max="99"
+                                                        data-item_id="{{ item.item_id }}"
+                                                        id="id_qty_{{ item.item_id }}">
+                                                    <div class="input-group-append">
+                                                        <button type="button" class="increment-qty btn btn-sm btn-black rounded-0"
+                                                            data-item_id="{{ item.item_id }}">
+                                                            <span><i class="fa-regular fa-circle-up"></i></span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                    <a class="update-link text-info"><small>Update</small></a>
+                                        </form>
+                                        <a class="update-link text-info"><small>Update</small></a>
+                                    {% endif %}
                                     <form method="POST" action="{% url 'basket:remove_from_basket' item.item_id %}">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-link p-0 text-danger">Remove</button>

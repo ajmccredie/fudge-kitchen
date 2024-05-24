@@ -3,96 +3,92 @@
 {% load basket_tools %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
+<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
 {% endblock %}
 
-<!-- {% block page_header %}
-    <div class="container header-container">
-        <div class="row">
-            <div class="col"></div>
+{% block content %}
+{% with on_checkout_success=True %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <hr>
+            <h2 class="logo-font mb-4">Thank You!</h2>
+            <hr>
+            <p>Your order information is below. We will send confirmation to <strong>{{ order.email }}</strong>.</p>
         </div>
     </div>
-{% endblock %} -->
 
-{% block content %}
-    {% with on_checkout_success=True %}
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <hr>
-                <h2 class="logo-font mb-4">Thank You!</h2>
-                <hr>
-                <p>Your order information is below. We will send confirmation to <strong>{{ order.email }}</strong>.</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12 col-lg-7">
-                <div class="order-confirmation-wrapper p-2 border">
-                    <div class="row">
-                        <div class="col">
-                            <small class="text-muted">Order Info:</small>
-                        </div>
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <div class="order-confirmation-wrapper p-2 border">
+                <div class="row">
+                    <div class="col">
+                        <small class="text-muted">Order Info:</small>
                     </div>
+                </div>
 
-                    <div class="row">
-                        <div class="col-12 col-md-4">
-                            <p class="mb-0 text-black font-weight-bold">Order Number</p>
-                        </div>
-                        <div class="col-12 col-md-8 text-md-right">
-                            <p class="mb-0">{{ order.order_number }}</p>
-                        </div>
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <p class="mb-0 text-black font-weight-bold">Order Number</p>
                     </div>
+                    <div class="col-12 col-md-8 text-md-right">
+                        <p class="mb-0">{{ order.order_number }}</p>
+                    </div>
+                </div>
 
-                    <div class="row">
-                        <div class="col-12 col-md-4">
-                            <p class="mb-0 text-black font-weight-bold">Order Date</p>
-                        </div>
-                        <div class="col-12 col-md-8 text-md-right">
-                            <p class="mb-0">{{ order.date }}</p>
-                        </div>
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <p class="mb-0 text-black font-weight-bold">Order Date</p>
                     </div>
+                    <div class="col-12 col-md-8 text-md-right">
+                        <p class="mb-0">{{ order.date }}</p>
+                    </div>
+                </div>
 
-                    <div class="row">
-                        <div class="col">
-                            <small class="text-muted">Order Details:</small>
-                        </div>
+                <div class="row">
+                    <div class="col">
+                        <small class="text-muted">Order Details:</small>
                     </div>
+                </div>
                 {% for item in order.lineitems.all %}
-                    <div class="row">
-                        <div class="col-2 mb-1">
-                            {% if item.product_type == 'edible' %}
-                                <a href="{% url 'product_detail' item.edible_product.id %}">
-                                    {% if item.edible_product.image %}
+                <div class="row">
+                    <div class="col-2 mb-1">
+                        {% if item.product_type == 'edible' %}
+                                {% if item.edible_product.image %}
                                     <img class="w-100" src="{{ item.edible_product.image.url }}" alt="{{ item.edible_product.flavour }}">
-                                    {% else %}
-                                        <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
-                                    {% endif %}
-                            {% else %}
-                                <a href="{% url 'product_detail' item.merch_product.id %}">
-                                    {% if item.merch_product.image %}
-                                    <img class="w-100" src="{{ item.merch_product.image.url }}" alt="{{ item.merch_product.name }}">
-                                    {% else %}
-                                        <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
-                                    {% endif %}
-                            {% endif %}
-                                
-                            </a>
-                        </div>
-                        <div class="col-7">
-                            {% if item.product_type == 'edible' %}
-                            <p class="my-0"><strong>{{ item.edible_product.flavour }}</strong></p>
-                            <p class="my-0 small">Weight: {{ item.weight }}g</p>
+                                {% else %}
+                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
+                                {% endif %}
                             {% elif item.product_type == 'merch' %}
-                            <p class="my-0"><strong>{{ item.merch_product.name }}
-                            <p class="my-0 small text-muted">Text: {{ item.selected_text.text }}</p>
+                                {% if item.merch_product.image %}
+                                    <img class="w-100" src="{{ item.merch_product.image.url }}" alt="{{ item.merch_product.name }}">
+                                {% else %}
+                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
+                                {% endif %}
+                            {% elif item.product_type == 'subscription' %}
+                                {% if item.subscription_product.image %}
+                                    <img class="w-100" src="{{ item.subscription_product.image.url }}" alt="{{ item.subscription_product.name }}">
+                                {% else %}
+                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
+                                {% endif %}
                             {% endif %}
-                            <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
                         </div>
-                        <div class="col-3 text-right">
-                            <p class="my-0 small text-muted">£{{ item.lineitem_total }}</p>
-                        </div>
+                    <div class="col-7">
+                        {% if item.product_type == 'edible' %}
+                        <p class="my-0"><strong>{{ item.edible_product.flavour }}</strong></p>
+                        <p class="my-0 small">Weight: {{ item.weight }}g</p>
+                        {% elif item.product_type == 'merch' %}
+                        <p class="my-0"><strong>{{ item.merch_product.name }}</strong></p>
+                        <p class="my-0 small text-muted">Text: {{ item.selected_text.text }}</p>
+                        {% elif item.product_type == 'subscription' %}
+                        <p class="my-0"><strong>{{ item.subscription_product.name }}</strong></p>
+                        {% endif %}
+                        <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
                     </div>
+                    <div class="col-3 text-right">
+                        <p class="my-0 small text-muted">£{{ item.lineitem_total }}</p>
+                    </div>
+                </div>
                 {% endfor %}
                 <div class="row">
                     <div class="col">
@@ -124,7 +120,7 @@
                         <p class="mb-0 text-black font-weight-bold">Address 2</p>
                     </div>
                     <div class="col-12 col-md-8 text-md-right">
-                        <p class="mb-0">{{ order.street_address1 }}</p>
+                        <p class="mb-0">{{ order.street_address2 }}</p>
                     </div>
                 </div>
                 {% endif %}
@@ -178,11 +174,6 @@
                     </div>
                 </div>
 
-                <!-- <div class="row">
-                    <div class="col">
-                        <small class="text-muted">Billing Info:</small>
-                    </div>
-                </div> -->
                 <hr class="my-0">
                 <div class="row text-black text-right">
                     <div class="col-7 offset-2">
@@ -197,7 +188,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Eventually want a selection of buttons to subscription details and to home page -->
             <div class="row mt-4">
                 <div class="col text-center">
                     <a href="{% url 'index' %}" class="btn btn-primary">Back to Home</a>
@@ -205,5 +195,6 @@
             </div>
         </div>
     </div>
-    {% endwith %}
+</div>
+{% endwith %}
 {% endblock %}
