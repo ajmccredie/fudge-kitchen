@@ -21,18 +21,18 @@
         {% if basket_items %}
         <p class="logo-font bg-white text-black py-1">Your Basket ({{ basket_items|length }})</p>
         <div class="basket-notification-wrapper">
-            {% for item_key, item in basket_items.items %}
+            {% for item in basket_items %}
             <div class="row">
                 <div class="col-3 my-1">
                     <img class="w-100" src="{{ item.product.image.url }}">
                 </div>
                 <div class="col-9">
-                    <p><strong>{{ item.name }}</strong></p>
+                    <p><strong>{{ item.product.name }}</strong></p>
                     {% if item.product_type == 'edible' %}
-                    <p>Flavour: {{ item.flavour }}</p>
+                    <p>Flavour: {{ item.product.flavour }}</p>
                     <p>Weight: {{ item.weight }}g</p>
                     {% elif item.product_type == 'merch' %}
-                    <p>Text: {{ item.text_option }}</p>
+                    <p>Text: {{ item.text_option.text }}</p>
                     {% endif %}
                     <p>Qty: {{ item.quantity }}</p>
                 </div>

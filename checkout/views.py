@@ -77,19 +77,17 @@ class CheckoutView(View):
 
         return render(request, 'checkout/checkout.html', context)
         
-    
     def post(self, request, *args, **kwargs):
         order_form = OrderForm(request.POST)
         basket = request.session.get('basket', {})
         if order_form.is_valid():
             order = order_form.save(commit=False)
             order.user_profile = request.user.profile if request.user.is_authenticated else None
-            print(order.user_profile)
             order.stripe_pid = request.POST.get('client_secret').split('_secret')[0]
             order.original_basket = json.dumps(basket)
             order.save()
 
-            self.handle_line_items(order, request.session.get('basket', {}))
+            self.handle_line_items(order, basket)
 
             # Setup Stripe payment intent with metadata
             stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -112,6 +110,7 @@ class CheckoutView(View):
         for item_id, item_data in basket.items():
             common_product = get_object_or_404(CommonProduct, id=item_id)
             product_type = common_product.product_type
+
             if product_type == 'edible':
                 product = get_object_or_404(EdibleProduct, id=common_product.product_id)
                 for weight, quantity in item_data['details'].items():
@@ -138,7 +137,26 @@ class CheckoutView(View):
                         lineitem_total=lineitem_total,
                         selected_text=selected_text
                     )
+            elif product_type == 'subscription':
+                product = get_object_or_404(SubscriptionProduct, id=common_product.product_id)
+                quantity = item_data.get('quantity', 1)
+                price_per_unit = product.price
+                lineitem_total = price_per_unit * quantity
+                OrderLineItem.objects.create(
+                    order=order,
+                    subscription_product=product,
+                    product_type='subscription',
+                    quantity=quantity,
+                    lineitem_total=lineitem_total
+                )
+                # Update the user's subscription status
+                if order.user_profile:
+                    order.user_profile.is_subscribed = True
+                    order.user_profile.subscription_start_date = timezone.now()
+                    order.user_profile.save()
+
         order.update_total()
+
 
 
 class CheckoutSuccessView(View):

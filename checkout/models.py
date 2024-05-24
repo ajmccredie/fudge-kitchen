@@ -10,6 +10,8 @@ from django_countries.fields import CountryField
 from profiles.models import Profile
 from edible_products.models import EdibleProduct, ProductWeightPrice
 from merch.models import MerchProduct, TextOption
+from profiles.models import SubscriptionProduct
+from core.models import Product, CommonProduct
 
 
 class Order(models.Model):
@@ -68,6 +70,7 @@ class OrderLineItem(models.Model):
     order = models.ForeignKey(Order, null=False, blank=False, on_delete=models.CASCADE, related_name='lineitems')
     edible_product = models.ForeignKey(EdibleProduct, null=True, blank=True, on_delete=models.CASCADE)
     merch_product = models.ForeignKey(MerchProduct, null=True, blank=True, on_delete=models.CASCADE)
+    subscription_product = models.ForeignKey(SubscriptionProduct, null=True, blank=True, on_delete=models.CASCADE)
     product_type = models.CharField(max_length=10, null=True, blank=True)
 
     weight = models.IntegerField(null=True, blank=True)  # Stores the selected weight
@@ -86,6 +89,8 @@ class OrderLineItem(models.Model):
                 self.lineitem_total = price_per_unit * Decimal(self.quantity)
             elif self.product_type == 'merch':
                 self.lineitem_total = self.merch_product.price * Decimal(self.quantity)
+            elif self.product_type == 'subscription':
+                self.lineitem_total = self.subscription_product.price * Decimal(self.quantity)
 
         super().save(*args, **kwargs)
 
@@ -96,4 +101,4 @@ class OrderLineItem(models.Model):
             text = f" - {self.selected_text.text}" if self.selected_text else ""
             return f'{self.merch_product.name}{text} on order {self.order.order_number}'
         else:
-            return f'Product on order {self.order.order_number}'
+            return f'Subscription product on order {self.order.order_number}'

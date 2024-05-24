@@ -57,7 +57,9 @@ class Profile(models.Model):
         if not self.is_subscribed or not self.subscription_start_date:
             return "No active subscription"
         expiration_date = self.subscription_start_date + timezone.timedelta(days=365 * 1)
+        print(f"Expiration Date: {expiration_date}, Current Date: {timezone.now().date()}")
         return expiration_date - timezone.now().date()
+
 
 
 @receiver(post_save, sender=User)

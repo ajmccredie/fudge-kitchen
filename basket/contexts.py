@@ -71,11 +71,12 @@ def basket_contents(request):
                 })
                 total += subtotal
                 product_count += quantity
+                has_subscription = True
 
         except Exception as e:
             print(f"Error processing item ID {item_id}: {e}")
 
-    delivery = calculate_delivery(total, request.user)
+    delivery = calculate_delivery(total, request.user, has_subscription)
     context = {
         'basket_items': basket_items,
         'total': total,
@@ -86,10 +87,12 @@ def basket_contents(request):
 
     return context
 
-def calculate_delivery(total, user):
+def calculate_delivery(total, user, has_subscription):
     delivery = Decimal(settings.DEFAULT_DELIVERY_CHARGE) if total > Decimal('0.00') else Decimal('0.00')
     if user and user.is_authenticated:
         profile = Profile.objects.filter(user=user).first()
         if profile and profile.is_subscribed:
             delivery = Decimal('0.00')
+    if has_subscription:
+        delivery = Decimal('0.00')
     return delivery

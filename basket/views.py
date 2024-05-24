@@ -144,8 +144,8 @@ class RemoveFromBasketView(View):
     def post(self, request, item_id):
         try:
             basket = request.session.get('basket', {})
-            if item_id in basket:
-                del basket[item_id]
+            if str(item_id) in basket:
+                del basket[str(item_id)]
                 request.session.modified = True
                 messages.success(request, "Item removed successfully.")
             else:
@@ -154,17 +154,18 @@ class RemoveFromBasketView(View):
             messages.error(request, f"Error removing item: {str(e)}")
         return redirect(reverse('basket:view_basket'))
 
+
 class AdjustBasketView(View):
     def post(self, request, item_id):
         basket = request.session.get('basket', {})
         quantity = int(request.POST.get('quantity'))
 
-        if item_id in basket:
+        if str(item_id) in basket:
             if quantity > 0:
-                basket[item_id]['quantity'] = quantity
+                basket[str(item_id)]['quantity'] = quantity
                 messages.success(request, 'Updated quantity in your basket.')
             else:
-                del basket[item_id]
+                del basket[str(item_id)]
                 if not basket:
                     del request.session['basket']
                 messages.success(request, 'Removed item from your basket.')

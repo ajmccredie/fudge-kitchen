@@ -106,12 +106,15 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
 
 class SubscriptionView(View):
     def get(self, request):
+        print("SubscriptionView: GET request received")
         subscription_product = get_object_or_404(SubscriptionProduct, name="Annual Subscription")
         common_product = CommonProduct.objects.get(product_id=subscription_product.id, product_type='subscription')
+        print(f"Subscription Product: {subscription_product}, Common Product: {common_product}")
         return render(request, 'profiles/subscription_page.html', {
             'subscription_product': subscription_product,
             'common_product': common_product,
         })
+
 
 class AddSubscriptionToBasketView(LoginRequiredMixin, View):
     def post(self, request):
