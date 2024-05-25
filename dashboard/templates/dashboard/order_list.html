@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container">
     <h2>Order List</h2>
-
+    <a href="{% url 'dashboard:home' %}" class="btn btn-secondary">Return to Dashboard</a>
     <form method="get" action="{% url 'dashboard:order_list' %}" class="mb-3">
         <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" id="filter_dispatch" name="filter_dispatch" {% if request.GET.filter_dispatch %}checked{% endif %}>
