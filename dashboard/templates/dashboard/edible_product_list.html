@@ -19,7 +19,7 @@
             <tr>
                 <td><img src="{{ product.image.url }}" alt="{{ product.flavour }}" style="width:100px; height:auto;"></td>
                 <td>{{ product.flavour }}</td>
-                <td>{{ product.details }}</td>
+                <td>{{ product.description }}</td>
                 <td>
                     {% for allergen in product.get_allergens_info %}
                     <img src="{% static allergen.symbol_path %}" alt="{{ allergen.name }}" title="{{ allergen.name }}" style="width: 30px; height: 30px; margin-right: 5px;">
