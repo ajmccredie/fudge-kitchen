@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
 @font-face {
     font-family: 'Terrapin';
     src: url('../fonts/Terrapin[1].ttf') format('truetype');
@@ -5,7 +6,6 @@
     font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
 
 html {
     height: 100%;

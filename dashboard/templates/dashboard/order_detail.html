@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block content %}
@@ -59,13 +58,25 @@
             </thead>
             <tbody>
                 {% for item in order.lineitems.all %}
+                {% if not request.GET.filter_type or item.product_type == request.GET.filter_type %}
                 <tr>
                     <td>{{ item }}<br><small>Text: {{ item.selected_text.text }}</small></td>
-                    <td>{% if item.made %}<span class="badge bg-success">Made</span>{% else %}<span class="badge bg-warning">Not Made</span>{% endif %}</td>
                     <td>
-                        <a href="{% url 'dashboard:mark_item_made' item.id %}" class="btn btn-sm btn-primary">Mark as Made</a>
+                        {% if item.product_type in 'merch,edible' %}
+                            {% if item.made %}
+                                <span class="badge bg-success">Made</span>
+                            {% else %}
+                                <span class="badge bg-warning">Not Made</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.product_type in 'merch,edible' and not item.made %}
+                        <a href="{% url 'dashboard:mark_item_made' item.id %}" class="btn btn-outline-primary btn-sm">Mark as Made</a>
+                        {% endif %}
                     </td>
                 </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>

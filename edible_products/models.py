@@ -23,13 +23,13 @@ class EdibleProduct(Product):
     }
 
     plant_based = models.BooleanField(default=False)
-    description = models.TextField(blank=True, null=True)
-    details = models.TextField(blank=True, null=True)
-    flavour = models.CharField(max_length=254, null=True, blank=True)
+    description = models.TextField(blank=False, null=True)
+    # details = models.TextField(blank=True, null=True)
+    flavour = models.CharField(max_length=254, null=True, blank=False)
     guest_flavour = models.BooleanField(default=False)
     ingredients = models.TextField()
     weight = models.PositiveIntegerField(default=400, choices=WEIGHT_CHOICES, help_text="Weight in grams")
-    image_url = models.URLField(max_length=1024, null=True, blank=True)
+    image_url = models.URLField(max_length=1024, null=True, blank=False)
 
     # Allergen boolean fields
     gluten = models.BooleanField(default=False, verbose_name='Gluten')

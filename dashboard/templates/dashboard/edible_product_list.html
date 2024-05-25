@@ -17,9 +17,27 @@
         <tbody>
             {% for product in products %}
             <tr>
-                <td><img src="{{ product.image.url }}" alt="{{ product.flavour }}" style="width:100px; height:auto;"></td>
-                <td>{{ product.flavour }}</td>
-                <td>{{ product.description }}</td>
+                <td>
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.flavour }}" style="width:100px; height:auto;">
+                    {% else %}
+                    <span class="text-danger">This still requires filling in</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.flavour %}
+                    {{ product.flavour }}
+                    {% else %}
+                    <span class="text-danger">This still requires filling in</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.description %}
+                    {{ product.description }}
+                    {% else %}
+                    <span class="text-danger">This still requires filling in</span>
+                    {% endif %}
+                </td>
                 <td>
                     {% for allergen in product.get_allergens_info %}
                     <img src="{% static allergen.symbol_path %}" alt="{{ allergen.name }}" title="{{ allergen.name }}" style="width: 30px; height: 30px; margin-right: 5px;">

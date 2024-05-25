@@ -22,10 +22,12 @@ class ProfileView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         profile = get_object_or_404(Profile, user=request.user)
         form = self.form_class(instance=profile)
-        orders = profile.orders.order_by('-date')  # Order by date in descending order
+        orders = profile.orders.order_by('-date')
+        latest_order = orders.first()
         context = {
             'form': form,
             'orders': orders,
+            'latest_order': latest_order,
             'on_profile_page': True,
             'subscription_active': profile.is_subscribed,
             'subscription_start_date': profile.subscription_start_date,
@@ -53,9 +55,11 @@ class ProfileView(LoginRequiredMixin, View):
         else:
             messages.error(request, 'Error updating your profile. Please check the form for errors.')
         orders = profile.orders.order_by('-date') 
+        latest_order = orders.first()
         context = {
             'form': form,
             'orders': orders,
+            'latest_order': latest_order,
             'on_profile_page': True,
             'subscription_active': profile.is_subscribed,
             'subscription_start_date': profile.subscription_start_date,

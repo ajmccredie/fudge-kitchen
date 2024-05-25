@@ -18,13 +18,32 @@
         <div class="col-12">
             <h3>Account Details</h3>
             <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Full Name:</strong> {{ profile.full_name }}</p>
+            <p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
             <p><strong>Phone Number:</strong> {{ profile.default_phone_number }}</p>
             <p><strong>Address:</strong> {{ profile.default_street_address1 }} {{ profile.default_street_address2 }},
                 {{ profile.default_town_or_city }}, {{ profile.default_county }}, {{ profile.default_country }}</p>
             <p><strong>Postal Code:</strong> {{ profile.default_postcode }}</p>
         </div>
     </div>
+
+    <!-- Latest Order Details -->
+    {% if latest_order %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>Latest Order</h3>
+            <p><strong>Order Number:</strong> {{ latest_order.order_number }}</p>
+            <p><strong>Date:</strong> {{ latest_order.date }}</p>
+            <p><strong>Dispatched:</strong> {{ latest_order.dispatched|yesno:"Yes,No" }}</p>
+            <h4>Items:</h4>
+            <ul>
+                {% for item in latest_order.lineitems.all %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="row">
         <div class="col-12">
             <h3>Subscription Status</h3>

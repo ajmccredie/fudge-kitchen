@@ -55,9 +55,21 @@ class CheckoutView(View):
             messages.error(request, "There's nothing in your basket at the moment.")
             return redirect(reverse('product_list'))
 
-        initial_data = {
-            'email': request.user.email,
-        } if request.user.is_authenticated else {}
+        if request.user.is_authenticated:
+            profile = request.user.profile
+            initial_data = {
+                'full_name': profile.user.get_full_name(),
+                'email': profile.user.email,
+                'phone_number': profile.default_phone_number,
+                'street_address1': profile.default_street_address1,
+                'street_address2': profile.default_street_address2,
+                'town_or_city': profile.default_town_or_city,
+                'postcode': profile.default_postcode,
+                'country': profile.default_country,
+                'county': profile.default_county,
+            }
+        else:
+            initial_data = {}
 
         order_form = OrderForm(initial=initial_data)
 

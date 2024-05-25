@@ -39,6 +39,10 @@ class EdibleProductCreateView(StaffRequiredMixin, CreateView):
     template_name = 'dashboard/product_form.html'
 
     def form_valid(self, form):
+        if not form.is_valid():
+            messages.error(self.request, 'Please correct the errors below.')
+            return self.form_invalid(form)
+        
         response = super().form_valid(form)
         messages.success(self.request, 'Product created successfully!')
         return response
@@ -46,18 +50,24 @@ class EdibleProductCreateView(StaffRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('dashboard:edible_product_list')
 
+
 class EdibleProductUpdateView(StaffRequiredMixin, UpdateView):
     model = EdibleProduct
     form_class = EdibleProductForm
     template_name = 'dashboard/product_form.html'
 
     def form_valid(self, form):
+        if not form.is_valid():
+            messages.error(self.request, 'Please correct the errors below.')
+            return self.form_invalid(form)
+        
         response = super().form_valid(form)
-        messages.success(self.request, 'Product updated successfully!')
+        messages.success(self.request, 'Product created successfully!')
         return response
 
     def get_success_url(self):
         return reverse('dashboard:edible_product_list')
+
 
 class EdibleProductDeleteView(StaffRequiredMixin, DeleteView):
     model = EdibleProduct
@@ -101,11 +111,14 @@ class MerchProductCreateView(StaffRequiredMixin, CreateView):
             colour_formset.save()
             text_option_formset.instance = self.object
             text_option_formset.save()
-            CommonProduct.objects.get_or_create(product_type='merch', product_id=self.object.id)
             messages.success(self.request, 'Merch product created successfully!')
             return redirect(self.get_success_url())
         else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'There was an error with your submission. Please check the form and try again.')
+        return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse('dashboard:merch_product_list')
@@ -135,17 +148,18 @@ class MerchProductUpdateView(StaffRequiredMixin, UpdateView):
             colour_formset.save()
             text_option_formset.instance = self.object
             text_option_formset.save()
-            common_product, created = CommonProduct.objects.get_or_create(product_id=self.object.id)
-            if not created:
-                common_product.product_type = 'merch'
-                common_product.save()
             messages.success(self.request, 'Merch product updated successfully!')
             return redirect(self.get_success_url())
         else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'There was an error with your submission. Please check the form and try again.')
+        return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse('dashboard:merch_product_list')
+        
 
 class MerchProductDeleteView(StaffRequiredMixin, DeleteView):
     model = MerchProduct
