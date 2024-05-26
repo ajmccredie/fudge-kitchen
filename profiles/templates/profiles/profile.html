@@ -52,44 +52,29 @@
             {% if user.profile.is_subscribed %}
                 <p>You are a subscriber!</p>
                 <p>Subscription Start Date: {{ user.profile.subscription_start_date }}</p>
-                <p>Time Remaining: {{ user.profile.get_subscription_time_remaining }}</p>
+                <p>Time Remaining: {{ user.profile.get_subscription_time_remaining.time_remaining }}</p>
+                {% if user.profile.get_subscription_time_remaining.expired %}
+                    <p>Your subscription has expired.</p>
+                {% endif %}
             {% else %}
                 <p>You do not have an active subscription.</p>
-                <a href="{% url 'profiles:subscription_page' %}" class="btn btn-primary">Subscribe Now</a>
+                <a href="{% url 'profiles:subscription_page' %}" class="btn btn-primary" {% if user.profile.get_subscription_time_remaining.expired %}disabled{% endif %}>Subscribe Now</a>
             {% endif %}
         </div>
     </div>
 
     <!-- Order History -->
-    <div class="row">
-        <div class="col-12">
-            <h3>Order History</h3>
-            <div class="list-group">
-                {% for order in orders %}
-                <a href="{% url 'profiles:order_detail' order.id %}" class="list-group-item list-group-item-action">
-                    <strong>Order #{{ order.order_number }} - {{ order.date }}</strong>
-                    <span class="badge badge-primary badge-pill float-right">{{ order.lineitems.count }} items</span>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
     <div class="row mt-4">
         <div class="col-12">
-            <a href="{% url 'profiles:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
-            <a href="{% url 'profiles:delete_account' %}" class="btn btn-danger" id="delete-account-btn">Delete Account</a>
+            <h3>Order History</h3>
+            <ul>
+                {% for order in orders %}
+                <li>
+                    <a href="{% url 'profiles:order_detail' order.pk %}">Order #{{ order.order_number }} - {{ order.date }}</a>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
-
-<script>
-    // Delete Account Confirmation
-    document.getElementById('delete-account-btn').addEventListener('click', function (event) {
-        event.preventDefault();
-        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-            window.location.href = this.href;
-        }
-    });
-</script>
 {% endblock %}

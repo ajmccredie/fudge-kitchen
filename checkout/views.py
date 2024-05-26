@@ -85,7 +85,8 @@ class CheckoutView(View):
         context.update({
             'order_form': order_form,
             'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
-            'client_secret': intent.client_secret
+            'client_secret': intent.client_secret,
+            'on_checkout': True 
         })
 
         return render(request, 'checkout/checkout.html', context)

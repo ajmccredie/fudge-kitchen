@@ -1,6 +1,7 @@
 {% load static %}
 {% load basket_tools %}
 
+{% if not on_checkout %}
 <div class="toast custom-toast rounded-0 border-top-0" data-autohide="false">
     <div class="arrow-up arrow-success"></div>
     <div class="w-100 toast-capper bg-success"></div>
@@ -17,7 +18,7 @@
                 <hr class="mt-1 mb-3">
             </div>
         </div>
-        {% if grand_total and not on_profile_page and not on_checkout_success and not on_checkout %}
+        {% if grand_total and not on_profile_page and not on_checkout_success %}
         {% if basket_items %}
         <p class="logo-font bg-white text-black py-1">Your Basket ({{ basket_items|length }})</p>
         <div class="basket-notification-wrapper">
@@ -66,3 +67,4 @@
         {% endif %}
     </div>
 </div>
+{% endif %}

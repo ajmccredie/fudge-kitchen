@@ -24,7 +24,7 @@ class ProfileForm(forms.ModelForm):
         fields = [
             'dietary_preference', 'default_phone_number', 'default_country', 'default_postcode',
             'default_town_or_city', 'default_street_address1', 'default_street_address2',
-            'default_county', 'is_subscribed', 'newsletter_recipient'
+            'default_county', 'newsletter_recipient'
         ]
         labels = {
             'dietary_preference': 'Dietary Preference',
@@ -35,7 +35,6 @@ class ProfileForm(forms.ModelForm):
             'default_street_address1': 'Street Address 1',
             'default_street_address2': 'Street Address 2',
             'default_county': 'County, State or Locality',
-            'is_subscribed': 'Part of the subscriber family',
             'newsletter_recipient': 'Receiver of our awesome newsletter',
         }
         widgets = {
@@ -68,7 +67,6 @@ class ProfileForm(forms.ModelForm):
                 css_class='form-row'
             ),
             Row(
-                Column('is_subscribed', css_class='form-group col-md-6 mb-0'),
                 Column('newsletter_recipient', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
