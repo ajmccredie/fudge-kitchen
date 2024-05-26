@@ -2,6 +2,6 @@ from django import template
 
 register = template.Library()
 
-@register.filter
-def getattr(obj, attr):
-    return getattr(obj, attr, None)
+@register.filter(name='get_attr')
+def get_attr(obj, attr, default=None):
+    return getattr(obj, attr, default)

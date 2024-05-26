@@ -1,5 +1,7 @@
 from django import forms
 from .models import Profile
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Row, Column, Submit, Field
 
 class ProfileForm(forms.ModelForm):
     ALLERGEN_FIELDS = [
@@ -9,6 +11,13 @@ class ProfileForm(forms.ModelForm):
         ('sesame_seeds', 'Sesame Seeds'), ('sulphur_dioxide_and_sulphites', 'Sulphur Dioxide and Sulphites'),
         ('lupin', 'Lupin'), ('molluscs', 'Molluscs')
     ]
+
+    allergens = forms.MultipleChoiceField(
+        choices=ALLERGEN_FIELDS,
+        widget=forms.CheckboxSelectMultiple(),
+        label="Allergen Preferences",
+        required=False
+    )
 
     class Meta:
         model = Profile
@@ -33,22 +42,39 @@ class ProfileForm(forms.ModelForm):
             'dietary_preference': forms.RadioSelect(),
         }
 
-    allergens = forms.MultipleChoiceField(
-        choices=ALLERGEN_FIELDS,
-        widget=forms.CheckboxSelectMultiple(),
-        label="Allergen Preferences",
-        required=False
-    )
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
-            field.label = self.Meta.labels.get(field_name, field_name.replace('_', ' ').capitalize())
-            if field.required:
-                field.widget.attrs['placeholder'] = f"{field.label} *"
-            else:
-                field.widget.attrs['placeholder'] = field.label
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Row(
+                Column('dietary_preference', css_class='form-group col-md-6 mb-0'),
+                Column('default_phone_number', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('default_country', css_class='form-group col-md-6 mb-0'),
+                Column('default_postcode', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('default_town_or_city', css_class='form-group col-md-6 mb-0'),
+                Column('default_street_address1', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('default_street_address2', css_class='form-group col-md-6 mb-0'),
+                Column('default_county', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('is_subscribed', css_class='form-group col-md-6 mb-0'),
+                Column('newsletter_recipient', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Field('allergens', css_class='form-group col-12'),
+            Submit('submit', 'Update Profile', css_class='btn btn-primary')
+        )
 
         if self.instance:
             self.initial['allergens'] = [

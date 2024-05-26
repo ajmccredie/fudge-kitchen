@@ -10,10 +10,16 @@
             <h3>Account Details</h3>
             <p><strong>Email:</strong> {{ user.email }}</p>
             <p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
-            <p><strong>Dietary Preference:</strong> {{ profile.get_dietary_preference_display }}</p>
+            <p><strong>Dietary Preference:</strong> 
+                {% if profile.dietary_preference == "plant_based" %}
+                    {{ profile.get_dietary_preference_display }}
+                {% else %}
+                    None
+                {% endif %}
+            </p>
             <p><strong>Allergen Preferences:</strong> 
                 {% for field_name, label in form.ALLERGEN_FIELDS %}
-                    {% if profile|getattr:field_name %}
+                    {% if profile|get_attr:field_name %}
                         {{ label }}{% if not forloop.last %}, {% endif %}
                     {% endif %}
                 {% endfor %}
@@ -62,22 +68,16 @@
                 {% for order in orders %}
                 <a href="{% url 'profiles:order_detail' order.id %}" class="list-group-item list-group-item-action">
                     <strong>Order #{{ order.order_number }} - {{ order.date }}</strong>
-                    <span class="badge {% if order.dispatched %}badge-success{% else %}badge-secondary{% endif %}">
-                        {% if order.dispatched %}Dispatched{% else %}Pending{% endif %}
-                    </span>
+                    <span class="badge badge-primary badge-pill float-right">{{ order.lineitems.count }} items</span>
                 </a>
-                {% empty %}
-                <p>No orders yet.</p>
                 {% endfor %}
             </div>
         </div>
     </div>
 
-    <!-- Account Management -->
     <div class="row mt-4">
         <div class="col-12">
-            <h3>Account Management</h3>
-            <a href="{% url 'profiles:edit_profile' %}" class="btn btn-primary">Edit Details</a>
+            <a href="{% url 'profiles:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
             <a href="{% url 'profiles:delete_account' %}" class="btn btn-danger" id="delete-account-btn">Delete Account</a>
         </div>
     </div>
