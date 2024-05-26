@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
 @font-face {
     font-family: 'Terrapin';
     src: url('../fonts/Terrapin[1].ttf') format('truetype');
@@ -5,7 +6,6 @@
     font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
 
 html {
     height: 100%;
@@ -74,23 +74,30 @@ header {
 }
 
 
-#delivery-banner {
-    width: 100%;
+.header-container.fixed-top {
+    z-index: 400; 
+    background-color: #6B4F4F;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1); 
 }
 
+#delivery-banner {
+    width: 100%;
+    display: block;
+}
 
 #delivery-banner h4 {
     margin: 0; 
     padding: 10px 0; 
     background-color: #2C2C2C;
+    font-size: 1rem;
 }
 
 .nav-link {
-    color: #FFF8DC; 
+    color: #f5f5cd !important;
 }
 
 .nav-link:hover {
-    color: #DAA520; 
+    color: #DAA520 !important; 
 }
 
 
@@ -226,6 +233,22 @@ header {
     transform: scale(0.8);
 }
 
+.guest-flavour-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffcc00;
+    color: #333;
+    text-align: center;
+    padding: 5px 0;
+    font-weight: bold;
+    z-index: 1;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    clip-path: polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%);
+}
+
 
 /* Merch Styling */
 #text-display {
@@ -235,19 +258,20 @@ header {
 
 /* Buttons */
 .btn-primary {
-    background-color: #DAA520;
-    border-color: #DAA520;
+    background-color: #c98a1e;
+    border-color: #c98a1e;
+    margin: 5px;
 }
 
 .btn-primary:hover {
-    background-color: #c98a1e;
-    border-color: #c98a1e;
+    background-color: #DAA520;
+    border-color: #DAA520;
 }
 
 .btn:active, .btn:focus {
     background-color: #8B4513; 
     color: white; 
-    outline: none;
+    outline: #8B4513;
 }
 
 .update-link, .remove_item {
@@ -262,13 +286,65 @@ header {
 }
 
 .custom-toast {
-    overflow: visible;
+    overflow: auto;
+    max-height: 75vh;
+    font-size: 0.9rem; /* Smaller text */
+    line-height: 1.2; /* Less line spacing */
 }
 
 .toast-capper {
     height: 2px;
 }
 
+.toast-body {
+    padding: 1rem;
+}
+
+.toast-message {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.basket-notification-wrapper .row {
+    margin-bottom: 0.5rem; /* Less margin between items */
+}
+
+.basket-item-image {
+    width: 100%; /* Adjust the image size */
+    max-width: 50px; /* Make the image smaller */
+    height: auto;
+}
+
+.toast-item-name,
+.toast-item-details,
+.toast-item-price {
+    font-size: 0.8rem; /* Smaller text for item details */
+}
+
+.toast-item-name {
+    font-weight: bold;
+}
+
+.btn-block {
+    margin-top: 0.5rem; /* Adjust the margin to place the button properly */
+}
+
+@media (max-width: 768px) {
+    .custom-toast {
+        font-size: 0.8rem; /* Even smaller text on small screens */
+        line-height: 1.1; /* Adjust line spacing for small screens */
+    }
+
+    .basket-item-image {
+        max-width: 40px; /* Smaller image on small screens */
+    }
+
+    .toast-item-name,
+    .toast-item-details,
+    .toast-item-price {
+        font-size: 0.7rem; /* Smaller text for item details on small screens */
+    }
+}
 
 /* Convenience classes - colors copied from Bootstrap */
 .arrow-primary {
@@ -408,14 +484,13 @@ header {
     border-color: #f5f5dc;
 }
 
-.dropdown-menu {
-    color: #f5f5cd;
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23FFFFFF' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 .dropdown-menu {
     color: #f5f5cd;
 }
-
 
 @media (max-width: 992px) {
     .navbar-light .navbar-toggler {
@@ -424,7 +499,7 @@ header {
     }
 
     .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23f5f5dc' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23FFFFFF' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
     }
 
     .d-flex .list-inline-item {
