@@ -1,15 +1,21 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import Profile, CommonProduct, SubscriptionProduct
-
+from .models import Profile, SubscriptionProduct
 
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     verbose_name_plural = 'profile'
     fk_name = 'user'
-    fields = ['allergen_preferences', 'default_phone_number', 'default_country', 'default_postcode', 'default_town_or_city', 'default_street_address1', 'default_street_address2', 'default_county', 'is_subscribed', 'subscription_start_date', 'newsletter_recipient']
+    fields = [
+        'dietary_preference', 'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts',
+        'soybeans', 'milk', 'nuts', 'celery', 'mustard', 'sesame_seeds',
+        'sulphur_dioxide_and_sulphites', 'lupin', 'molluscs', 'default_phone_number',
+        'default_country', 'default_postcode', 'default_town_or_city', 'default_street_address1',
+        'default_street_address2', 'default_county', 'is_subscribed', 'subscription_start_date',
+        'newsletter_recipient'
+    ]
     extra = 0
 
 class UserAdmin(BaseUserAdmin):

@@ -9,15 +9,6 @@ from django_countries.fields import CountryField
 from core.models import Product, CommonProduct
 
 
-class Allergen(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
-    symbol = models.ImageField(upload_to='allergens/', null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class SubscriptionProduct(Product):
     duration_in_years = models.IntegerField(default=1)
 
@@ -27,17 +18,12 @@ class SubscriptionProduct(Product):
 
 
 class Profile(models.Model):
-    """ 
-    This will store the important information for the user
-    which they can access on login
-    """
     DIETARY_CHOICES = [
         ('none', 'None'),
         ('plant_based', 'Plant Based'),
     ]
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    allergen_preferences = models.ManyToManyField(Allergen, blank=True)
     dietary_preference = models.CharField(max_length=20, choices=DIETARY_CHOICES, default='none')
     default_phone_number = models.CharField(max_length=20, null=True, blank=True)
     default_country = CountryField(blank_label='Country *', null=True, blank=True)
@@ -48,7 +34,23 @@ class Profile(models.Model):
     default_county = models.CharField(max_length=80, null=True, blank=True)
     is_subscribed = models.BooleanField(default=False)
     subscription_start_date = models.DateField(null=True, blank=True)
-    newsletter_recipient = models.BooleanField(default=True)  
+    newsletter_recipient = models.BooleanField(default=False)
+
+    # Allergen boolean fields
+    gluten = models.BooleanField(default=False, verbose_name='Gluten')
+    crustaceans = models.BooleanField(default=False, verbose_name='Crustaceans')
+    eggs = models.BooleanField(default=False, verbose_name='Eggs')
+    fish = models.BooleanField(default=False, verbose_name='Fish')
+    peanuts = models.BooleanField(default=False, verbose_name='Peanuts')
+    soybeans = models.BooleanField(default=False, verbose_name='Soybeans')
+    milk = models.BooleanField(default=False, verbose_name='Milk')
+    nuts = models.BooleanField(default=False, verbose_name='Nuts')
+    celery = models.BooleanField(default=False, verbose_name='Celery')
+    mustard = models.BooleanField(default=False, verbose_name='Mustard')
+    sesame_seeds = models.BooleanField(default=False, verbose_name='Sesame Seeds')
+    sulphur_dioxide_and_sulphites = models.BooleanField(default=False, verbose_name='Sulphur Dioxide and Sulphites')
+    lupin = models.BooleanField(default=False, verbose_name='Lupin')
+    molluscs = models.BooleanField(default=False, verbose_name='Molluscs')
 
     def __str__(self):
         return f"{self.user.username}'s profile"
