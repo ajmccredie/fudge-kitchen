@@ -15,7 +15,6 @@ from django.utils.decorators import method_decorator
 from django.utils import timezone
 
 class ProfileView(LoginRequiredMixin, View):
-    """ Display the user's profile. """
     template_name = 'profiles/profile.html'
     form_class = ProfileForm
 
@@ -40,21 +39,10 @@ class ProfileView(LoginRequiredMixin, View):
         form = self.form_class(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            latest_order = profile.orders.aggregate(Max('date')).get('date__max')
-            if latest_order:
-                latest_order = profile.orders.get(date=latest_order)
-                profile.default_phone_number = latest_order.phone_number
-                profile.default_country = latest_order.country
-                profile.default_postcode = latest_order.postcode
-                profile.default_town_or_city = latest_order.town_or_city
-                profile.default_street_address1 = latest_order.street_address1
-                profile.default_street_address2 = latest_order.street_address2
-                profile.default_county = latest_order.county
-                profile.save()
             messages.success(request, 'Profile updated successfully')
         else:
             messages.error(request, 'Error updating your profile. Please check the form for errors.')
-        orders = profile.orders.order_by('-date') 
+        orders = profile.orders.order_by('-date')
         latest_order = orders.first()
         context = {
             'form': form,
@@ -66,7 +54,6 @@ class ProfileView(LoginRequiredMixin, View):
             'subscription_time_remaining': profile.get_subscription_time_remaining(),
         }
         return render(request, self.template_name, context)
-
 
 class EditProfileView(LoginRequiredMixin, View):
     template_name = 'profiles/edit_profile.html'
@@ -81,9 +68,9 @@ class EditProfileView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully')
-            return redirect('profile')
+            return redirect('profiles:profile')
         else:
-            print(form.errors)
+            messages.error(request, 'Error updating your profile. Please check the form for errors.')
         return render(request, self.template_name, {'form': form})
 
 

@@ -14,7 +14,7 @@ class EdibleProductAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         (None, {
-            'fields': ('name', 'flavour', 'plant_based', 'guest_flavour', 'details', 'ingredients', 'quantity', 'price', 'rating', 'image_url', 'image')
+            'fields': ('name', 'flavour', 'plant_based', 'guest_flavour', 'description', 'ingredients', 'image')
         }),
         ('Allergens', {
             'fields': (

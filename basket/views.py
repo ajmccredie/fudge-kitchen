@@ -150,12 +150,16 @@ class RemoveFromBasketView(View):
 
 class AdjustBasketView(View):
     def post(self, request, item_id):
-        basket = request.session.get('basket', {})
         quantity = int(request.POST.get('quantity'))
+        basket = request.session.get('basket', {})
 
         if str(item_id) in basket:
             if quantity > 0:
-                basket[str(item_id)]['quantity'] = quantity
+                if 'details' in basket[str(item_id)]:
+                    for detail in basket[str(item_id)]['details']:
+                        basket[str(item_id)]['details'][detail] = quantity
+                else:
+                    basket[str(item_id)]['quantity'] = quantity
                 messages.success(request, 'Updated quantity in your basket.')
             else:
                 del basket[str(item_id)]

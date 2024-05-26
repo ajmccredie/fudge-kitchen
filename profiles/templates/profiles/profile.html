@@ -19,10 +19,23 @@
             <h3>Account Details</h3>
             <p><strong>Email:</strong> {{ user.email }}</p>
             <p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
-            <p><strong>Phone Number:</strong> {{ profile.default_phone_number }}</p>
-            <p><strong>Address:</strong> {{ profile.default_street_address1 }} {{ profile.default_street_address2 }},
-                {{ profile.default_town_or_city }}, {{ profile.default_county }}, {{ profile.default_country }}</p>
-            <p><strong>Postal Code:</strong> {{ profile.default_postcode }}</p>
+        </div>
+    </div>
+
+    <!-- Preferences -->
+    <div class="row">
+        <div class="col-12">
+            <h3>Preferences</h3>
+            <p><strong>Newsletter Recipient:</strong> {{ profile.newsletter_recipient|yesno:"Yes,No" }}</p>
+            <p><strong>Dietary Preference:</strong> {{ profile.dietary_preference }}</p>
+            <p><strong>Allergen Preferences:</strong></p>
+            <ul>
+                {% for allergen in profile.allergen_preferences.all %}
+                <li>{{ allergen.name }}</li>
+                {% empty %}
+                <li>No allergen preferences set.</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 
@@ -81,7 +94,7 @@
     <div class="row mt-4">
         <div class="col-12">
             <h3>Account Management</h3>
-            <a href="{% url 'profiles:edit_profile' %}" class="btn btn-primary">Edit Details</a>
+            <a href="{% url 'profiles:edit_profile' %}" class="btn btn-primary">Check and Edit Delivery Address and Other Details</a>
             <a href="{% url 'profiles:delete_account' %}" class="btn btn-danger" id="delete-account-btn">Delete Account</a>
         </div>
     </div>

@@ -32,7 +32,7 @@
                             <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
                         </td>
                         <td class="py-3">
-                            <p class="my-0"><strong>{{ item.name }}</strong></p>
+                            <p class="my-0"><strong>{{ item.product.name }}</strong></p>
                             {% if item.product_type == 'edible' %}
                             <p class="my-0">Flavour: {{ item.product.flavour }}</p>
                             <p class="my-0">Weight: {{ item.weight }}g</p>
@@ -45,8 +45,7 @@
                         </td>
                         <td class="py-3 w-25">
                             {% if item.product_type != 'subscription' %}
-                            <form class="form update-form" method="POST"
-                                action="{% url 'basket:adjust_basket' item_id=item.item_id %}">
+                            <form class="form update-form" method="POST" action="{% url 'basket:adjust_basket' item_id=item.item_id %}">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <div class="input-group">
@@ -99,8 +98,7 @@
                                 </span>
                                 <span class="text-uppercase">Keep Shopping</span>
                             </a>
-                            <form method="POST" action="{% url 'basket:clear_basket' %}"
-                                onsubmit="return confirmClearBasket();">
+                            <form method="POST" action="{% url 'basket:clear_basket' %}" onsubmit="return confirmClearBasket();">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-black rounded-0 btn-lg">
                                     <span class="text-uppercase">Clear Basket</span>
@@ -146,7 +144,6 @@
     {% endif %}
 </div>
 {% endblock %}
-
 
 {% block postloadjs %}
 <script type="text/javascript">
@@ -194,13 +191,13 @@
         var itemId = $(this).data('item_id');
         handleEnableDisable(itemId);
     });
+
     // Update quantity on click
     $('.update-link').click(function (e) {
         var form = $(this).prev('.update-form');
         form.submit();
-    })
-</script>
-<script>
+    });
+
     // Remove item and reload on click
     $('.remove-item').click(function (e) {
         var csrfToken = "{{ csrf_token }}";

@@ -24,7 +24,6 @@ class EdibleProduct(Product):
 
     plant_based = models.BooleanField(default=False)
     description = models.TextField(blank=False, null=True)
-    # details = models.TextField(blank=True, null=True)
     flavour = models.CharField(max_length=254, null=True, blank=False)
     guest_flavour = models.BooleanField(default=False)
     ingredients = models.TextField()

@@ -31,9 +31,14 @@ class Profile(models.Model):
     This will store the important information for the user
     which they can access on login
     """
+    DIETARY_CHOICES = [
+        ('none', 'None'),
+        ('plant_based', 'Plant Based'),
+    ]
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     allergen_preferences = models.ManyToManyField(Allergen, blank=True)
-    dietary_preference = models.CharField(max_length=20, blank=True, null=True, help_text='Would you prefer to only see plant-based options?')
+    dietary_preference = models.CharField(max_length=20, choices=DIETARY_CHOICES, default='none')
     default_phone_number = models.CharField(max_length=20, null=True, blank=True)
     default_country = CountryField(blank_label='Country *', null=True, blank=True)
     default_postcode = models.CharField(max_length=20, null=True, blank=True)
@@ -43,7 +48,7 @@ class Profile(models.Model):
     default_county = models.CharField(max_length=80, null=True, blank=True)
     is_subscribed = models.BooleanField(default=False)
     subscription_start_date = models.DateField(null=True, blank=True)
-    newsletter_recipient = models.BooleanField(default=False)  
+    newsletter_recipient = models.BooleanField(default=True)  
 
     def __str__(self):
         return f"{self.user.username}'s profile"

@@ -2,7 +2,7 @@
     <ul class="navbar-nav w-auto mx-auto">
         <!-- Edible Products Dropdown -->
         <li class="nav-item dropdown">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'index' %}" id="home-link"
+            <a class="logo-font font-weight-bold nav-link mr-5" href="{% url 'index' %}" id="home-link"
                 data-toggle="none" aria-haspopup="true" aria-expanded="false">
                 Home
             </a>
@@ -15,14 +15,12 @@
             <div class="dropdown-menu border-0" aria-labelledby="edible-products-link">
                 <a href="{% url 'plant_based_products' %}" class="dropdown-item">Plant Based</a>
                 <a href="{% url 'traditional_products' %}" class="dropdown-item">Traditional</a>
-                <a href="{% url 'product_list' %}?tag=guest_flavour" class="dropdown-item">This Month's Guest
-                    Flavour</a>
             </div>
         </li>
 
         <!-- Merch Dropdown -->
         <li class="nav-item dropdown">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="#" id="merch-link"
+            <a class="logo-font font-weight-bold nav-link mr-5" href="#" id="merch-link"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Merch
             </a>
@@ -36,7 +34,7 @@
 
         <!-- Story Link -->
         <li class="nav-item">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{% url 'our_story' %}">Story</a>
+            <a class="logo-font font-weight-bold nav-link mr-5" href="{% url 'our_story' %}">Story</a>
         </li>
 
         <!-- Subscription Link -->

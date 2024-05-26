@@ -13,7 +13,7 @@
     <div class="toast-body bg-white">
         <div class="row">
             <div class="col">
-                {{ message }}
+                <p class="toast-message">{{ message }}</p>
                 <hr class="mt-1 mb-3">
             </div>
         </div>
@@ -22,22 +22,20 @@
         <p class="logo-font bg-white text-black py-1">Your Basket ({{ basket_items|length }})</p>
         <div class="basket-notification-wrapper">
             {% for item in basket_items %}
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-3 my-1">
-                    <img class="w-100" src="{{ item.product.image.url }}">
+                    <img class="basket-item-image" src="{{ item.product.image.url }}">
                 </div>
                 <div class="col-9">
-                    <p><strong>{{ item.product.name }}</strong></p>
+                    <p class="toast-item-name"><strong>{{ item.product.name }}</strong></p>
                     {% if item.product_type == 'edible' %}
-                    <p>Flavour: {{ item.product.flavour }}</p>
-                    <p>Weight: {{ item.weight }}g</p>
+                    <p class="toast-item-details">Flavour: {{ item.product.flavour }}</p>
+                    <p class="toast-item-details">Weight: {{ item.weight }}g</p>
                     {% elif item.product_type == 'merch' %}
-                    <p>Text: {{ item.text_option.text }}</p>
+                    <p class="toast-item-details">Text: {{ item.text_option.text }}</p>
                     {% endif %}
-                    <p>Qty: {{ item.quantity }}</p>
-                </div>
-                <div class="col-3 text-right">
-                    <p>£{{ item.price | calc_subtotal:item.quantity }}</p>
+                    <p class="toast-item-details">Qty: {{ item.quantity }}</p>
+                    <p class="toast-item-price">£{{ item.price | calc_subtotal:item.quantity }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -50,7 +48,7 @@
                         <span class="float-right">£{{ grand_total|floatformat:2 }}</span>
                     </p>
                 </strong>
-                <a href="{% url 'checkout' %}" class="btn btn-black btn-block rounded-0">
+                <a href="{% url 'checkout' %}" class="btn btn-primary btn-block rounded-0">
                     <span class="text-uppercase">Go To Secure Checkout</span>
                     <span class="icon">
                         <i class="fas fa-lock"></i>

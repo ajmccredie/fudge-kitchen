@@ -1,14 +1,31 @@
 from django import forms
-from .models import Profile
+from .models import Profile, Allergen
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ('user',)
-        fields = ['allergen_preferences', 'dietary_preference', 'default_phone_number', 'default_country', 'default_postcode', 'default_town_or_city', 'default_street_address1', 'default_street_address2', 'default_county', 'is_subscribed', 'newsletter_recipient']
+        fields = [
+            'allergen_preferences', 'dietary_preference', 'default_phone_number',
+            'default_country', 'default_postcode', 'default_town_or_city',
+            'default_street_address1', 'default_street_address2', 'default_county',
+            'is_subscribed', 'newsletter_recipient'
+        ]
         widgets = {
             'allergen_preferences': forms.CheckboxSelectMultiple(),
-            'dietary_preference': forms.CheckboxInput(),
+            'dietary_preference': forms.RadioSelect(),
+        }
+        labels = {
+            'allergen_preferences': 'Allergen Preferences',
+            'dietary_preference': 'Dietary Preference',
+            'default_phone_number': 'Phone Number',
+            'default_country': 'Country',
+            'default_postcode': 'Postal Code',
+            'default_town_or_city': 'Town or City',
+            'default_street_address1': 'Street Address 1',
+            'default_street_address2': 'Street Address 2',
+            'default_county': 'County, State or Locality',
+            'is_subscribed': 'Part of the subscriber family',
+            'newsletter_recipient': 'Receiver of our awesome newsletter',
         }
 
     def __init__(self, *args, **kwargs):
@@ -27,6 +44,6 @@ class ProfileForm(forms.ModelForm):
                 placeholder = placeholders.get(field, '') 
                 self.fields[field].widget.attrs['placeholder'] = placeholder if self.fields[field].required else f'{placeholder} (optional)'
                 self.fields[field].widget.attrs['class'] = 'border-black rounded-0 profile-form-input'
-                self.fields[field].label = False
+                self.fields[field].label = self.Meta.labels.get(field, self.fields[field].label)
             if field == 'is_subscribed':
                 self.fields[field].widget.attrs['disabled'] = 'disabled'

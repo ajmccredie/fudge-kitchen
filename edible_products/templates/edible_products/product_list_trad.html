@@ -30,7 +30,12 @@
         {% for product in edible_products %}
         <a href="{% url 'product_detail' product.id %}" style="text-decoration: none; color: inherit;"
             class="col-sm-6 col-md-4 col-lg-3 mb-4" onmouseover="this.style.cursor='pointer'">
-            <div class="card h-100">
+            <div class="card h-100 position-relative">
+                {% if product.guest_flavour %}
+                <div class="guest-flavour-banner">
+                    GUEST FLAVOUR: LIMITED EDITION
+                </div>
+                {% endif %}
                 {% if product.image %}
                 <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.flavour }}">
                 {% else %}
