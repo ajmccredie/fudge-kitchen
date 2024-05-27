@@ -51,7 +51,7 @@
                             </select>                            
                         </div>
                         <input type="hidden" name="redirect_url" value="{{ request.path }}">
-                        <label for="quantity">Quantity:</label>
+                        <h5>Quantity:</h5>
                         <div class="form-group w-50">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -106,7 +106,7 @@
 {% endblock %}
 
 {% block postloadjs %}
-<script type="text/javascript">
+<script>
   $('.toast').toast('show');</script>
 <script>
     // Disable +/- buttons outside 1-99 range
