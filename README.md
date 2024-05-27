@@ -1,13 +1,13 @@
 # Roo's Fudge Kitchen
-
+![Logo](static/images/READMEImages/logo.jpg)
 
 ## Project Rationale
-A site for the e-commerce store selling homemade fudge. The site allows for products to be filtered according to allergen needs.
-If you want to test the payment system, use these test card details:
-Card Number: 4242 4242 4242 4242
-Date: 0424
-CVC: 242
-Postcode: 42424
+A site for the e-commerce store selling homemade fudge. The site allows for products to be filtered according to allergen needs.<br>
+If you want to test the payment system, use these test card details:<br>
+Card Number: 4242 4242 4242 4242<br>
+Date: 0424<br>
+CVC: 242<br>
+Postcode: 42424<br>
 
 
 ## Table of Contents
@@ -95,37 +95,52 @@ A full list of user stories and the associated acceptance criteria are detailed 
 | Administration dashboard 'home' | ![Administrative dashboard wireframe](static/images/READMEImages/WF11-AdminInterface.png) | This page will lead to a number of administrative lists and ways to CRUD products and track orders and inquiries. Only accessible to users designated as 'staff'. |
 
 ### Colour schemes
+Some initial ideas for the luxury fudge site were experimented with. 
+![Potential colour palettes](static/images/READMEImages/colour-initial-ideas.png)
+
+The final choices and uses were as follows:
+**Background colour: #fff8dc (cornsilk)**
+Soft, warm tone to give a sense of sweetness and nostalgia.
+**Primary text colour: #2c2c2c (dark charcoal)**
+A suitable neutral colour to provide balance to the warm tones and excellent readability.
+**Header background colour and card background colour: #6b4f4f (deep taupe)**
+Rich and warm, contrasing with the cornsilk.
+**Header text colour: #f5f5cd (light khaki)**
+Soft, pale yellow, to contrast with the header background and ensure readability.
+**Link colours and card titles: #daa520 (goldenrod)**
+Highlights important names and adds some vibrancy to the interactive features.
 
 ### Fonts
-
-### Mock-ups
+**Terrapin, serif**
+A classic, elegrant font, with a sense of fun. Used for headers and slogans on the merchandise.
+**Anonymous Pro, monospace**
+Provides a modern, clean look and excellent readability.
 
 ### Design development and consistency in site theming
+The same colour schemes and fonts are used throughout the site. The use of the base.html file allowed for the same headers and navbar, giving the users a strong sense of familiarity whilst navigating around the site.
+Toasts are used throughout the site to provide information regarding the basket and other user actions, including confirmation of any CRUD actions in the business dashboard. 
+The merchandise and edible products are shown in 'cards' on the full product lists with key information, with further details and choices available when these are clicked on. This prevents overload of information and allows the customer to quickly browse products of interest.
 
 
 [Return to Top](#roos-fudge-kitchen)
 
-### Structure Plane: Key site features
-#### Home page
-#### Contact page
-#### Main nav menu
-#### Search bar
-#### Site filtering
-#### Subscriptions page
-#### Edible products
-#### Merchandise products
-#### Product detail page
-#### Restricted pages
-#### Accounts pages (including sign-up, sign-in and sign-out)
-#### Basket
-#### Checkout
-#### Admin dashboard features
+### Structure Plane: Key site features (all responsive)
+
+| Page | Desktop | Tablet | Phone | Comments |
+| --- | --- | --- | --- | --- |
+| **Home** | ![Homepage desktop](static/images/READMEImages/desktop-index.png) | ![Homepage tablet](static/images/READMEImages/ipad-index.png) | ![Homepage mobile](static/images/READMEImages/mobile-index.png) | - Home page nav top left (desktop only)<br> - Navbar either across (desktop) or burger menu (phone and tablet) <br> - Site search function for all product names and descriptions<br> - Easy link to accounts/profile<br> - Four site sections easy to reach – edible products, merch products, our-story and contact-us, and subscription |
+| **Search results from search bar** | ![Search desktop](static/images/READMEImages/desktop-search.png) | ![Search tablet](static/images/READMEImages/ipad-search.png) | ![Homepage mobile](static/images/READMEImages/mobile-search.png) | - Listed under ‘type’ <br> - Each result links to the product it found |
+| **Edible products** | ![Fudge desktop](static/images/READMEImages/desktop-product-list.png) | ![Fudge tablet](static/images/READMEImages/ipad-product-list.png) | ![Fudge mobile](static/images/READMEImages/mobile-product-list.png) | - Choice of viewing all products, plant-based or traditional <br> - Filter for allergens drops down and returns as required <br> - Symbols shown for allergens, as a short-hand, but other ways of interpreting the information are available.<br> - Price for 400g shown, but other weights available in the detail view <br> - Clear pictures and displayed on cards <br> - Guest products are shown with banners |
+
+
+
 #### Future features
 
 [Return to Top](#roos-fudge-kitchen)
 
 ## Data relationships
 ### ERD
+![Entity relationship diagram](static/images/READMEImages/ERD.png)
 
 ### Explanation of relationships
 1. Users/Profile
@@ -178,6 +193,7 @@ A full list of user stories and the associated acceptance criteria are detailed 
 
 ### Social media
 #### Facebook business page (mockup)
+![Facebook mockup](static/images/READMEImages/facebook-mockup.png)
 Facebook business pages are used to allow followers to see and share up to date information about the brands that interest them. The page is used to inform about new products and promotions, place targeted advertising and to link users to the main product site.
 #### Instagram with merchandise
 Humorous merchandise and pictures with people and their bought products are encouraged in the delivery notes. The main aim of this is to generate interest in the brand and encourage people to visit the main page and make their own purchases.
@@ -185,7 +201,7 @@ Humorous merchandise and pictures with people and their bought products are enco
 
 ### Newsletters
 Users sign up with an email address. Those who do not opt out of marketing will receive emails detailing flavours of the month and other new and exciting products. 
-This process is managed by {XXX}, and site users who have not yet signed
+This process is managed by {XXX}, and site users who have not yet made a purchase can still create a login, which will sign them up to the newsletter.
 
 [Return to Top](#roos-fudge-kitchen)
 
