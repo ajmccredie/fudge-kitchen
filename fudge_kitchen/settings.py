@@ -27,8 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-#DEBUG = 'DEVELOPMENT' in os.environ
+DEBUG = True
 
 ALLOWED_HOSTS = ['.herokuapp.com', '8000-ajmccredie-fudgekitchen-iermqdja4mr.ws-eu114.gitpod.io',
  '8000-ajmccredie-fudgekitchen-y9g237kif7v.ws-eu111.gitpod.io', 
@@ -122,7 +121,7 @@ SITE_ID = 1
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 # IMPORTANT - THIS NEEDS TO BE SET BACK TO MANDATORY ONCE EMAILS ARE ALL LINKED UP!
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'MANDATORY'
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = '/accounts/login/'

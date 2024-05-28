@@ -23,6 +23,9 @@ class ProfileView(LoginRequiredMixin, View):
         form = self.form_class(instance=profile)
         orders = profile.orders.order_by('-date')
         latest_order = orders.first()
+        allergen_info = {field: getattr(profile, field) for field, _ in ProfileForm.ALLERGEN_FIELDS}
+        dietary_preference = profile.get_dietary_preference_display()
+
         context = {
             'form': form,
             'orders': orders,
@@ -31,6 +34,9 @@ class ProfileView(LoginRequiredMixin, View):
             'subscription_active': profile.is_subscribed,
             'subscription_start_date': profile.subscription_start_date,
             'subscription_time_remaining': profile.get_subscription_time_remaining(),
+            'allergen_info': allergen_info,
+            'dietary_preference': dietary_preference,
+            'newsletter_recipient': profile.newsletter_recipient,
         }
         return render(request, self.template_name, context)
 
@@ -44,6 +50,10 @@ class ProfileView(LoginRequiredMixin, View):
             messages.error(request, 'Error updating your profile. Please check the form for errors.')
         orders = profile.orders.order_by('-date')
         latest_order = orders.first()
+
+        allergen_info = {field: getattr(profile, field) for field, _ in ProfileForm.ALLERGEN_FIELDS}
+        dietary_preference = profile.get_dietary_preference_display()
+
         context = {
             'form': form,
             'orders': orders,
@@ -52,8 +62,12 @@ class ProfileView(LoginRequiredMixin, View):
             'subscription_active': profile.is_subscribed,
             'subscription_start_date': profile.subscription_start_date,
             'subscription_time_remaining': profile.get_subscription_time_remaining(),
+            'allergen_info': allergen_info,
+            'dietary_preference': dietary_preference,
+            'newsletter_recipient': profile.newsletter_recipient,
         }
         return render(request, self.template_name, context)
+
 
 class EditProfileView(LoginRequiredMixin, View):
     template_name = 'profiles/edit_profile.html'

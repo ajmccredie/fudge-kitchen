@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView, DetailView
 from profiles.models import Profile, SubscriptionProduct
+from profiles.forms import ProfileForm
 from core.models import CommonProduct
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct, ColourVariation, TextOption
@@ -267,9 +268,22 @@ class SubscriptionManagementView(StaffRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         subscriptions = Profile.objects.filter(is_subscribed=True)
         subscription_products = SubscriptionProduct.objects.all()
+        allergen_fields = ProfileForm.ALLERGEN_FIELDS
+
+        for profile in subscriptions:
+            print(profile)
+            profile.allergen_info = {field: getattr(profile, field) for field, _ in allergen_fields}
+            profile.dietary_preference_display = profile.get_dietary_preference_display()
+            print(f"Profile: {profile.user.username}")
+            print(f"Allergens: {profile.allergen_info}")
+            print(f"Dietary Preference: {profile.dietary_preference_display}")
+
         return render(request, self.template_name, {
             'subscriptions': subscriptions,
             'subscription_products': subscription_products,
+            'allergen_fields': allergen_fields,
+            'allergen_info': profile.allergen_info,
+            'dietary_preference': profile.dietary_preference,
         })
 
 class SubscriptionProductListView(StaffRequiredMixin, ListView):
@@ -284,16 +298,19 @@ class SubscriptionProductCreateView(StaffRequiredMixin, CreateView):
     template_name = 'dashboard/subscription_product_form.html'
     success_url = reverse_lazy('dashboard:subscription_management')
 
+
 class SubscriptionProductUpdateView(StaffRequiredMixin, UpdateView):
     model = SubscriptionProduct
     form_class = SubscriptionProductForm
     template_name = 'dashboard/subscription_product_form.html'
     success_url = reverse_lazy('dashboard:subscription_management')
 
+
 class SubscriptionProductDeleteView(StaffRequiredMixin, DeleteView):
     model = SubscriptionProduct
     template_name = 'dashboard/subscription_product_confirm_delete.html'
     success_url = reverse_lazy('dashboard:subscription_management')
+
 
 class SubscribedUsersListView(StaffRequiredMixin, ListView):
     model = Profile
@@ -313,6 +330,7 @@ class SubscribedUsersListView(StaffRequiredMixin, ListView):
         context['subscriptions'] = subscriptions
         return context
 
+
 class UpdateSubscriptionStatusView(StaffRequiredMixin, View):
     def post(self, request, pk):
         profile = get_object_or_404(Profile, pk=pk)
@@ -321,3 +339,12 @@ class UpdateSubscriptionStatusView(StaffRequiredMixin, View):
         profile.save()
         messages.success(request, 'Subscription status updated successfully.')
         return redirect('dashboard:subscribed_users_list')
+
+
+class NewsletterRecipientsView(StaffRequiredMixin, ListView):
+    model = Profile
+    template_name = 'dashboard/newsletter_recipients.html'
+    context_object_name = 'newsletter_recipients'
+
+    def get_queryset(self):
+        return Profile.objects.filter(newsletter_recipient=True)

@@ -11,6 +11,7 @@
             <li><a href="{% url 'dashboard:order_list' %}">Order Management</a></li>
             <li><a href="{% url 'dashboard:inquiries_list' %}">Customer Inquiries</a></li>            
             <li><a href="{% url 'dashboard:subscription_management' %}">Subscription Management</a></li>
+            <li><a href="{% url 'dashboard:newsletter_recipients' %}">Newsletter Management</a></li>
         </ul>
         <form method="post" action="{% url 'dashboard:clear_basket_cache' %}">
             {% csrf_token %}

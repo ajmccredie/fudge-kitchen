@@ -4,6 +4,7 @@
 {% block content %}
 <div class="container">
     <h1>Subscription Management</h1>
+    <a href="{% url 'dashboard:home' %}" class="btn btn-secondary">Return to Dashboard</a>
     <h2>Subscribed Users</h2>
     <table class="table table-bordered mt-3">
         <thead>
@@ -12,6 +13,8 @@
                 <th>Email</th>
                 <th>Subscription Start Date</th>
                 <th>Time Remaining</th>
+                <th>Dietary Preference</th>
+                <th>Allergens</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -22,6 +25,30 @@
                 <td>{{ profile.user.email }}</td>
                 <td>{{ profile.subscription_start_date|date:"d M Y" }}</td>
                 <td>{{ profile.time_remaining }}</td>
+                <td>
+                    {% if profile.dietary_preference_display and profile.dietary_preference_display != "None" %}
+                        {{ profile.dietary_preference_display }}
+                    {% else %}
+                        None selected
+                    {% endif %}
+                </td>
+                <td>
+                    {% with selected_allergens=profile.allergen_info.items %}
+                        {% if selected_allergens %}
+                            {% for field_name, value in selected_allergens %}
+                                {% if value %}
+                                    {% for field, label in allergen_fields %}
+                                        {% if field == field_name %}
+                                            {{ label }}{% if not forloop.last %}, {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            None selected
+                        {% endif %}
+                    {% endwith %}
+                </td>
                 <td>
                     <form action="{% url 'dashboard:update_subscription_status' profile.pk %}" method="post" style="display:inline;">
                         {% csrf_token %}

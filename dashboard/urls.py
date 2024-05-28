@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView, OrderDetailView, mark_order_dispatched, mark_item_made, delete_order, InquiryListView, InquiryDetailView, MarkInquiryDealtWithView, ClearBasketCacheView, SubscriptionProductListView, SubscriptionProductCreateView, SubscriptionProductUpdateView, SubscriptionProductDeleteView, SubscribedUsersListView, UpdateSubscriptionStatusView, SubscriptionManagementView
+from .views import DashboardView, EdibleProductListView, EdibleProductCreateView, EdibleProductUpdateView, EdibleProductDeleteView, MerchProductListView, MerchProductCreateView, MerchProductUpdateView, MerchProductDeleteView, OrderListView, OrderDetailView, mark_order_dispatched, mark_item_made, delete_order, InquiryListView, InquiryDetailView, MarkInquiryDealtWithView, ClearBasketCacheView, SubscriptionProductListView, SubscriptionProductCreateView, SubscriptionProductUpdateView, SubscriptionProductDeleteView, SubscribedUsersListView, UpdateSubscriptionStatusView, SubscriptionManagementView, NewsletterRecipientsView
 
 app_name = 'dashboard'
 
@@ -30,4 +30,5 @@ urlpatterns = [
     path('subscriptions/<int:pk>/delete/', SubscriptionProductDeleteView.as_view(), name='subscription_product_delete'),
     path('subscribed_users/', SubscribedUsersListView.as_view(), name='subscribed_users_list'),
     path('subscribed_users/<int:pk>/update_status/', UpdateSubscriptionStatusView.as_view(), name='update_subscription_status'),
+    path('newsletter_recipients/', NewsletterRecipientsView.as_view(), name='newsletter_recipients'),
 ]

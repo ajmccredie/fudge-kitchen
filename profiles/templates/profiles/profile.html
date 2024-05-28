@@ -9,22 +9,31 @@
         <div class="col-12">
             <h3>Account Details</h3>
             <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
             <p><strong>Dietary Preference:</strong> 
-                {% if profile.dietary_preference == "plant_based" %}
-                    {{ profile.get_dietary_preference_display }}
+                {% if dietary_preference != "None" %}
+                    {{ dietary_preference }}
                 {% else %}
-                    None
+                    None selected
                 {% endif %}
             </p>
             <p><strong>Allergen Preferences:</strong> 
-                {% for field_name, label in form.ALLERGEN_FIELDS %}
-                    {% if profile|get_attr:field_name %}
-                        {{ label }}{% if not forloop.last %}, {% endif %}
+                {% with selected_allergens=allergen_info.items %}
+                    {% if selected_allergens %}
+                        {% for field_name, value in selected_allergens %}
+                            {% if value %}
+                                {% for field, label in form.ALLERGEN_FIELDS %}
+                                    {% if field == field_name %}
+                                        {{ label }}{% if not forloop.last %}, {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        None selected
                     {% endif %}
-                {% endfor %}
+                {% endwith %}
             </p>
-            <p><strong>Newsletter:</strong> {{ profile.newsletter_recipient|yesno:"Subscribed,Not Subscribed" }}</p>
+            <p><strong>Newsletter:</strong> {{ newsletter_recipient|yesno:"Subscribed,Not Subscribed" }}</p>
         </div>
     </div>
 
