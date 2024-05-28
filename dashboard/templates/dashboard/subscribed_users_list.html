@@ -26,28 +26,18 @@
                 <td>{{ profile.subscription_start_date|date:"d M Y" }}</td>
                 <td>{{ profile.time_remaining }}</td>
                 <td>
-                    {% if profile.dietary_preference_display and profile.dietary_preference_display != "None" %}
+                    {% if profile.dietary_preference_display %}
                         {{ profile.dietary_preference_display }}
                     {% else %}
-                        None selected
+                        Nope
                     {% endif %}
                 </td>
                 <td>
-                    {% with selected_allergens=profile.allergen_info.items %}
-                        {% if selected_allergens %}
-                            {% for field_name, value in selected_allergens %}
-                                {% if value %}
-                                    {% for field, label in allergen_fields %}
-                                        {% if field == field_name %}
-                                            {{ label }}{% if not forloop.last %}, {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            {% endfor %}
-                        {% else %}
-                            None selected
-                        {% endif %}
-                    {% endwith %}
+                    {% if profile.allergen_display %}
+                        {{ profile.allergen_display }}
+                    {% else %}
+                        None selected
+                    {% endif %}
                 </td>
                 <td>
                     <form action="{% url 'dashboard:update_subscription_status' profile.pk %}" method="post" style="display:inline;">
@@ -56,8 +46,20 @@
                     </form>
                 </td>
             </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No subscribed users found.</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Debug Output -->
+    <div>
+        <h2>Debug Output</h2>
+        {% for profile in subscriptions %}
+            <p>{{ profile.user.username }} - Dietary Preference: {{ profile.user.dietary_preference_display }} - Allergens: {{ profile.user.allergen_display }}</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

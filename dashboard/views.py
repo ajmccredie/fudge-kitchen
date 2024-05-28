@@ -17,6 +17,8 @@ from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItem
 
 # Create your views here.
 
+from django.forms.models import model_to_dict
+
 class StaffRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     """Mixin to require user to be staff."""
     def test_func(self):
@@ -271,20 +273,28 @@ class SubscriptionManagementView(StaffRequiredMixin, View):
         allergen_fields = ProfileForm.ALLERGEN_FIELDS
 
         for profile in subscriptions:
-            print(profile)
-            profile.allergen_info = {field: getattr(profile, field) for field, _ in allergen_fields}
-            profile.dietary_preference_display = profile.get_dietary_preference_display()
-            print(f"Profile: {profile.user.username}")
-            print(f"Allergens: {profile.allergen_info}")
-            print(f"Dietary Preference: {profile.dietary_preference_display}")
+            allergen_info = {field: getattr(profile, field) for field, _ in allergen_fields}
+            profile.user.allergen_display = ", ".join([label for field, label in allergen_fields if allergen_info.get(field)])
+            profile.user.dietary_preference_display = profile.get_dietary_preference_display()
 
-        return render(request, self.template_name, {
+            if not profile.user.allergen_display:
+                profile.user.allergen_display = "None selected"
+
+            if profile.user.dietary_preference_display == "None":
+                profile.user.dietary_preference_display = "None selected"
+
+            print(f"Profile: {profile.user.username}")
+            print(f"Allergens: {profile.user.allergen_display}")
+            print(f"Dietary Preference: {profile.user.dietary_preference_display}")
+
+        context = {
             'subscriptions': subscriptions,
             'subscription_products': subscription_products,
             'allergen_fields': allergen_fields,
-            'allergen_info': profile.allergen_info,
-            'dietary_preference': profile.dietary_preference,
-        })
+        }
+
+        return render(request, self.template_name, context)
+
 
 class SubscriptionProductListView(StaffRequiredMixin, ListView):
     model = SubscriptionProduct
