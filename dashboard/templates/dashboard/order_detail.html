@@ -60,7 +60,12 @@
                 {% for item in order.lineitems.all %}
                 {% if not request.GET.filter_type or item.product_type == request.GET.filter_type %}
                 <tr>
-                    <td>{{ item }}<br><small>Text: {{ item.selected_text.text }}</small></td>
+                    <td>
+                        {{ item }}
+                        {% if item.product_type == 'merch' %}
+                        <br><small>Text: {{ item.selected_text.text }}</small>
+                        {% endif %}
+                    </td>
                     <td>
                         {% if item.product_type in 'merch,edible' %}
                             {% if item.made %}
