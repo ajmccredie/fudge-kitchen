@@ -9,9 +9,9 @@ We are currently processing your order and will send you another email once your
 Order Details:
 {% for item in order.lineitems.all %}
     {% if item.product_type == 'edible' %}
-        - {{ item.edible_product.flavour }} - {{ item.weight }}g ({{ item.quantity }} @ £{{ item.edible_product.price }})
+        - {{ item.edible_product.flavour }} - {{ item.weight }}g ({{ item.quantity }} = £{{ item.lineitem_total }})
     {% elif item.product_type == 'merch' %}
-        - {{ item.merch_product.name }} ({{ item.quantity }} @ £{{ item.merch_product.price }})
+        - {{ item.merch_product.name }} ({{ item.quantity }} = £{{ item.merch_product.price }})
     {% endif %}
 {% endfor %}
 

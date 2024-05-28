@@ -31,9 +31,11 @@ class OrderForm(forms.ModelForm):
             self.fields[field].widget.attrs['class'] = 'stripe-style-input'
             self.fields[field].label = False
 
+        if self.initial.get('email'):
+            self.fields['email'].widget.attrs['readonly'] = True
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if not email:
             raise forms.ValidationError('Email address is required.')
         return email
-        

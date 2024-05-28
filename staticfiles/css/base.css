@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css');
 @font-face {
     font-family: 'Terrapin';
     src: url('../fonts/Terrapin[1].ttf') format('truetype');
@@ -103,6 +104,7 @@ header {
 
 .container {
     padding-top: 200px;
+    padding-bottom: 40px;
 }
 
 .icon {
@@ -286,11 +288,13 @@ header {
 }
 
 .custom-toast {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     max-height: 75vh;
-    font-size: 0.9rem; /* Smaller text */
-    line-height: 1.2; /* Less line spacing */
+    font-size: 0.9rem;
+    line-height: 1;
 }
+
 
 .toast-capper {
     height: 2px;
@@ -329,22 +333,6 @@ header {
     margin-top: 0.5rem; /* Adjust the margin to place the button properly */
 }
 
-@media (max-width: 768px) {
-    .custom-toast {
-        font-size: 0.8rem; /* Even smaller text on small screens */
-        line-height: 1.1; /* Adjust line spacing for small screens */
-    }
-
-    .basket-item-image {
-        max-width: 40px; /* Smaller image on small screens */
-    }
-
-    .toast-item-name,
-    .toast-item-details,
-    .toast-item-price {
-        font-size: 0.7rem; /* Smaller text for item details on small screens */
-    }
-}
 
 /* Convenience classes - colors copied from Bootstrap */
 .arrow-primary {
@@ -452,33 +440,6 @@ header {
     align-items: center;
 }
 
-/* Container for the loading image */
-.loading-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100px; /* Adjust size as needed */
-    height: 100px; /* Adjust size as needed */
-}
-
-/* Styling the loading image */
-#loadingLogo {
-    width: 100%; /* Full width of its container */
-    height: auto; /* Maintain aspect ratio */
-    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.75); /* White glow around the image */
-    animation: glow 1.5s infinite alternate; /* Animated glow effect */
-}
-
-/* Keyframes for the glow animation */
-@keyframes glow {
-    from {
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-    }
-    to {
-        box-shadow: 0 0 20px rgba(255, 255, 255, 1);
-    }
-}
-
 .navbar-toggler {
     color: #f5f5dc;
     border-color: #f5f5dc;
@@ -493,6 +454,11 @@ header {
 }
 
 @media (max-width: 992px) {
+    body {
+        font-size: 0.9rem; 
+        line-height: 1.4;
+    }
+
     .navbar-light .navbar-toggler {
         color: #f5f5dc;
         border-color: #f5f5dc;
@@ -510,7 +476,36 @@ header {
 }
 
 @media (max-width: 768px) {
+    body {
+        font-size: 0.8rem; 
+        line-height: 1.3; 
+    }
+
+    .custom-toast {
+        font-size: 0.8rem; 
+        line-height: 0.9; 
+    }
+
+    .basket-item-image {
+        max-width: 40px; 
+    }
+
+    .toast-item-name,
+    .toast-item-details,
+    .toast-item-price {
+        font-size: 0.7rem; /* Smaller text for item details on small screens */
+        margin-top: 0;
+        margin-bottom: 0.3rem;
+    }
+
     .mt-mobile-header {
         margin-top: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        font-size: 0.75rem;
+        line-height: 1.2;
     }
 }
