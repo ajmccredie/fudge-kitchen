@@ -131,7 +131,26 @@ The merchandise and edible products are shown in 'cards' on the full product lis
 | **Home** | ![Homepage desktop](static/images/READMEImages/desktop-index.png) | ![Homepage tablet](static/images/READMEImages/ipad-index.png) | ![Homepage mobile](static/images/READMEImages/mobile-index.png) | - Home page nav top left (desktop only)<br> - Navbar either across (desktop) or burger menu (phone and tablet) <br> - Site search function for all product names and descriptions<br> - Easy link to accounts/profile<br> - Four site sections easy to reach – edible products, merch products, our-story and contact-us, and subscription |
 | **Search results from search bar** | ![Search desktop](static/images/READMEImages/desktop-search.png) | ![Search tablet](static/images/READMEImages/ipad-search.png) | ![Homepage mobile](static/images/READMEImages/mobile-search.png) | - Listed under ‘type’ <br> - Each result links to the product it found |
 | **Edible products** | ![Fudge desktop](static/images/READMEImages/desktop-product-list.png) | ![Fudge tablet](static/images/READMEImages/ipad-product-list.png) | ![Fudge mobile](static/images/READMEImages/mobile-product-list.png) | - Choice of viewing all products, plant-based or traditional <br> - Filter for allergens drops down and returns as required <br> - Symbols shown for allergens, as a short-hand, but other ways of interpreting the information are available.<br> - Price for 400g shown, but other weights available in the detail view <br> - Clear pictures and displayed on cards <br> - Guest products are shown with banners |
-
+| **Edible product details** | ![Fudge details desktop](static/images/READMEImages/desktop-product-detail.png) | ![Fudge details iPad](static/images/READMEImages/ipad-product-detail.png) | ![Fudge details mobile](static/images/READMEImages/mobile-product-detail.png) | - A full ingredients list <br> - Another list of the allergens <br> - A drop-down choice of weights and values <br> - Ability to increase/decrease the number required |
+| **Merchandise products** | ![Merch list desktop](static/images/READMEImages/desktop-merch-list.png) | ![Merch list iPad](static/images/READMEImages/ipad-merch-list.png) | ![Merch list mobile](static/images/READMEImages/mobile-merch-list.png) | - Full variety of products can be seen. <br> - These can be further filtered using the navbar <br> - Detail and price shown on cards |
+| **Merchandise product details** | ![Merch details desktop](static/images/READMEImages/desktop-merch-detail.png) | ![Merch details iPad](static/images/READMEImages/ipad-merch-details.png) | ![Merch details mobile](static/images/READMEImages/mobile-merch-details.png) | - Price and description with larger, full image shown <br> - Alternative colours (if available) are shown and act as links to those products <br> - Choice of text in drop down menu, shown in the correct font when suggested. <br> - Ability to change the quantity required |
+| **Basket** | ![Basket desktop](static/images/READMEImages/desktop-basket.png) | ![Basket iPad](static/images/READMEImages/ipad-basket.png) | ![Basket mobile](static/images/READMEImages/mobile-basket.png) | - Key product information (name, image, amount, flavour and weight for edible, and text for merch) shown <br> - Ability to update the number of products or remove them altogether <br> - Options for whether to clear basket, keep shopping or proceed to checkout <br> - If basket is empty, only a 'keep shopping' option is given which returns to the homepage |
+| **Login** | Desktop | Tablet | Phone | - Adapted template from allauth <br> -  |
+| Sign-up | Desktop | Tablet | Phone | Comments |
+| Checkout | Desktop | Tablet | Phone | Comments |
+| Checkout success | Desktop | Tablet | Phone | Comments |
+| Profile | Desktop | Tablet | Phone | Comments |
+| Order details | Desktop | Tablet | Phone | Comments |
+| Edit profile | Desktop | Tablet | Phone | Comments |
+| Story | Desktop | Tablet | Phone | Comments |
+| Contact us and FAQs | Desktop | Tablet | Phone | Comments |
+| Subscription | Desktop | Tablet | Phone | Comments |
+| Store Management | Desktop | Tablet | Phone | Comments |
+| Product CRUD | Desktop | Tablet | Phone | Comments |
+| Order tracking | Desktop | Tablet | Phone | Comments |
+| Subscription management | Desktop | Tablet | Phone | Comments |
+| Newsletter management | Desktop | Tablet | Phone | Comments |
+| Inquiries management | Desktop | Tablet | Phone | Comments |
 
 
 #### Future features
@@ -177,8 +196,10 @@ The merchandise and edible products are shown in 'cards' on the full product lis
 
 ## Marketing
 ### Business model
+This site works on the principle of Business to Customer. The user is able to purchase the products directly from the business and have them shipped straight to them. A login is required to complete the purchase, but this has the advantage to the user that they can then track their order. There are further advantages and additional features available to registered users, newsletter suscribers and those who purchase an annual subscription.
 
 ### Core business intent
+To provide a simple and satisfying shopping experience for customers, allowing them to easily find the products they want and to make selections and purchases without problems. 
 
 ### Search Engine Optimisation (SEO)
 #### Keywords
@@ -365,40 +386,46 @@ Goal 6: General bug fixing for address details and updating <br>
 Goal 7: 'Flavour of the month' products (automatically ordered for subscribed customers, and optional additions for other customers)?
 
 #### Sprint analysis and lessons learned
+The subscription product was made. At the moment users can sign up for a full year of free deliveries (starting from the instant of adding it to their basket and completing checkout). They can opt to remove the susbcription by contacting admin. Admin can see the dates when subscription were set up and the countdown of the number of valid dates remaining. <br>
+The emails were linked up, but this proved to be a little more difficult than originally anticipated and also lead to the webhooks not working for a time. Users were given the ability to sign-up for the newsletter and a list of interested users is easily available through the Store Management pages. General bugs were addressed through iteration and targeting. More were found through final testing and steps taken to fix each one. <br>
+Guest flavours have been identified on the site for general use. In a real life business, these would be sent to the users who are subscribed using information contained in the Store Management.
+
+[Return to Top](#roos-fudge-kitchen)
 
 ## Manual testing (overview)
 ### Testing of User Stories
 |  User Story | MoSCow | Screenshot | Comments |
 | ---- | --- | --- | --- |
-| As a **site visitor** I can **browse fudge products and merchandise without creating an account**, in order to **decide whether to purchase from the site**.      | Must    |  | Products and merchandise are displayed on 'cards' on the list pages. Key information is contained on the cards, and they act as links to the product details and to where the purchases can be made. For the fudge products, any 'guest products' are clearly shown. |
-| As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.   | Should    |  | A collapsible filter list of allergens is shown. These can be selected and de-selected and used as a filter for the products. Only products without those allergens are shown. Additionally the products can be shown as 'all', 'traditional' or 'plant-based' to suit user preferences. |
-| As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.  | Should   |  | The benefits of a subscription can be seen by all. The opportunity to subscribe is given to logged in customers. |
-| As a **member**, I can **select fudge sizes and packaging options**, in order **to customise my order**. | Should |  | Partially complete: the weights and subsequent prices can be selected, but it was decided not to add the 'gift wrapping' option (this could be a future feature). |
-| As a **member**, I can **checkout**, in order to **complete my purchase**. | Must |  | Users can put items in their basket and proceed to checkout. On checkout, a confirmation is given on the screen and an email is generated to the user's address. |
-| As a **member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**. | Must |  | Stripe handles the secure payments and additionally generates webhooks to add to the transactional security. |
-| As a **member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**. | Must |  | Emails are generated in live mode. In development mode, these print to the console. |
-| As a **member**, I can **submit enquiries through a form**, in order to **get answers to questions not covered in the FAQs**. | Could |  | Signed in users can access the 'contact us' form, which generates queries on the 'store management' pages for the admin to be able to handle. |
-| As a **member**, I can **create an account to save my details**, in order to **checkout faster in the future**. | Must |  | An account must be created to checkout. The address used for checkout is then saved in the user's account and will come up in subsequent checkouts. ALl details can be edited, either in the 'profile' section, or on the next checkout (with the exception of the email address) |
-| As a **member**, I can **log in to my account to view past orders and update my details**, in order to **manage my purchases and account information easily**. | Must |  | The user profile shows the address, dietary preferences, newsletter and subsciption statuses, as well as user allergens. These can all be edited with the exception of subscription status. |
-| As a **member**, I can **receive promotional emails**, in order to **be informed about new flavours and special offers**. | Could |  | Users can opt-in and opt-out of emails. These users are shown in a list for the admin in the 'store management'. Promotional emails can be generated for this list. |
-| As a **member**, I can **have the site remember my dietary preferences**, in order **to automatically filter products for me**. | Could |  | The site does remember the user's preferences in their account, but automatic filtering was not developed. This will be moved to a future feature. |
-| As a **member**, I can **purchase merchandise like mugs and coasters**, in order to **have branded items from my favourite fudge shop**. | Should |  | A small list of different merch with different branded phrases is available. |
-| s a **subscribing customer**, I can **choose a subscription plan**, in order **to best fit my needs**. | Should |  | Only a single plan is available at present. This could be further developed to a variety of plans and monthly payments rather than a single annual payment. |
-| As a **subscribing customer**, I can **receive free delivery and monthly 'flavour of the month' samples**, in order to **enjoy my subscription benefits**. | Should |  | Free delivery is automatically applied to subscribers from the moment it is detected in the basket. A list of users who are subscribed is available to the admin for sending free samples. |
-| As a **subscribing customer**, I can **update or cancel my subscription**, in order to **have control over my subscription choices**. | Should |  | Users can cancel their subscription with no refund by sending a message to the store admin. |
-| As a **subscribing customer**, I can **receive a monthly email about the 'flavour of the month' and other promotions**, in order to **stay informed about new and special offers**. | Could |  | This would be an easy addition as a future feature using a platform such as MailChimp, because a list of subscribed users and email addresses is generated in the Store Management. |
+| As a **site visitor** I can **browse fudge products and merchandise without creating an account**, in order to **decide whether to purchase from the site**.      | Must    | ![Merch list desktop](static/images/READMEImages/desktop-merch-list.png) <br> ![Merch list desktop](static/images/READMEImages/desktop-product-list.png) | Products and merchandise are displayed on 'cards' on the list pages. Key information is contained on the cards, and they act as links to the product details and to where the purchases can be made. For the fudge products, any 'guest products' are clearly shown. |
+| As a **site-visitor**, I can **filter fudge products by plant-based or traditional and by allergens**, in order to **find products suitable for my dietary needs**.   | Should | ![Fudge filters](static/images/READMEImages/filter-details.png) | A collapsible filter list of allergens is shown. These can be selected and de-selected and used as a filter for the products. Only products without those allergens are shown. Additionally the products can be shown as 'all', 'traditional' or 'plant-based' to suit user preferences. |
+| As a **site-visitor**, I can **view the additional benefits of subscription plans**, in order to **allow informed decisions of the potential reasons to sign-up for this**.  | Should | ![Subscription benefits](static/images/READMEImages/desktop-subscription.png) | The benefits of a subscription can be seen by all. The opportunity to subscribe is given to logged in customers. |
+| As a **member**, I can **select fudge sizes and packaging options**, in order **to customise my order**. | Should | ![Customise fudge](static/images/READMEImages/customise-fudge.png) | Partially complete: the weights and subsequent prices can be selected, but it was decided not to add the 'gift wrapping' option (this could be a future feature). |
+| As a **member**, I can **checkout**, in order to **complete my purchase**. | Must | ![Checkout page](static/images/READMEImages/desktop-checkout.png) | Users can put items in their basket and proceed to checkout. On checkout, a confirmation is given on the screen and an email is generated to the user's address. |
+| As a **member**, I can **make secure payments using Stripe**, in order to **ensure my payment information is safe**. | Must | ![Webhooks in Stripe](static/images/READMEImages/webhooks-working.png) | Stripe handles the secure payments and additionally generates webhooks to add to the transactional security. |
+| As a **member**, I can **receive an order confirmation via email**, in order to **have a record of my purchase**. | Must | ![Confirmation email in the console](static/images/READMEImages/confirmation-email-console.png) | Emails are generated in live mode. In development mode, these print to the console. |
+| As a **member**, I can **submit enquiries through a form**, in order to **get answers to questions not covered in the FAQs**. | Could | ![Contact us and FAQs](static/images/READMEImages/ipad-faqs.png) | Signed in users can access the 'contact us' form, which generates queries on the 'store management' pages for the admin to be able to handle. |
+| As a **member**, I can **create an account to save my details**, in order to **checkout faster in the future**. | Must | ![Create account](static/images/READMEImages/user-sign-up.png) | An account must be created to checkout. The address used for checkout is then saved in the user's account and will come up in subsequent checkouts. ALl details can be edited, either in the 'profile' section, or on the next checkout (with the exception of the email address) |
+| As a **member**, I can **log in to my account to view past orders and update my details**, in order to **manage my purchases and account information easily**. | Must | ![User sign in](static/images/READMEImages/user-sign-in.png) <br> ![Edit profile](static/images/READMEImages/desktop-profile-edit.png) | The user profile shows the address, dietary preferences, newsletter and subsciption statuses, as well as user allergens. These can all be edited with the exception of subscription status. |
+| As a **member**, I can **receive promotional emails**, in order to **be informed about new flavours and special offers**. | Could | This is a toggle status tick box in the profile edit shown above | Users can opt-in and opt-out of emails. These users are shown in a list for the admin in the 'store management'. Promotional emails can be generated for this list. |
+| As a **member**, I can **have the site remember my dietary preferences**, in order **to automatically filter products for me**. | Could | This is the same as the tick list in the edible products, again in the profile edit pages | The site does remember the user's preferences in their account, but automatic filtering was not developed. This will be moved to a future feature. |
+| As a **member**, I can **purchase merchandise like mugs and coasters**, in order to **have branded items from my favourite fudge shop**. | Should | ![Customise merch](static/images/READMEImages/customise-merch.png)  | A small list of different merch with different branded phrases is available. |
+| s a **subscribing customer**, I can **choose a subscription plan**, in order **to best fit my needs**. | Should | N/A | Only a single plan is available at present. This could be further developed to a variety of plans and monthly payments rather than a single annual payment. |
+| As a **subscribing customer**, I can **receive free delivery and monthly 'flavour of the month' samples**, in order to **enjoy my subscription benefits**. | Should | ![User subscriber banner](static/images/READMEImages/user-subscriber-banner.png) | Free delivery is automatically applied to subscribers from the moment it is detected in the basket. A list of users who are subscribed is available to the admin for sending free samples. |
+| As a **subscribing customer**, I can **update or cancel my subscription**, in order to **have control over my subscription choices**. | Should | N/A | Users can cancel their subscription with no refund by sending a message to the store admin. |
+| As a **subscribing customer**, I can **receive a monthly email about the 'flavour of the month' and other promotions**, in order to **stay informed about new and special offers**. | Could | N/A | This would be an easy addition as a future feature using a platform such as MailChimp, because a list of subscribed users and email addresses is generated in the Store Management. |
 | As a **subscribing customer**, I can **set my allergen/dietary preferences for the 'guest flavour' samples**, in order to **ensure they are always suitable for me to consume**. | Should |  |  |
-| As a **subscribing customer**, I can **have my billing and shipping details remembered**, in order to **ensure smooth subscription renewals**. | Should |  | This is available to any memeber, not just those who subscribe. |
-| As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**. | Must  |  | The management of products is easily conducted through the 'Store Management' pages. Full CRUD is available. |
-| As a **site admin**, I can **view and manage customer orders**, in order to **ensure timely processing and delivery**. | Must  |  | The orders are listed and are shown as 'made' and dispatched. It is possible to filter only by those requiring dispatch, or only those with edible or merch products. |
+| As a **subscribing customer**, I can **have my billing and shipping details remembered**, in order to **ensure smooth subscription renewals**. | Should | ![Checkout form details](static/images/READMEImages/user-checkout-details.png) | This is available to any memeber, not just those who subscribe. The billing address will automatically populate with the last address used on that account, but this can be easily over-ridden. |
+| As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**. | Must | ![Fudge CRUD part 1](static/images/READMEImages/user-CRUD-fudge1.png) <br> ![Fudge CRUD part 2](static/images/READMEImages/user-CRUD-fudge2.png) <br> ![Fudge CRUD part 3](static/images/READMEImages/user-CRUD-fudge3.png) | The management of products is easily conducted through the 'Store Management' pages. Full CRUD is available. |
+| As a **site admin**, I can **view and manage customer orders**, in order to **ensure timely processing and delivery**. | Must  | ![Order list pending](static/images/READMEImages/user-order-list.png) <br> ![Order list with dispatched](static/images/READMEImages/user-order-list-made-and-dispatched.png) <br> ![Store Management Order details](static/images/READMEImages/user-order-details.png) | The orders are listed and are shown as 'made' and dispatched. It is possible to filter only by those requiring dispatch, or only those with edible or merch products. |
 | As a **site admin**, I can **manage user accounts, including subscription details**, in order to **provide customer support and manage subscriptions**. | Must |  | Store Management can toggle subscription status, and manage user accounts as required. |
 | As a **site admin**, I can **send out monthly promotional emails to subscribers**, in order to **engage with my customers and promote new flavours and offers**. | Should | N/A | This could be set up as a future feature using an email mailout provider, or as an addition to the 'Store Management' |
-| As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**. | Must |  | The 'Store Management' page allows easy access for site management. A small business owner can access the functionality they need to manage the site. |
-| As a **site admin**, I can **receive and respond to customer inquiries submitted through the website**, in order to **provide assistance and information as needed**. | Should |  | These show as a list on the 'Store Management' and can be marked as 'dealt with' for ease of management. |
+| As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**. | Must | ![Store Management Dashoboard](static/images/READMEImages/desktop-dashboard.png) | The 'Store Management' page allows easy access for site management. A small business owner can access the functionality they need to manage the site. |
+| As a **site admin**, I can **receive and respond to customer inquiries submitted through the website**, in order to **provide assistance and information as needed**. | Should | ![Inquiry list and management](static/images/READMEImages/user-inquiry-management.png) | These show as a list on the 'Store Management' and can be marked as 'dealt with' for ease of management. |
 | As a **site admin**, I can **implement and manage SEO strategies and tools on the website**, in order to **improve the site's visibility and ranking on search engines, thereby attracting more potential customers to our fudge products and increasing sales**. | Must |  |  |
 
-
 Full test details and results can be found in TESTING.md.
+
+[Return to Top](#roos-fudge-kitchen)
 
 ### Bugs
 #### Resolved
@@ -416,9 +443,7 @@ Full test details and results can be found in TESTING.md.
 #### Unresolved
 - Unable to get the allergen symbols to render with the allergens in the list filtering
 
-### Lighthouse outcomes
-
-### Features tests
+[Return to Top](#roos-fudge-kitchen)
 
 ## Technologies used
 ### Languages
@@ -450,6 +475,8 @@ Full test details and results can be found in TESTING.md.
 - Amazon Web Services S3 Bucket
 - ElephantSQL
 - Stripe
+
+[Return to Top](#roos-fudge-kitchen)
 
 ## References and credits
 - Walkthrough projects of XXX
@@ -694,3 +721,5 @@ To ensure seamless transaction processing, especially if users exit the purchase
 #### Final Steps
 
 Ensure that all Stripe keys are securely stored and correctly configured in your project settings to facilitate transactions. Test the webhook by simulating payments to verify that the integration works as expected.
+
+[Return to Top](#roos-fudge-kitchen)

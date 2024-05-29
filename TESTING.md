@@ -1,7 +1,6 @@
 # Full details of manual site testing
 ## Site browser compatability
 
-
 ## Home page
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
@@ -9,7 +8,7 @@
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| ![Home HTML](static/images/READMEImages/index-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  | ![Home Lighthouse](static/images/READMEImages/Lighthouse-home.png) |
+| ![Home HTML](static/images/READMEImages/index-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Home Lighthouse](static/images/READMEImages/Lighthouse-home.png) |
 
 
 #### Main nav menu
@@ -34,6 +33,8 @@ Page returning general search results
 | ----------- | ----------- |
 | Back-up |   |
 | Navigating elsewhere |   |
+
+[Return to Top](#full-details-of-manual-site-testing)
 
 ## About us
 | Test case description  | Expected outcome |  Pass?  | 
@@ -64,6 +65,8 @@ FAQs and Contact Us
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
 |  |   |
+
+[Return to Top](#full-details-of-manual-site-testing)
 
 ## Edible Products
 | Test case description  | Expected outcome |  Pass?  | 
@@ -109,6 +112,8 @@ FAQs and Contact Us
 | ----------- | ----------- |
 |  |   |
 
+[Return to Top](#full-details-of-manual-site-testing)
+
 ## Merchandise products
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
@@ -138,6 +143,8 @@ FAQs and Contact Us
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
 |  |   |
+
+[Return to Top](#full-details-of-manual-site-testing)
 
 ## Accounts pages (including sign-up, sign-in and sign-out)
 | Test case description  | Expected outcome |  Pass?  | 
