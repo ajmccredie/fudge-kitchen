@@ -22,17 +22,18 @@
 #### Search bar
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-| Text entry |  |  |  |  |
+| Text entry | Results show no results available for " " |  | Spelling mistakes are unlikely to generate zero results. | N/A |
 
 Page returning general search results
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| Back-up |   |
+| Navigating elsewhere |   |
 
 ## About us
 | Test case description  | Expected outcome |  Pass?  | 
@@ -47,12 +48,12 @@ Page returning general search results
 Our Story
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 FAQs and Contact Us
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| ![FAQ HTML](static/images/READMEImages/faq-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+| ![FAQ HTML](static/images/READMEImages/faq-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 #### Restricted pages
 | Test case description  | Expected outcome |  Pass?  | 
@@ -73,7 +74,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 #### Edible product detail page
 | Test case description  | Expected outcome |  Pass?  | 
@@ -82,7 +83,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -115,7 +116,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 #### Merch product detail page
 | Test case description  | Expected outcome |  Pass?  | 
@@ -126,7 +127,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -146,7 +147,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -166,7 +167,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -187,7 +188,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -203,36 +204,43 @@ FAQs and Contact Us
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| Back-up |   |
+| Change page from a link |   |
+| Change page from the page address bar |   |
 
 #### Restricted pages
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| User login |  |   |
+| User logout |  |   |
+| Store admin login |  |   |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
 | Sign-up |  |  |  |  |
 | Sign-in |  |  |  |  |
+| Password |  |  |  |  |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| Attempting access with the address bar |   |
+| Back-up after logging out |   |
 
 ## Subscriptions page
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| View non-restricted content when not registered/logged in |  |   |
+| Access to restricted content after logging in |  |   |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| Attempt to register the same email address twice |   |
 
 ## Admin dashboard features
 | Test case description  | Expected outcome |  Pass?  | 
@@ -241,7 +249,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 ### CRUD of Edible Products
 | Test case description  | Expected outcome |  Pass?  | 
@@ -250,7 +258,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -263,7 +271,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -276,7 +284,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -289,7 +297,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated-html.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
