@@ -1,5 +1,6 @@
 # Full details of manual site testing
 ## Site browser compatability
+The site was checked for compatability on Chrome, Edge and Firefox
 
 ## Home page
 | Test case description  | Expected outcome |  Pass?  | 
@@ -51,7 +52,7 @@ Page returning general search results
 Our Story
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| [Our Story HTML](static/images/READMEImages/story-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | N/A | no issues | [Story Lighthouse](static/images/READMEImages/Lighthouse-ourstory.png) |
 
 FAQs and Contact Us
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
@@ -61,7 +62,7 @@ FAQs and Contact Us
 #### Restricted pages
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-| Only signed-in users access the inquiries form |  |   |
+| Only signed-in users access the inquiries form | Users are directed to login or sign-up. A new sign-up will have their email verified. Redirects to page with the form. Logged in users can use the form | Yes  |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
@@ -76,6 +77,7 @@ FAQs and Contact Us
 | Display all products | Products display with correct price and images, and link to the correct product details |   |
 | Products displayed according to preference | Products can be correctly displayed as 'All', 'Plant-based' or 'Traditional' | Yes |
 | Allergen filtering | Products can be filtered on page according to selected allergens, and this can be changed multiple times without issue. | Yes |
+| Guest products are identifiable | Guest products are shown with a banner which states they are 'guest products' | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
@@ -100,13 +102,6 @@ FAQs and Contact Us
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
 |  |  |   |
-
-| Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
-| ----------- | ----------- | ----------- | ----------- | --------|
-| All edible products link |  |  |  |  |
-| Plant-based edible products link |  |  |  |  |
-| Traditional edible products link |  |  |  |  |
-| Allergen filters |  |  |  |  |
 
 
 #### Other tests of possible user actions

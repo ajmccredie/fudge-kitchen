@@ -2,7 +2,7 @@
 ![Logo](static/images/READMEImages/logo.jpg)
 
 ## Project Rationale
-A site for the e-commerce store selling homemade fudge. The site allows for products to be filtered according to allergen needs.<br>
+A site for the e-commerce store selling homemade fudge. The site allows for products to be filtered according to allergen needs. Access the deployed site [here](https://roos-fudge-kitchen-9f7897dcad9e.herokuapp.com/) <br>
 If you want to test the payment system, use these test card details:<br>
 Card Number: 4242 4242 4242 4242<br>
 Date: 0424<br>
@@ -35,9 +35,7 @@ Postcode: 42424<br>
   - [Responsiveness](#responsiveness)
   - [Browser Compatibility](#browser-compatability)
   - [Bugs](#bugs)
-  - [Lighthouse Outcomes](#lighthouse-outcomes)
   - [User Stories Tests](#user-stories-tests)
-  - [Features Tests](#features-tests)
 - [Technologies Used](#technologies-used)
   - [Frameworks](#frameworks)
   - [Libraries](#libraries)
@@ -203,7 +201,7 @@ To provide a simple and satisfying shopping experience for customers, allowing t
 
 ### Search Engine Optimisation (SEO)
 #### Keywords
-{details about how the keywords on the site are anaylised and added to the description of the online store on the main page…}
+The potential keywords from the pages were analysed. Some potential search terms from these were devised, and a few tested for web traffic as shown in the images. Key terms were optimised and added into the base.html meta tags in order to affect the whole site output.
 #### SiteMap
 {XML-Sitemaps creator – use on live site and place the XML created in the root directory of the website}
 #### Robots
@@ -421,7 +419,7 @@ Guest flavours have been identified on the site for general use. In a real life 
 | As a **site admin**, I can **send out monthly promotional emails to subscribers**, in order to **engage with my customers and promote new flavours and offers**. | Should | N/A | This could be set up as a future feature using an email mailout provider, or as an addition to the 'Store Management' |
 | As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**. | Must | ![Store Management Dashoboard](static/images/READMEImages/desktop-dashboard.png) | The 'Store Management' page allows easy access for site management. A small business owner can access the functionality they need to manage the site. |
 | As a **site admin**, I can **receive and respond to customer inquiries submitted through the website**, in order to **provide assistance and information as needed**. | Should | ![Inquiry list and management](static/images/READMEImages/user-inquiry-management.png) | These show as a list on the 'Store Management' and can be marked as 'dealt with' for ease of management. |
-| As a **site admin**, I can **implement and manage SEO strategies and tools on the website**, in order to **improve the site's visibility and ranking on search engines, thereby attracting more potential customers to our fudge products and increasing sales**. | Must |  |  |
+| As a **site admin**, I can **implement and manage SEO strategies and tools on the website**, in order to **improve the site's visibility and ranking on search engines, thereby attracting more potential customers to our fudge products and increasing sales**. | Must | ![Meta tags](static/images/READMEImages/seo-meta-tags.png)  | Key search terms were researched and applied in the Meta tags. A sitemap was produced with an accompanying robots.txt file.  |
 
 Full test details and results can be found in TESTING.md.
 
@@ -479,12 +477,14 @@ Full test details and results can be found in TESTING.md.
 [Return to Top](#roos-fudge-kitchen)
 
 ## References and credits
-- Walkthrough projects of XXX
-- Mentor 
-- Learning Support, in particular Roman
+- Walkthrough projects of "BoutiqueAdo" and "I Think, Therefore I Blog". Template from BoutiqueAdo used and manipulated, in particular for the initial basket, webhooks, and checkout structures.
+- Mentor for checking my ideas make sense and encouragement to get them implemented.
+- Learning Support, in particular Roman for assistance on a variety of topics, but mostly the webhooks.
 - Sam 
 - Previous Hackathon projects of XXX for assistance with headers, menus and some script tricks
 - References for particular features or inspiration...
+
+https://docs.djangoproject.com/en/5.0/topics/db/models/ for assistance on models and inheritance 
 
 ## Procedures
 ### Prerequisites and installs

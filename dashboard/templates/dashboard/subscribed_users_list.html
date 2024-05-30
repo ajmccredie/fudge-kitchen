@@ -26,8 +26,8 @@
                 <td>{{ profile.subscription_start_date|date:"d M Y" }}</td>
                 <td>{{ profile.time_remaining }}</td>
                 <td>
-                    {% if profile.dietary_preference_display %}
-                        {{ profile.dietary_preference_display }}
+                    {% if profile.dietary_preference %}
+                        {{ profile.dietary_preference }}
                     {% else %}
                         Nope
                     {% endif %}
@@ -58,7 +58,7 @@
     <div>
         <h2>Debug Output</h2>
         {% for profile in subscriptions %}
-            <p>{{ profile.user.username }} - Dietary Preference: {{ profile.user.dietary_preference_display }} - Allergens: {{ profile.user.allergen_display }}</p>
+            <p>{{ profile.user.username }} - Dietary Preference: {{ profile.dietary_preference }} - Allergens: {{ profile.user.allergen_display }}</p>
         {% endfor %}
     </div>
 </div>
