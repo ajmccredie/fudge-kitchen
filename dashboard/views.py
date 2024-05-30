@@ -1,28 +1,34 @@
 from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.utils import timezone
 from datetime import timedelta
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin, UserPassesTestMixin
+)
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView, ListView, DetailView
+from django.views.generic import (
+    CreateView, UpdateView, DeleteView, TemplateView,
+    ListView, DetailView
+)
 from profiles.models import Profile, SubscriptionProduct
 from profiles.forms import ProfileForm
-from core.models import CommonProduct
-from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
-from merch.models import MerchProduct, ColourVariation, TextOption
+from core.models import Product
+from edible_products.models import EdibleProduct
+from merch.models import MerchProduct
 from checkout.models import Order, OrderLineItem
 from home.models import Inquiry
-from .forms import EdibleProductForm, MerchProductForm, OrderForm, OrderLineItemForm, ColourVariationFormSet, TextOptionFormSet, SubscriptionProductForm
+from .forms import (
+    EdibleProductForm, MerchProductForm, ColourVariationFormSet,
+    TextOptionFormSet, SubscriptionProductForm
+)
 
-# Create your views here.
-
-from django.forms.models import model_to_dict
 
 class StaffRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     """Mixin to require user to be staff."""
     def test_func(self):
         return self.request.user.is_staff
+
 
 class DashboardView(StaffRequiredMixin, TemplateView):
     template_name = 'dashboard/home.html'
@@ -31,10 +37,12 @@ class DashboardView(StaffRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         return context
 
+
 class EdibleProductListView(StaffRequiredMixin, ListView):
     model = EdibleProduct
     template_name = 'dashboard/edible_product_list.html'
     context_object_name = 'products'
+
 
 class EdibleProductCreateView(StaffRequiredMixin, CreateView):
     model = EdibleProduct
@@ -45,7 +53,7 @@ class EdibleProductCreateView(StaffRequiredMixin, CreateView):
         if not form.is_valid():
             messages.error(self.request, 'Please correct the errors below.')
             return self.form_invalid(form)
-        
+
         response = super().form_valid(form)
         messages.success(self.request, 'Product created successfully!')
         return response
@@ -63,9 +71,9 @@ class EdibleProductUpdateView(StaffRequiredMixin, UpdateView):
         if not form.is_valid():
             messages.error(self.request, 'Please correct the errors below.')
             return self.form_invalid(form)
-        
+
         response = super().form_valid(form)
-        messages.success(self.request, 'Product created successfully!')
+        messages.success(self.request, 'Product updated successfully!')
         return response
 
     def get_success_url(self):
@@ -84,10 +92,12 @@ class EdibleProductDeleteView(StaffRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse('dashboard:edible_product_list')
 
+
 class MerchProductListView(StaffRequiredMixin, ListView):
     model = MerchProduct
     template_name = 'dashboard/merch_product_list.html'
     context_object_name = 'merch_products'
+
 
 class MerchProductCreateView(StaffRequiredMixin, CreateView):
     model = MerchProduct
@@ -97,8 +107,12 @@ class MerchProductCreateView(StaffRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         if self.request.POST:
-            data['colour_formset'] = ColourVariationFormSet(self.request.POST, self.request.FILES)
-            data['text_option_formset'] = TextOptionFormSet(self.request.POST, self.request.FILES)
+            data['colour_formset'] = ColourVariationFormSet(
+                self.request.POST, self.request.FILES
+            )
+            data['text_option_formset'] = TextOptionFormSet(
+                self.request.POST, self.request.FILES
+            )
         else:
             data['colour_formset'] = ColourVariationFormSet()
             data['text_option_formset'] = TextOptionFormSet()
@@ -108,23 +122,34 @@ class MerchProductCreateView(StaffRequiredMixin, CreateView):
         context = self.get_context_data()
         colour_formset = context['colour_formset']
         text_option_formset = context['text_option_formset']
-        if form.is_valid() and colour_formset.is_valid() and text_option_formset.is_valid():
+        if (
+            form.is_valid()
+            and colour_formset.is_valid()
+            and text_option_formset.is_valid()
+        ):
             self.object = form.save()
             colour_formset.instance = self.object
             colour_formset.save()
             text_option_formset.instance = self.object
             text_option_formset.save()
-            messages.success(self.request, 'Merch product created successfully!')
+            messages.success(
+                self.request, 'Merch product created successfully!'
+            )
             return redirect(self.get_success_url())
         else:
             return self.form_invalid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'There was an error with your submission. Please check the form and try again.')
+        messages.error(
+            self.request,
+            'There was an error with your submission. '
+            'Please check the form and try again.'
+        )
         return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse('dashboard:merch_product_list')
+
 
 class MerchProductUpdateView(StaffRequiredMixin, UpdateView):
     model = MerchProduct
@@ -134,35 +159,53 @@ class MerchProductUpdateView(StaffRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         if self.request.POST:
-            data['colour_formset'] = ColourVariationFormSet(self.request.POST, self.request.FILES, instance=self.object)
-            data['text_option_formset'] = TextOptionFormSet(self.request.POST, self.request.FILES, instance=self.object)
+            data['colour_formset'] = ColourVariationFormSet(
+                self.request.POST, self.request.FILES, instance=self.object
+            )
+            data['text_option_formset'] = TextOptionFormSet(
+                self.request.POST, self.request.FILES, instance=self.object
+            )
         else:
-            data['colour_formset'] = ColourVariationFormSet(instance=self.object)
-            data['text_option_formset'] = TextOptionFormSet(instance=self.object)
+            data['colour_formset'] = ColourVariationFormSet(
+                instance=self.object
+            )
+            data['text_option_formset'] = TextOptionFormSet(
+                instance=self.object
+            )
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
         colour_formset = context['colour_formset']
         text_option_formset = context['text_option_formset']
-        if form.is_valid() and colour_formset.is_valid() and text_option_formset.is_valid():
+        if (
+            form.is_valid()
+            and colour_formset.is_valid()
+            and text_option_formset.is_valid()
+        ):
             self.object = form.save()
             colour_formset.instance = self.object
             colour_formset.save()
             text_option_formset.instance = self.object
             text_option_formset.save()
-            messages.success(self.request, 'Merch product updated successfully!')
+            messages.success(
+                self.request, 'Merch product updated successfully!'
+            )
             return redirect(self.get_success_url())
         else:
             return self.form_invalid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'There was an error with your submission. Please check the form and try again.')
+        messages.error(
+            self.request,
+            'There was an error with your submission. '
+            'Please check the form and try again.'
+        )
         return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse('dashboard:merch_product_list')
-        
+
 
 class MerchProductDeleteView(StaffRequiredMixin, DeleteView):
     model = MerchProduct
@@ -175,6 +218,7 @@ class MerchProductDeleteView(StaffRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('dashboard:merch_product_list')
+
 
 class OrderListView(StaffRequiredMixin, ListView):
     model = Order
@@ -190,14 +234,18 @@ class OrderListView(StaffRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter_dispatch'] = self.request.GET.get('filter_dispatch', '')
+        context['filter_dispatch'] = self.request.GET.get(
+            'filter_dispatch', ''
+        )
         context['filter_type'] = self.request.GET.get('filter_type', '')
         return context
+
 
 class OrderDetailView(StaffRequiredMixin, DetailView):
     model = Order
     template_name = 'dashboard/order_detail.html'
     context_object_name = 'order'
+
 
 def mark_order_dispatched(request, order_id):
     order = get_object_or_404(Order, id=order_id)
@@ -205,17 +253,20 @@ def mark_order_dispatched(request, order_id):
     order.save()
     return redirect('dashboard:order_list')
 
+
 def mark_item_made(request, item_id):
     item = get_object_or_404(OrderLineItem, id=item_id)
     item.made = True
     item.save()
     return redirect('dashboard:order_details', pk=item.order.id)
 
+
 def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.delete()
     messages.success(request, "Order has been successfully deleted.")
     return redirect('dashboard:order_list')
+
 
 class InquiryListView(StaffRequiredMixin, View):
     template_name = 'dashboard/inquiries_list.html'
@@ -226,6 +277,7 @@ class InquiryListView(StaffRequiredMixin, View):
             'inquiries': inquiries,
         }
         return render(request, self.template_name, context)
+
 
 class InquiryDetailView(StaffRequiredMixin, View):
     template_name = 'dashboard/inquiries_detail.html'
@@ -240,6 +292,7 @@ class InquiryDetailView(StaffRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
+
 class MarkInquiryDealtWithView(StaffRequiredMixin, View):
     def post(self, request, pk, *args, **kwargs):
         inquiry = get_object_or_404(Inquiry, pk=pk)
@@ -247,6 +300,7 @@ class MarkInquiryDealtWithView(StaffRequiredMixin, View):
         inquiry.save()
         messages.success(request, 'Inquiry marked as dealt with.')
         return redirect('dashboard:inquiries_detail', pk=pk)
+
 
 def product_list(request):
     products = Product.objects.all()
@@ -273,19 +327,22 @@ class SubscriptionManagementView(StaffRequiredMixin, View):
         allergen_fields = ProfileForm.ALLERGEN_FIELDS
 
         for profile in subscriptions:
-            allergen_info = {field: getattr(profile, field) for field, _ in allergen_fields}
-            profile.user.allergen_display = ", ".join([label for field, label in allergen_fields if allergen_info.get(field)])
-            profile.user.dietary_preference_display = profile.get_dietary_preference_display()
+            allergen_info = {
+                field: getattr(profile, field) for field, _ in allergen_fields
+            }
+            profile.user.allergen_display = ", ".join([
+                label for field, label in allergen_fields
+                if allergen_info.get(field)
+            ])
+            profile.user.dietary_preference_display = (
+                profile.get_dietary_preference_display()
+            )
 
             if not profile.user.allergen_display:
                 profile.user.allergen_display = "None selected"
 
             if profile.user.dietary_preference_display == "None":
                 profile.user.dietary_preference_display = "None selected"
-
-            print(f"Profile: {profile.user.username}")
-            print(f"Allergens: {profile.user.allergen_display}")
-            print(f"Dietary Preference: {profile.user.dietary_preference_display}")
 
         context = {
             'subscriptions': subscriptions,
@@ -330,11 +387,15 @@ class SubscribedUsersListView(StaffRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         subscriptions = Profile.objects.filter(is_subscribed=True)
-        
+
         for profile in subscriptions:
             if profile.is_subscribed and profile.subscription_start_date:
-                expiration_date = profile.subscription_start_date + timedelta(days=365)
-                profile.time_remaining = expiration_date - timezone.now().date()
+                expiration_date = (
+                    profile.subscription_start_date + timedelta(days=365)
+                )
+                profile.time_remaining = (
+                    expiration_date - timezone.now().date()
+                )
             else:
                 profile.time_remaining = "No active subscription"
         context['subscriptions'] = subscriptions
@@ -345,7 +406,10 @@ class UpdateSubscriptionStatusView(StaffRequiredMixin, View):
     def post(self, request, pk):
         profile = get_object_or_404(Profile, pk=pk)
         profile.is_subscribed = not profile.is_subscribed
-        profile.subscription_start_date = None if not profile.is_subscribed else profile.subscription_start_date
+        profile.subscription_start_date = (
+            None if not profile.is_subscribed
+            else profile.subscription_start_date
+        )
         profile.save()
         messages.success(request, 'Subscription status updated successfully.')
         return redirect('dashboard:subscribed_users_list')

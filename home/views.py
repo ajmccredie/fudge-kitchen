@@ -1,26 +1,22 @@
 from django.shortcuts import render, redirect
 from .models import OurStory
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .forms import InquiryForm
 from django.views import View
 from django.db.models import Q
-from core.models import CommonProduct
 from edible_products.models import EdibleProduct
 from merch.models import MerchProduct
 from profiles.models import SubscriptionProduct
 
-# Create your views here.
 
 def index(request):
     """ A view to return the index page """
-    
-    return render(request, 'home/index.html') 
+    return render(request, 'home/index.html')
 
 
 def our_story(request):
-    story = OurStory.objects.first() 
+    story = OurStory.objects.first()
     context = {'story': story}
     return render(request, 'home/our_story.html', context)
 
@@ -55,19 +51,19 @@ class SearchResultsView(View):
         if query:
             # Searching edible products
             edible_products = EdibleProduct.objects.filter(
-                Q(name__icontains=query) | 
+                Q(name__icontains=query) |
                 Q(flavour__icontains=query)
             )
 
             # Searching merch products
             merch_products = MerchProduct.objects.filter(
-                Q(name__icontains=query) | 
+                Q(name__icontains=query) |
                 Q(description__icontains=query)
             )
 
             # Searching subscription products
             subscription_products = SubscriptionProduct.objects.filter(
-                Q(name__icontains=query) | 
+                Q(name__icontains=query) |
                 Q(description__icontains=query)
             )
         else:

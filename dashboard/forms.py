@@ -5,6 +5,7 @@ from merch.models import MerchProduct, ColourVariation, TextOption
 from checkout.models import Order, OrderLineItem
 from profiles.models import SubscriptionProduct
 
+
 class EdibleProductForm(forms.ModelForm):
     plant_based = forms.BooleanField(label='Plant-based', required=False)
     allergens = forms.ModelMultipleChoiceField(
@@ -16,7 +17,28 @@ class EdibleProductForm(forms.ModelForm):
 
     class Meta:
         model = EdibleProduct
-        fields = ['name', 'flavour', 'description', 'ingredients', 'image', 'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts', 'soybeans', 'milk', 'nuts', 'celery', 'mustard', 'sesame_seeds', 'sulphur_dioxide_and_sulphites', 'lupin', 'molluscs', 'plant_based']
+        fields = [
+            'name',
+            'flavour',
+            'description',
+            'ingredients',
+            'image',
+            'gluten',
+            'crustaceans',
+            'eggs',
+            'fish',
+            'peanuts',
+            'soybeans',
+            'milk',
+            'nuts',
+            'celery',
+            'mustard',
+            'sesame_seeds',
+            'sulphur_dioxide_and_sulphites',
+            'lupin',
+            'molluscs',
+            'plant_based'
+            ]
         error_messages = {
             'name': {'required': 'Name is required.'},
             'flavour': {'required': 'Flavour is required.'},
@@ -72,7 +94,7 @@ class MerchProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(MerchProductForm, self).__init__(*args, **kwargs)
 
-# Specify the fk_name attribute
+
 ColourVariationFormSet = inlineformset_factory(
     MerchProduct,
     ColourVariation,
@@ -109,6 +131,7 @@ class OrderForm(forms.ModelForm):
             'dispatched': {'required': 'Dispatch status is required.'}
         }
 
+
 class OrderLineItemForm(forms.ModelForm):
     class Meta:
         model = OrderLineItem
@@ -116,6 +139,7 @@ class OrderLineItemForm(forms.ModelForm):
         error_messages = {
             'made': {'required': 'Made status is required.'}
         }
+
 
 class SubscriptionProductForm(forms.ModelForm):
     class Meta:

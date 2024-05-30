@@ -1,9 +1,11 @@
 from django.contrib import admin
 from .models import EdibleProduct, ProductWeightPrice
 
+
 class ProductWeightPriceInline(admin.TabularInline):
     model = ProductWeightPrice
     extra = 3
+
 
 @admin.register(EdibleProduct)
 class EdibleProductAdmin(admin.ModelAdmin):
@@ -14,13 +16,21 @@ class EdibleProductAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         (None, {
-            'fields': ('name', 'flavour', 'plant_based', 'guest_flavour', 'description', 'ingredients', 'image')
+            'fields': (
+                'name',
+                'flavour',
+                'plant_based',
+                'guest_flavour',
+                'description',
+                'ingredients',
+                'image'
+                )
         }),
         ('Allergens', {
             'fields': (
-                'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts', 
-                'soybeans', 'milk', 'nuts', 'celery', 'mustard', 
-                'sesame_seeds', 'sulphur_dioxide_and_sulphites', 
+                'gluten', 'crustaceans', 'eggs', 'fish', 'peanuts',
+                'soybeans', 'milk', 'nuts', 'celery', 'mustard',
+                'sesame_seeds', 'sulphur_dioxide_and_sulphites',
                 'lupin', 'molluscs'
             ),
             'description': "Select all allergens present in this product."
@@ -31,5 +41,6 @@ class EdibleProductAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
         for weight_price in obj.weight_prices.all():
             weight_price.save()
+
 
 admin.site.register(ProductWeightPrice)

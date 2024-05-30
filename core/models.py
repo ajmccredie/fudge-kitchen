@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
+
 class Product(models.Model):
     PRODUCT_TYPE_CHOICES = [
         ('edible', 'Edible'),
@@ -11,9 +12,18 @@ class Product(models.Model):
 
     name = models.CharField(max_length=254, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        blank=True, null=True
+        )
     image = models.ImageField(null=True, blank=True)
-    product_type = models.CharField(max_length=50, choices=PRODUCT_TYPE_CHOICES, blank=True, null=True)
+    product_type = models.CharField(
+        max_length=50,
+        choices=PRODUCT_TYPE_CHOICES,
+        blank=True,
+        null=True
+        )
 
     def __str__(self):
         return self.name

@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.http import HttpResponse
 from django.views import View
 from django.views.generic import DetailView
 from django.contrib import messages
@@ -9,10 +7,8 @@ from .models import Profile, SubscriptionProduct
 from checkout.models import Order
 from .forms import ProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Max
-from core.models import CommonProduct, Product
-from django.utils.decorators import method_decorator
-from django.utils import timezone
+from core.models import CommonProduct
+
 
 class ProfileView(LoginRequiredMixin, View):
     template_name = 'profiles/profile.html'
@@ -23,7 +19,11 @@ class ProfileView(LoginRequiredMixin, View):
         form = self.form_class(instance=profile)
         orders = profile.orders.order_by('-date')
         latest_order = orders.first()
-        allergen_info = {field: getattr(profile, field) for field, _ in ProfileForm.ALLERGEN_FIELDS}
+        allergen_info = {
+            field: getattr(profile, field)
+            for field, _
+            in ProfileForm.ALLERGEN_FIELDS
+            }
         dietary_preference = profile.get_dietary_preference_display()
 
         context = {
@@ -33,7 +33,9 @@ class ProfileView(LoginRequiredMixin, View):
             'on_profile_page': True,
             'subscription_active': profile.is_subscribed,
             'subscription_start_date': profile.subscription_start_date,
-            'subscription_time_remaining': profile.get_subscription_time_remaining(),
+            'subscription_time_remaining': (
+                profile.get_subscription_time_remaining()
+                ),
             'allergen_info': allergen_info,
             'dietary_preference': dietary_preference,
             'newsletter_recipient': profile.newsletter_recipient,
@@ -47,11 +49,18 @@ class ProfileView(LoginRequiredMixin, View):
             form.save()
             messages.success(request, 'Profile updated successfully')
         else:
-            messages.error(request, 'Error updating your profile. Please check the form for errors.')
+            messages.error(
+                request,
+                'Cannot update: Please check the form for errors.'
+                )
         orders = profile.orders.order_by('-date')
         latest_order = orders.first()
 
-        allergen_info = {field: getattr(profile, field) for field, _ in ProfileForm.ALLERGEN_FIELDS}
+        allergen_info = {
+            field: getattr(profile, field)
+            for field, _
+            in ProfileForm.ALLERGEN_FIELDS
+            }
         dietary_preference = profile.get_dietary_preference_display()
 
         context = {
@@ -61,7 +70,9 @@ class ProfileView(LoginRequiredMixin, View):
             'on_profile_page': True,
             'subscription_active': profile.is_subscribed,
             'subscription_start_date': profile.subscription_start_date,
-            'subscription_time_remaining': profile.get_subscription_time_remaining(),
+            'subscription_time_remaining': (
+                profile.get_subscription_time_remaining()
+            ),
             'allergen_info': allergen_info,
             'dietary_preference': dietary_preference,
             'newsletter_recipient': profile.newsletter_recipient,
@@ -84,7 +95,10 @@ class EditProfileView(LoginRequiredMixin, View):
             messages.success(request, 'Profile updated successfully')
             return redirect('profiles:profile')
         else:
-            messages.error(request, 'Error updating your profile. Please check the form for errors.')
+            messages.error(
+                request,
+                'Cannot update: Please check the form for errors.'
+                )
         return render(request, self.template_name, {'form': form})
 
 
@@ -93,7 +107,7 @@ class DeleteProfileView(LoginRequiredMixin, View):
         user = request.user
         user.delete()
         logout(request)  # Logout the user after account deletion
-        messages.success(request, "Your account has been successfully deleted.")
+        messages.success(request, "Account successfully deleted.")
         return redirect('home')
 
 
@@ -112,9 +126,18 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
 class SubscriptionView(View):
     def get(self, request):
         print("SubscriptionView: GET request received")
-        subscription_product = get_object_or_404(SubscriptionProduct, name="Annual Subscription")
-        common_product = CommonProduct.objects.get(product_id=subscription_product.id, product_type='subscription')
-        print(f"Subscription Product: {subscription_product}, Common Product: {common_product}")
+        subscription_product = (
+            get_object_or_404(
+                SubscriptionProduct,
+                name="Annual Subscription"
+                )
+        )
+        common_product = (
+            CommonProduct.objects.get
+            (product_id=subscription_product.id,
+                product_type='subscription')
+        )
+
         return render(request, 'profiles/subscription_page.html', {
             'subscription_product': subscription_product,
             'common_product': common_product,
@@ -134,9 +157,16 @@ class AddSubscriptionToBasketView(LoginRequiredMixin, View):
             return redirect('profiles:subscription')
 
         basket = request.session.get('basket', {})
-        basket = {k: v for k, v in basket.items() if CommonProduct.objects.get(pk=k).product_type != 'subscription'}
+        basket = {
+            k: v for k, v in basket.items()
+            if CommonProduct.objects.get(pk=k).product_type !=
+            'subscription'
+            }
 
-        common_product = CommonProduct.objects.get(product_id=subscription_product.id, product_type='subscription')
+        common_product = CommonProduct.objects.get(
+            product_id=subscription_product.id,
+            product_type='subscription'
+            )
 
         basket[str(common_product.id)] = {
             'product_id': subscription_product.id,
@@ -149,5 +179,7 @@ class AddSubscriptionToBasketView(LoginRequiredMixin, View):
 
         request.session['basket'] = basket
         request.session.modified = True
-        messages.success(request, f'Added "{subscription_product.name}" to your basket.')
+        messages.success(
+            request, f'Added "{subscription_product.name}" to your basket.'
+            )
         return redirect('basket:view_basket')

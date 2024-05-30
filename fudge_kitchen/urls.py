@@ -24,7 +24,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', home_views.index, name='index'),  # Map root URL directly to 'index' view
+    path('', home_views.index, name='index'),
     path('', include('home.urls', namespace='home')),
     path('our_story/', home_views.our_story, name='our_story'),
     path('edible_products/', include('edible_products.urls')),
@@ -36,4 +36,6 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+        )

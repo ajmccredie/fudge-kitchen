@@ -2,9 +2,10 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
 from core.models import CommonProduct
-from edible_products.models import EdibleProduct, ProductWeightPrice
+from edible_products.models import EdibleProduct
 from profiles.models import Profile, SubscriptionProduct
-from merch.models import MerchProduct, ColourVariation, TextOption
+from merch.models import MerchProduct, TextOption
+
 
 def basket_contents(request):
     basket_items = []
@@ -20,12 +21,18 @@ def basket_contents(request):
             product = None
 
             if product_type == 'edible':
-                product = get_object_or_404(EdibleProduct, pk=common_product.product_id)
+                product = get_object_or_404(
+                    EdibleProduct, pk=common_product.product_id
+                )
                 if 'details' in item_data:
                     weight_data = item_data['details']
                     for weight, quantity in weight_data.items():
                         price = product.get_price_for_weight(int(weight))
-                        subtotal = Decimal(quantity) * Decimal(price) if (quantity and price) else Decimal('0.00')
+                        subtotal = (
+                            Decimal(quantity) * Decimal(price)
+                            if (quantity and price)
+                            else Decimal('0.00')
+                        )
                         basket_items.append({
                             'item_id': item_id,
                             'product': product,
@@ -39,11 +46,15 @@ def basket_contents(request):
                         product_count += quantity
 
             elif product_type == 'merch':
-                product = get_object_or_404(MerchProduct, pk=common_product.product_id)
+                product = get_object_or_404(
+                    MerchProduct, pk=common_product.product_id
+                )
                 if 'details' in item_data:
                     text_option_data = item_data['details']
                     for text_option_id, quantity in text_option_data.items():
-                        text_option = get_object_or_404(TextOption, pk=text_option_id)
+                        text_option = get_object_or_404(
+                            TextOption, pk=text_option_id
+                        )
                         subtotal = Decimal(quantity) * Decimal(product.price)
                         basket_items.append({
                             'item_id': item_id,
@@ -56,9 +67,11 @@ def basket_contents(request):
                         })
                         total += subtotal
                         product_count += quantity
-            
+
             elif product_type == 'subscription':
-                product = get_object_or_404(SubscriptionProduct, pk=common_product.product_id)
+                product = get_object_or_404(
+                    SubscriptionProduct, pk=common_product.product_id
+                )
                 quantity = item_data
                 price = product.price
                 subtotal = Decimal(quantity) * Decimal(price)
@@ -88,8 +101,12 @@ def basket_contents(request):
 
     return context
 
+
 def calculate_delivery(total, user, has_subscription):
-    delivery = Decimal(settings.DEFAULT_DELIVERY_CHARGE) if total > Decimal('0.00') else Decimal('0.00')
+    delivery = (
+        Decimal(settings.DEFAULT_DELIVERY_CHARGE)
+        if total > Decimal('0.00') else Decimal('0.00')
+    )
     if user and user.is_authenticated:
         profile = Profile.objects.filter(user=user).first()
         if profile and profile.is_subscribed:

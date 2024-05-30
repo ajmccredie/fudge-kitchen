@@ -13,12 +13,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+
 if os.path.isfile('env.py'):
     import env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -27,13 +27,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = 'DEVELOPMENT' in os.environ
 
-ALLOWED_HOSTS = ['.herokuapp.com', '8000-ajmccredie-fudgekitchen-iermqdja4mr.ws-eu114.gitpod.io',
- '8000-ajmccredie-fudgekitchen-y9g237kif7v.ws-eu111.gitpod.io', 
- '8000-ajmccredie-fudgekitchen-y9g237kif7v.ws-eu114.gitpod.io']
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.gitpod.io',
+ALLOWED_HOSTS = [
+    '.herokuapp.com',
+    '8000-ajmccredie-fudgekitchen-iermqdja4mr.ws-eu114.gitpod.io',
+    '8000-ajmccredie-fudgekitchen-y9g237kif7v.ws-eu111.gitpod.io',
+    '8000-ajmccredie-fudgekitchen-y9g237kif7v.ws-eu114.gitpod.io'
 ]
+
+CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -56,10 +57,8 @@ INSTALLED_APPS = [
     'edible_products.apps.EdibleProductsConfig',
     'checkout.apps.CheckoutConfig',
     'merch',
-    #'profiles',
     'profiles.apps.ProfilesConfig',
     'basket',
-    # other
     'crispy_forms',
     'storages',
 ]
@@ -90,7 +89,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request', # required by allauth
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
@@ -107,10 +106,7 @@ TEMPLATES = [
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
@@ -125,7 +121,6 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = 'fudge_kitchen.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -152,7 +147,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -164,9 +158,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 SESSION_SAVE_EVERY_REQUEST = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -175,13 +167,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 if 'USE_AWS' in os.environ:
     AWS_S3_OBJECT_PARAMETERS = {
-        'Expires': 'Thu, 31 Dec2099 20:00:00 GMT',
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
         'CacheControl': 'max-age=94608000',
     }
     AWS_STORAGE_BUCKET_NAME = 'fudge-kitchen'
@@ -200,7 +191,6 @@ if 'USE_AWS' in os.environ:
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
-
 DEFAULT_DELIVERY_CHARGE = 3
 
 # Stripe
@@ -209,15 +199,14 @@ STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
 
-
 if 'DEVELOPMENT' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEFAULT_FROM_EMAIL = 'roosfudgekitchen@roosfudgekitchen.com'
 else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
-    EMAIL_USE_TLS = True 
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_USE_TLS = True
     EMAIL_PORT = 587
-    EMAIL_HOST = 'smpt.gmail.com'
+    EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
     DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')

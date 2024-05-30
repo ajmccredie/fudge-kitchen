@@ -1,5 +1,6 @@
 from django import forms
 
+
 class AllergenFilterForm(forms.Form):
     ALLERGEN_CHOICES = [
         ('gluten', 'Gluten'),

@@ -1,17 +1,18 @@
-from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.shortcuts import (
+    render, get_object_or_404, redirect, reverse
+)
 from django.views import View
 from django.contrib import messages
-from django.http import HttpRequest, HttpResponseRedirect, JsonResponse, HttpResponse
+from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
 from decimal import Decimal
 from .contexts import basket_contents
 from core.models import CommonProduct
 from edible_products.models import EdibleProduct, ProductWeightPrice
-from merch.models import MerchProduct, TextOption
+from merch.models import MerchProduct
 from profiles.models import SubscriptionProduct
+
 
 class BasketView(View):
     def get(self, request, *args, **kwargs):
@@ -23,7 +24,7 @@ class BasketView(View):
         grand_total = context_data.get('grand_total')
         is_subscribed = False
         if request.user.is_authenticated and hasattr(request.user, 'profile'):
-            is_subscribed = request.user.profile.is_subscribed  
+            is_subscribed = request.user.profile.is_subscribed
 
         context = {
             'is_subscribed': is_subscribed,
@@ -35,13 +36,14 @@ class BasketView(View):
         }
         return render(request, 'basket/basket.html', context)
 
+
 class AddToBasketView(View):
     def post(self, request, item_id):
         print("Received data:", request.POST)  # Debug statement
 
         product_type = request.POST.get('product_type')
         print("Product type:", product_type)  # Debug statement
-        
+
         if product_type == 'edible':
             product = get_object_or_404(EdibleProduct, pk=item_id)
             product_id = product.id
@@ -53,24 +55,29 @@ class AddToBasketView(View):
             product_id = product.id
             name = product.name
             price = product.price
-            image_url = product.image.url
         elif product_type == 'subscription':
             product = get_object_or_404(SubscriptionProduct, pk=item_id)
             product_id = product.id
             name = "Annual Subscription"
             price = product.price
-            image_url = product.image.url
         else:
             print("Invalid product type detected.")  # Debug statement
             messages.error(request, 'Invalid product type.')
             return redirect(reverse('basket:view_basket'))
 
         try:
-            common_product = CommonProduct.objects.get(product_id=product_id, product_type=product_type)
+            common_product = CommonProduct.objects.get(
+                product_id=product_id, product_type=product_type
+            )
             print("CommonProduct found:", common_product)  # Debug statement
         except CommonProduct.DoesNotExist:
-            print(f"CommonProduct with Product ID {product_id} and type {product_type} does not exist.")
-            messages.error(request, f"Product with ID {product_id} not found.")
+            print(
+                f"CommonProduct with Product ID {product_id} and type "
+                f"{product_type} does not exist."
+            )
+            messages.error(
+                request, f"Product with ID {product_id} not found."
+            )
             return redirect(reverse('basket:view_basket'))
 
         basket = request.session.get('basket', {})
@@ -100,21 +107,34 @@ class AddToBasketView(View):
             if str(common_product.id) not in basket:
                 basket[str(common_product.id)] = {'details': {}}
 
-            if text_option_id in basket[str(common_product.id)]['details']:
-                basket[str(common_product.id)]['details'][text_option_id] += quantity
+            if text_option_id in basket[
+                str(common_product.id)]['details']:
+                basket[str(common_product.id)]['details'][
+                    text_option_id
+                ] += quantity
             else:
-                basket[str(common_product.id)]['details'][text_option_id] = quantity
+                basket[str(common_product.id)]['details'][
+                    text_option_id
+                ] = quantity
 
         elif product_type == 'subscription':
             if request.user.profile.is_subscribed:
-                messages.error(request, 'You already have an active subscription.')
+                messages.error(
+                    request, 'You already have an active subscription.'
+                )
                 return redirect(reverse('basket:view_basket'))
 
             if str(common_product.id) in basket:
-                messages.error(request, 'You cannot add more than one subscription to your basket.')
+                messages.error(
+                    request,
+                    'You cannot add more than one subscription to your basket.'
+                )
                 return redirect(reverse('basket:view_basket'))
 
-            basket = {k: v for k, v in basket.items() if CommonProduct.objects.get(pk=k).product_type != 'subscription'}
+            basket = {
+                k: v for k, v in basket.items()
+                if CommonProduct.objects.get(pk=k).product_type != 'subscription'
+            }
             basket[str(common_product.id)] = 1
 
         request.session['basket'] = basket
@@ -122,15 +142,21 @@ class AddToBasketView(View):
         messages.success(request, f'Added "{name}" to your basket.')
         return redirect(reverse('basket:view_basket'))
 
+
 class ClearBasketView(View):
     def post(self, request, *args, **kwargs):
         if 'basket' in request.session:
             del request.session['basket']
             request.session.modified = True
-            messages.success(request, 'Basket successfully emptied for you to reimagine the delicious things you want...')
+            messages.success(
+                request,
+                'Basket successfully emptied for you to reimagine '
+                'the delicious things you want...'
+            )
         else:
             messages.info(request, 'Your basket is already empty.')
         return HttpResponseRedirect(reverse('basket:view_basket'))
+
 
 class RemoveFromBasketView(View):
     @method_decorator(require_POST)

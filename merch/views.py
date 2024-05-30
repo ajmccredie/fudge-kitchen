@@ -1,12 +1,6 @@
-from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from .models import MerchProduct
-from core.models import Product
 
-# Create your views here.
-
-from django.views.generic import DetailView, ListView
-from .models import MerchProduct
 
 class MerchProductListView(ListView):
     model = MerchProduct
@@ -14,7 +8,8 @@ class MerchProductListView(ListView):
     context_object_name = 'merch_products'
 
     def get_queryset(self):
-        """Override the default queryset to filter by category if it is provided in the URL."""
+        """Override the default queryset to filter by category
+        if it is provided in the URL."""
         queryset = super().get_queryset()
         product_type = self.request.GET.get('type')
         if product_type:

@@ -2,8 +2,10 @@ from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 from .models import Order, OrderLineItem
+from core.models import CommonProduct
 from edible_products.models import EdibleProduct
 from merch.models import MerchProduct, TextOption
 from profiles.models import Profile
@@ -11,6 +13,7 @@ from profiles.models import Profile
 import json
 import time
 import stripe
+
 
 class StripeWH_Handler:
     """Handle Stripe webhooks"""
@@ -23,10 +26,12 @@ class StripeWH_Handler:
         cust_email = order.email
         subject = render_to_string(
             'checkout/confirmation_emails/confirmation_email_subject.txt',
-            {'order': order})
+            {'order': order}
+        )
         body = render_to_string(
             'checkout/confirmation_emails/confirmation_email_body.txt',
-            {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+            {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL}
+        )
 
         send_mail(
             subject,
@@ -41,7 +46,8 @@ class StripeWH_Handler:
         """
         return HttpResponse(
             content=f'Unhandled webhook received: {event["type"]}',
-            status=200)
+            status=200
+        )
 
     def handle_payment_intent_succeeded(self, event):
         """
@@ -57,9 +63,9 @@ class StripeWH_Handler:
             intent.latest_charge
         )
 
-        billing_details = stripe_charge.billing_details  # updated
+        billing_details = stripe_charge.billing_details
         shipping_details = intent.shipping
-        grand_total = round(stripe_charge.amount / 100, 2)  # updated
+        grand_total = round(stripe_charge.amount / 100, 2)
 
         # Clean data in the shipping details
         for field, value in shipping_details.address.items():
@@ -107,9 +113,12 @@ class StripeWH_Handler:
         if order_exists:
             self._send_confirmation_email(order)
             return HttpResponse(
-                content=(f'Webhook received: {event["type"]} | SUCCESS: '
-                         'Verified order already in database'),
-                status=200)
+                content=(
+                    f'Webhook received: {event["type"]} | SUCCESS: '
+                    'Verified order already in database'
+                ),
+                status=200
+            )
         else:
             order = None
             try:
@@ -128,11 +137,14 @@ class StripeWH_Handler:
                     stripe_pid=pid,
                 )
                 for item_id, item_data in json.loads(basket).items():
-                    common_product = get_object_or_404(CommonProduct, id=item_id)
+                    common_product = get_object_or_404(
+                        CommonProduct, id=item_id)
                     product_type = common_product.product_type
 
                     if product_type == 'edible':
-                        product = get_object_or_404(EdibleProduct, id=common_product.product_id)
+                        product = get_object_or_404(
+                            EdibleProduct, id=common_product.product_id
+                        )
                         for weight, quantity in item_data['details'].items():
                             OrderLineItem.objects.create(
                                 order=order,
@@ -140,12 +152,19 @@ class StripeWH_Handler:
                                 product_type='edible',
                                 weight=weight,
                                 quantity=quantity,
-                                lineitem_total=product.get_price_for_weight(weight) * quantity
+                                lineitem_total=(
+                                    product.get_price_for_weight(weight) *
+                                    quantity
+                                )
                             )
                     elif product_type == 'merch':
-                        product = get_object_or_404(MerchProduct, id=common_product.product_id)
+                        product = get_object_or_404(
+                            MerchProduct, id=common_product.product_id
+                        )
                         for text_option_id, quantity in item_data['details'].items():
-                            selected_text = get_object_or_404(TextOption, id=text_option_id)
+                            selected_text = get_object_or_404(
+                                TextOption, id=text_option_id
+                            )
                             OrderLineItem.objects.create(
                                 order=order,
                                 merch_product=product,
@@ -160,12 +179,16 @@ class StripeWH_Handler:
                     order.delete()
                 return HttpResponse(
                     content=f'Webhook received: {event["type"]} | ERROR: {e}',
-                    status=500)
+                    status=500
+                )
         self._send_confirmation_email(order)
         return HttpResponse(
-            content=(f'Webhook received: {event["type"]} | SUCCESS: '
-                     'Created order in webhook'),
-            status=200)
+            content=(
+                f'Webhook received: {event["type"]} | SUCCESS: Created order '
+                'in webhook'
+            ),
+            status=200
+        )
 
     def handle_payment_intent_payment_failed(self, event):
         """
@@ -173,4 +196,5 @@ class StripeWH_Handler:
         """
         return HttpResponse(
             content=f'Webhook received: {event["type"]}',
-            status=200)
+            status=200
+        )
