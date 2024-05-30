@@ -9,7 +9,7 @@ from .views import (
     SubscriptionProductCreateView, SubscriptionProductUpdateView,
     SubscriptionProductDeleteView, SubscribedUsersListView,
     UpdateSubscriptionStatusView, SubscriptionManagementView,
-    NewsletterRecipientsView
+    NewsletterRecipientsView, SubProfileDetailView
 )
 
 app_name = 'dashboard'
@@ -108,7 +108,13 @@ urlpatterns = [
         name='update_subscription_status'
     ),
     path(
-        'newsletter_recipients/', NewsletterRecipientsView.as_view(),
+        'profile/<int:pk>/',
+        SubProfileDetailView.as_view(),
+        name='sub_profile_detail'
+    ),
+    path(
+        'newsletter_recipients/',
+        NewsletterRecipientsView.as_view(),
         name='newsletter_recipients'
     ),
 ]

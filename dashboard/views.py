@@ -344,16 +344,11 @@ class SubscriptionManagementView(StaffRequiredMixin, View):
             allergen_display = profile.user.allergen_display
             dietary_display = profile.user.dietary_preference_display
             
-
             if not profile.user.allergen_display:
                 profile.user.allergen_display = "None selected"
 
             if profile.user.dietary_preference_display == "None":
                 profile.user.dietary_preference_display = "None selected"
-
-            print(profile.user)
-            print(allergen_display)
-            print(dietary_display)
 
         context = {
             'subscriptions': subscriptions,
@@ -362,6 +357,21 @@ class SubscriptionManagementView(StaffRequiredMixin, View):
         }
 
         return render(request, self.template_name, context)
+
+
+class SubProfileDetailView(StaffRequiredMixin, DetailView):
+    model = Profile
+    template_name = 'dashboard/sub_profile_detail.html'
+    context_object_name = 'profile'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.object
+        allergen_fields = ProfileForm.ALLERGEN_FIELDS
+        context['allergens'] = [
+            label for field, label in allergen_fields if getattr(profile, field)
+        ]
+        return context
 
 
 class SubscriptionProductListView(StaffRequiredMixin, ListView):

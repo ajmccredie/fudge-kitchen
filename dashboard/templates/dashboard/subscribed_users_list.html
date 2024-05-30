@@ -2,64 +2,54 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-4">
     <h1>Subscription Management</h1>
     <a href="{% url 'dashboard:home' %}" class="btn btn-secondary">Return to Dashboard</a>
     <h2>Subscribed Users</h2>
-    <table class="table table-bordered mt-3">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Subscription Start Date</th>
-                <th>Time Remaining</th>
-                <th>Dietary Preference</th>
-                <th>Allergens</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for profile in subscriptions %}
-            <tr>
-                <td>{{ profile.user.username }}</td>
-                <td>{{ profile.user.email }}</td>
-                <td>{{ profile.subscription_start_date|date:"d M Y" }}</td>
-                <td>{{ profile.time_remaining }}</td>
-                <td>
-                    {% if profile.dietary_preference %}
-                        {{ profile.dietary_preference }}
-                    {% else %}
-                        Nope
-                    {% endif %}
-                </td>
-                <td>
-                    {% if profile.allergen_display %}
-                        {{ profile.allergen_display }}
-                    {% else %}
-                        None selected
-                    {% endif %}
-                </td>
-                <td>
-                    <form action="{% url 'dashboard:update_subscription_status' profile.pk %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-warning">Toggle Status</button>
-                    </form>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="7">No subscribed users found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <!-- Debug Output -->
-    <div>
-        <h2>Debug Output</h2>
-        {% for profile in subscriptions %}
-            <p>{{ profile.user.username }} - Dietary Preference: {{ profile.dietary_preference }} - Allergens: {{ profile.user.allergen_display }}</p>
-        {% endfor %}
+    <div class="table-responsive">
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Subscription Start Date</th>
+                    <th>Time Remaining</th>
+                    <th>Dietary Preference</th>
+                    <th>Allergens and address link</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in subscriptions %}
+                <tr>
+                    <td>{{ profile.user.username }}</td>
+                    <td>{{ profile.user.email }}</td>
+                    <td>{{ profile.subscription_start_date|date:"d M Y" }}</td>
+                    <td>{{ profile.time_remaining }}</td>
+                    <td>
+                        {% if profile.dietary_preference %}
+                            {{ profile.dietary_preference }}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'dashboard:sub_profile_detail' profile.pk %}">Allergens and Address Info</a>
+                    </td>
+                    <td>
+                        <form action="{% url 'dashboard:update_subscription_status' profile.pk %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning btn-sm">Toggle Status</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No subscribed users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

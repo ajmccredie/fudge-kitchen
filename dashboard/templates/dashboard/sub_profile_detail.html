@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ profile.user.username }}'s Profile</h2>
+    <h3>Address Details</h3>
+    <p><strong>Phone Number:</strong> {{ profile.default_phone_number }}</p>
+    <p><strong>Country:</strong> {{ profile.default_country }}</p>
+    <p><strong>Postcode:</strong> {{ profile.default_postcode }}</p>
+    <p><strong>Town or City:</strong> {{ profile.default_town_or_city }}</p>
+    <p><strong>Street Address 1:</strong> {{ profile.default_street_address1 }}</p>
+    <p><strong>Street Address 2:</strong> {{ profile.default_street_address2 }}</p>
+    <p><strong>County:</strong> {{ profile.default_county }}</p>
+
+    <h3>Allergen Details</h3>
+    <ul>
+        {% for allergen in allergens %}
+            <li>{{ allergen }}</li>
+        {% empty %}
+            <li>No Allergens</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Dietary Preference</h3>
+    <p>{{ profile.get_dietary_preference_display }}</p>
+
+    <a href="{% url 'dashboard:subscribed_users_list' %}" class="btn btn-secondary">Return to List of Subscribed Users</a>
+</div>
+{% endblock %}

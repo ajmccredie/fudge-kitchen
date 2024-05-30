@@ -96,17 +96,17 @@ A full list of user stories and the associated acceptance criteria are detailed 
 Some initial ideas for the luxury fudge site were experimented with. 
 ![Potential colour palettes](static/images/READMEImages/colour-initial-ideas.png)
 
-The final choices and uses were as follows:
-**Background colour: #fff8dc (cornsilk)**
-Soft, warm tone to give a sense of sweetness and nostalgia.
-**Primary text colour: #2c2c2c (dark charcoal)**
-A suitable neutral colour to provide balance to the warm tones and excellent readability.
-**Header background colour and card background colour: #6b4f4f (deep taupe)**
-Rich and warm, contrasing with the cornsilk.
+The final choices and uses were as follows:<br>
+**Background colour: #fff8dc (cornsilk)**<br>
+Soft, warm tone to give a sense of sweetness and nostalgia.<br>
+**Primary text colour: #2c2c2c (dark charcoal)**<br>
+A suitable neutral colour to provide balance to the warm tones and excellent readability.<br>
+**Header background colour and card background colour: #6b4f4f (deep taupe)**<br>
+Rich and warm, contrasing with the cornsilk.<br>
 **Header text colour: #f5f5cd (light khaki)**
-Soft, pale yellow, to contrast with the header background and ensure readability.
-**Link colours and card titles: #daa520 (goldenrod)**
-Highlights important names and adds some vibrancy to the interactive features.
+Soft, pale yellow, to contrast with the header background and ensure readability.<br>
+**Link colours and card titles: #daa520 (goldenrod)**<br>
+Highlights important names and adds some vibrancy to the interactive features.<br>
 
 ### Fonts
 **Terrapin, serif**
@@ -202,11 +202,14 @@ To provide a simple and satisfying shopping experience for customers, allowing t
 ### Search Engine Optimisation (SEO)
 #### Keywords
 The potential keywords from the pages were analysed. Some potential search terms from these were devised, and a few tested for web traffic as shown in the images. Key terms were optimised and added into the base.html meta tags in order to affect the whole site output.
+![Keyword search for Fudge Delivery](static/images/READMEImages/seo-keyword-search1.png)
+![Keyword search for Luxury Fudge](static/images/READMEImages/seo-keyword-search2.png)
+![Keyword search for Vegan Fudge](static/images/READMEImages/seo-keyword-search3.png)
 #### SiteMap
-{XML-Sitemaps creator – use on live site and place the XML created in the root directory of the website}
+A sitemap was created by entering the site's url into xml.sitemap.com. This provided a map of all the pages visible to search engines. This file was then downloaded and added to the project root directory.
 #### Robots
-{create a robots.txt file to determine what should be looked at in SEO}
-
+A robots.txt file was created following the guidelines in [this page from conductor.com](https://www.conductor.com/academy/robotstxt/). This will ensure that the search engines focus on the pages with the most suitable and useful content for the customers.
+![robots.txt file](static/images/READMEImages/robots-txt.png)
 
 [Return to Top](#roos-fudge-kitchen)
 
@@ -407,16 +410,16 @@ Guest flavours have been identified on the site for general use. In a real life 
 | As a **member**, I can **receive promotional emails**, in order to **be informed about new flavours and special offers**. | Could | This is a toggle status tick box in the profile edit shown above | Users can opt-in and opt-out of emails. These users are shown in a list for the admin in the 'store management'. Promotional emails can be generated for this list. |
 | As a **member**, I can **have the site remember my dietary preferences**, in order **to automatically filter products for me**. | Could | This is the same as the tick list in the edible products, again in the profile edit pages | The site does remember the user's preferences in their account, but automatic filtering was not developed. This will be moved to a future feature. |
 | As a **member**, I can **purchase merchandise like mugs and coasters**, in order to **have branded items from my favourite fudge shop**. | Should | ![Customise merch](static/images/READMEImages/customise-merch.png)  | A small list of different merch with different branded phrases is available. |
-| s a **subscribing customer**, I can **choose a subscription plan**, in order **to best fit my needs**. | Should | N/A | Only a single plan is available at present. This could be further developed to a variety of plans and monthly payments rather than a single annual payment. |
+| As a **subscribing customer**, I can **choose a subscription plan**, in order **to best fit my needs**. | Should | N/A | Only a single plan is available at present. This could be further developed to a variety of plans and monthly payments rather than a single annual payment. |
 | As a **subscribing customer**, I can **receive free delivery and monthly 'flavour of the month' samples**, in order to **enjoy my subscription benefits**. | Should | ![User subscriber banner](static/images/READMEImages/user-subscriber-banner.png) | Free delivery is automatically applied to subscribers from the moment it is detected in the basket. A list of users who are subscribed is available to the admin for sending free samples. |
-| As a **subscribing customer**, I can **update or cancel my subscription**, in order to **have control over my subscription choices**. | Should | N/A | Users can cancel their subscription with no refund by sending a message to the store admin. |
-| As a **subscribing customer**, I can **receive a monthly email about the 'flavour of the month' and other promotions**, in order to **stay informed about new and special offers**. | Could | N/A | This would be an easy addition as a future feature using a platform such as MailChimp, because a list of subscribed users and email addresses is generated in the Store Management. |
-| As a **subscribing customer**, I can **set my allergen/dietary preferences for the 'guest flavour' samples**, in order to **ensure they are always suitable for me to consume**. | Should |  |  |
+| As a **subscribing customer**, I can **update or cancel my subscription**, in order to **have control over my subscription choices**. | Should | Use the contact us page. | Users can cancel their subscription with no refund by sending a message to the store admin. |
+| As a **subscribing customer**, I can **receive a monthly email about the 'flavour of the month' and other promotions**, in order to **stay informed about new and special offers**. | Could | No screenshot, because this wiykd be through MailChimp. | This would be an easy addition as a future feature using a platform such as MailChimp, because a list of subscribed users and email addresses is generated in the Store Management. |
+| As a **subscribing customer**, I can **set my allergen/dietary preferences for the 'guest flavour' samples**, in order to **ensure they are always suitable for me to consume**. | Should | ![Preference management for subscriptions](static/images/READMEImages/sub-management-details.png) | Customers can change these in their profile. For subscribing customers, this information is available to the Store Management from the dsashboard. |
 | As a **subscribing customer**, I can **have my billing and shipping details remembered**, in order to **ensure smooth subscription renewals**. | Should | ![Checkout form details](static/images/READMEImages/user-checkout-details.png) | This is available to any memeber, not just those who subscribe. The billing address will automatically populate with the last address used on that account, but this can be easily over-ridden. |
 | As a **site admin**, I can **add, update, or remove fudge flavours and merchandise from the site**, in order to **manage the products effectively**. | Must | ![Fudge CRUD part 1](static/images/READMEImages/user-CRUD-fudge1.png) <br> ![Fudge CRUD part 2](static/images/READMEImages/user-CRUD-fudge2.png) <br> ![Fudge CRUD part 3](static/images/READMEImages/user-CRUD-fudge3.png) | The management of products is easily conducted through the 'Store Management' pages. Full CRUD is available. |
 | As a **site admin**, I can **view and manage customer orders**, in order to **ensure timely processing and delivery**. | Must  | ![Order list pending](static/images/READMEImages/user-order-list.png) <br> ![Order list with dispatched](static/images/READMEImages/user-order-list-made-and-dispatched.png) <br> ![Store Management Order details](static/images/READMEImages/user-order-details.png) | The orders are listed and are shown as 'made' and dispatched. It is possible to filter only by those requiring dispatch, or only those with edible or merch products. |
-| As a **site admin**, I can **manage user accounts, including subscription details**, in order to **provide customer support and manage subscriptions**. | Must |  | Store Management can toggle subscription status, and manage user accounts as required. |
-| As a **site admin**, I can **send out monthly promotional emails to subscribers**, in order to **engage with my customers and promote new flavours and offers**. | Should | N/A | This could be set up as a future feature using an email mailout provider, or as an addition to the 'Store Management' |
+| As a **site admin**, I can **manage user accounts, including subscription details**, in order to **provide customer support and manage subscriptions**. | Must | ![Subscription management list](static/images/READMEImages/sub-management-list.png) | Store Management can toggle subscription status, and manage user accounts as required. |
+| As a **site admin**, I can **send out monthly promotional emails to subscribers**, in order to **engage with my customers and promote new flavours and offers**. | Should | NOT IMPLEMENTED | This could be set up as a future feature using an email mailout provider, or as an addition to the 'Store Management' |
 | As a **site admin**, I can **access a user-friendly admin interface**, in order to **efficiently manage the site**. | Must | ![Store Management Dashoboard](static/images/READMEImages/desktop-dashboard.png) | The 'Store Management' page allows easy access for site management. A small business owner can access the functionality they need to manage the site. |
 | As a **site admin**, I can **receive and respond to customer inquiries submitted through the website**, in order to **provide assistance and information as needed**. | Should | ![Inquiry list and management](static/images/READMEImages/user-inquiry-management.png) | These show as a list on the 'Store Management' and can be marked as 'dealt with' for ease of management. |
 | As a **site admin**, I can **implement and manage SEO strategies and tools on the website**, in order to **improve the site's visibility and ranking on search engines, thereby attracting more potential customers to our fudge products and increasing sales**. | Must | ![Meta tags](static/images/READMEImages/seo-meta-tags.png)  | Key search terms were researched and applied in the Meta tags. A sitemap was produced with an accompanying robots.txt file.  |
