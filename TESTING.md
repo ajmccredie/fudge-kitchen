@@ -8,7 +8,7 @@
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| ![Home HTML](static/images/READMEImages/index-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Home Lighthouse](static/images/READMEImages/Lighthouse-home.png) |
+| ![Home HTML](static/images/READMEImages/index-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | N/A | No issues | ![Home Lighthouse](static/images/READMEImages/Lighthouse-home.png) |
 
 
 #### Main nav menu
@@ -26,25 +26,27 @@
 Page returning general search results
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| ![Search results HTML](static/images/READMEImages/search-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | N/A | No issues | ![Search results Lighthouse](static/images/READMEImages/Lighthouse-search.png)  |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-| Back-up |   |
-| Navigating elsewhere |   |
+| Back-up |  Browser back-up in Chrome not supported from this page. |
+| Navigating elsewhere |  No issues found |
+| Page reload |  Search results maintained |
 
 [Return to Top](#full-details-of-manual-site-testing)
 
 ## About us
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-| Read story |  |   |
-| View images |  |   |
-| Navigate to inquiries and FAQs |  |  |
-| Views FAQs |  |  |
-| Non-signed in users cannot access inquiries |  |  |
-| Signed in users can access inquiries |  |  |
+| Read story | Story renders on page and can be read | Yes  |
+| View images | Images render with the story and can be seen | Yes  |
+| Navigate to inquiries and FAQs | Links work and navigate to the expected page | Yes |
+| Views FAQs | Each FAQ will drop open when clicked and remain open until clicked again | Yes |
+| Non-signed in users cannot access inquiries | This part demands a login or sign-up if the user is not already authenticated | Yes |
+| Signed in users can access inquiries | The form and submit button render if the user is authenticated | Yes |
+| User feedback on actions | Users receive a confirmation toast when they send an inquiry | Yes |
 
 Our Story
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |

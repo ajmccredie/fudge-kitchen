@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /accounts/
+Disallow: /profiles/
+Disallow: /basket/
+Disallow: /checkout/
+Disallow: /admin/
+
+Sitemap: https://roos-fudge-kitchen-9f7897dcad9e.herokuapp.com/sitemap.html
