@@ -16,7 +16,7 @@ urlpatterns = [
         name='adjust_basket'
     ),
     path(
-        'remove/<int:item_id>/', 
+        'remove/<int:item_id>/',
         RemoveFromBasketView.as_view(),
         name='remove_from_basket'
     ),

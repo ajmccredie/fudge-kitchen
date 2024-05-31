@@ -167,11 +167,12 @@ FAQs and Contact Us
 #### Basket
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
+| Subscription status honoured | If a user is already a subscriber, this is reflected in the banner and the removal of the delivery charge. If the subscription product is in the basket for checkout, the same thing happens. | Yes  |
 |  |  |   |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Two warnings, but function of page is not impacted <br> ![Basket HTML Vadlidated](static/images/READMEImages/basket-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | ![JShint validation](static/images/READMEImages/jshint-basket.png) | One variable in a 'try/except' statement showing as unused. | The basket can only be checked as empty: <br> ![Lighthouse Basket](static/images/READMEImages/Lighthouse-basket.png) |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -183,27 +184,37 @@ FAQs and Contact Us
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| Adding multiple increments of 99 products to basket | These products are all added, although this might prove difficult for the business, all products are charged for, so fulfilling the order might actually be lucrative. Result is acceptable.  |
+| User empties all items from basket | Empty basket with the option to 'Keep shopping' returned. Result acceptable.  |
 
 #### Checkout
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| User can view their products | Products and details display, with the option to return to the basket if anything is incorrect | Yes  |
+| Subscription status honoured | If a user is already a subscriber, this is reflected in the banner and the removal of the delivery charge. If the subscription product is in the basket for checkout, the same thing happens. | Yes  |
+| Update address as required | All fields can be altered with the exception of the email address | Yes |
+| Complete checkout | Customer can checkout, receive a confirmation toast and a confirmation email on click (if all form fields are valid) | Yes |
+
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Cannot be checked because login protected | ![CSS validation](static/images/READMEImages/css-validated.png) | Some errors of unused variables, largely taken through walkthrough code. <br> ![JSHint Checkout](static/images/READMEImages/jshint-checkout.png) | One line in the models and three in the webhook_handler exceed the character limit of 79 (the worst being 85 characters). | Cannot be checked because login protected |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-| Name |  |  |  |  |
-| Email |  |  |  |  |
-| Address Line 1 |  |  |  |  |
-| Address Line 2 (optional) |  |  |  |  |
-| Town/City |  |  |  |  |
-| County (optional) |  |  |  |  |
-| Country |  |  |  |  |
-| Stripe Payment |  |  |  |  |
+| Name | User prompted to enter | No further input allowed after charcter limit | Wrong name will be sent on order | Wrong name will be sent on order |
+| Email | Cannot be deleted | Cannot be changed | Cannot be changed | Was verified on sign-up |
+| Address Line 1 | User prompted to enter | No further input allowed after charcter limit | Wrong name will be sent on order. Depending on the error, it may or may not reach the destination, but the site cannot know if the address is valid or correct | Wrong name will be sent on order. Depending on the error, it may or may not reach the destination, but the site cannot know if the address is valid or correct |
+| Address Line 2 (optional) | Order proceeds without issue | No further input allowed after charcter limit | No issue | No issue |
+| Town/City | User prompted to enter | No further input allowed after charcter limit | Wrong name will be sent on order. Depending on the error, it may or may not reach the destination, but the site cannot know if the address is valid or correct | Wrong name will be sent on order. Depending on the error, it may or may not reach the destination, but the site cannot know if the address is valid or correct |
+| County (optional) | Order proceeds without issue | No further input allowed after charcter limit | No issue | No issue |
+| Country | User prompted to enter | No further input allowed after charcter limit | Drop down menu, so cannot be incorrect | Wrong country may be selected. If the rest of the address is correct, it shouldn't cause too much issue |
+| Post code | Payment proceeds so long as it is entered in the Stripe element | No further input allowed after the character limit | The Stripe element will override |  The Stripe element will override |
+| Stripe Payment | Tries to complete the payment, but returns to checkout page with message of card number being incomplete | Will not accept more digits | Returns to the checkout page with errors visible under the Stripe element | Returns to the checkout page with errors visible under the Stripe element |
+
+The Stripe payments were tested using their set of test numbers. It was also confirmed that after the user received their error warning that they were then able to complete a purchase as planned with a correct number.
+
+
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 

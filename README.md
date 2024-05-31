@@ -133,9 +133,9 @@ The merchandise and edible products are shown in 'cards' on the full product lis
 | **Merchandise products** | ![Merch list desktop](static/images/READMEImages/desktop-merch-list.png) | ![Merch list iPad](static/images/READMEImages/ipad-merch-list.png) | ![Merch list mobile](static/images/READMEImages/mobile-merch-list.png) | - Full variety of products can be seen. <br> - These can be further filtered using the navbar <br> - Detail and price shown on cards |
 | **Merchandise product details** | ![Merch details desktop](static/images/READMEImages/desktop-merch-detail.png) | ![Merch details iPad](static/images/READMEImages/ipad-merch-details.png) | ![Merch details mobile](static/images/READMEImages/mobile-merch-details.png) | - Price and description with larger, full image shown <br> - Alternative colours (if available) are shown and act as links to those products <br> - Choice of text in drop down menu, shown in the correct font when suggested. <br> - Ability to change the quantity required |
 | **Basket** | ![Basket desktop](static/images/READMEImages/desktop-basket.png) | ![Basket iPad](static/images/READMEImages/ipad-basket.png) | ![Basket mobile](static/images/READMEImages/mobile-basket.png) | - Key product information (name, image, amount, flavour and weight for edible, and text for merch) shown <br> - Ability to update the number of products or remove them altogether <br> - Options for whether to clear basket, keep shopping or proceed to checkout <br> - If basket is empty, only a 'keep shopping' option is given which returns to the homepage |
-| **Login** | Desktop | Tablet | Phone | - Adapted template from allauth <br> -  |
-| Sign-up | Desktop | Tablet | Phone | Comments |
-| Checkout | Desktop | Tablet | Phone | Comments |
+| **Login** | ![Login desktop](static/images/READMEImages/desktop-signin.png) | ![Login iPad](static/images/READMEImages/ipad-signin.png) | ![Login mobile](static/images/READMEImages/mobile-signin.png) | - Adapted template from allauth <br> - User receieves a toast confirming their actions |
+| **Sign-up** | ![Signup desktop](static/images/READMEImages/desktop-signup.png) | ![Signup iPad](static/images/READMEImages/ipad-signup.png) | ![Signup mobile](static/images/READMEImages/mobile-signup.png) | - Adapted template from allauth <br> - User receieves a toast confirming their actions <br> - Email address is confirmed and user redirected back to site |
+| Checkout | Desktop | Tablet | Phone | - Products, details and images are shown on the page <br> -  |
 | Checkout success | Desktop | Tablet | Phone | Comments |
 | Profile | Desktop | Tablet | Phone | Comments |
 | Order details | Desktop | Tablet | Phone | Comments |
@@ -202,8 +202,8 @@ To provide a simple and satisfying shopping experience for customers, allowing t
 ### Search Engine Optimisation (SEO)
 #### Keywords
 The potential keywords from the pages were analysed. Some potential search terms from these were devised, and a few tested for web traffic as shown in the images. Key terms were optimised and added into the base.html meta tags in order to affect the whole site output.
-![Keyword search for Fudge Delivery](static/images/READMEImages/seo-keyword-search1.png)
-![Keyword search for Luxury Fudge](static/images/READMEImages/seo-keyword-search2.png)
+![Keyword search for Fudge Delivery](static/images/READMEImages/seo-keyword-search1.png) <br>
+![Keyword search for Luxury Fudge](static/images/READMEImages/seo-keyword-search2.png) <br>
 ![Keyword search for Vegan Fudge](static/images/READMEImages/seo-keyword-search3.png)
 #### SiteMap
 A sitemap was created by entering the site's url into xml.sitemap.com. This provided a map of all the pages visible to search engines. This file was then downloaded and added to the project root directory.
@@ -223,7 +223,7 @@ Humorous merchandise and pictures with people and their bought products are enco
 
 ### Newsletters
 Users sign up with an email address. Those who do not opt out of marketing will receive emails detailing flavours of the month and other new and exciting products. 
-This process is managed by {XXX}, and site users who have not yet made a purchase can still create a login, which will sign them up to the newsletter.
+This process is managed by MailChimp (where these promotional emails can easily be set up and managed from the lists held in the Store Management parts of the site), and site users who have not yet made a purchase can still create a login, which will sign them up to the newsletter.
 
 [Return to Top](#roos-fudge-kitchen)
 

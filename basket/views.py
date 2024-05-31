@@ -49,7 +49,7 @@ class AddToBasketView(View):
             product_id = product.id
             name = product.name
             price = product.price
-            image_url = product.image.url
+            # image_url = product.image.url
         elif product_type == 'merch':
             product = get_object_or_404(MerchProduct, pk=item_id)
             product_id = product.id
@@ -109,7 +109,7 @@ class AddToBasketView(View):
 
             if text_option_id in basket[
                 str(common_product.id)]['details']:
-                basket[str(common_product.id)]['details'][
+                    basket[str(common_product.id)]['details'][
                     text_option_id
                 ] += quantity
             else:
@@ -133,7 +133,9 @@ class AddToBasketView(View):
 
             basket = {
                 k: v for k, v in basket.items()
-                if CommonProduct.objects.get(pk=k).product_type != 'subscription'
+                if (
+                    CommonProduct.objects.get(pk=k).product_type != 'subscription'
+                )
             }
             basket[str(common_product.id)] = 1
 

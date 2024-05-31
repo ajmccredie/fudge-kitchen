@@ -1,14 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_css %}
+<style>
+    .small-text-table th, .small-text-table td {
+        font-size: 0.7rem;
+        white-space: normal;
+    }
+
+    .small-text-table th, .small-text-table td {
+        padding: 0.5rem;
+    }
+
+    .container {
+        margin-left: 20px;
+        margin-right: 60px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
+<div class="container">
     <h1>Subscription Management</h1>
     <a href="{% url 'dashboard:home' %}" class="btn btn-secondary">Return to Dashboard</a>
     <h2>Subscribed Users</h2>
     <div class="table-responsive">
-        <table class="table table-bordered mt-3">
-            <thead>
+        <table class="table table-bordered table-striped table-hover small-text-table">
+            <thead class="thead-dark">
                 <tr>
                     <th>Username</th>
                     <th>Email</th>
@@ -34,7 +52,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'dashboard:sub_profile_detail' profile.pk %}">Allergens and Address Info</a>
+                        <a href="{% url 'dashboard:sub_profile_detail' profile.pk %}">click here</a>
                     </td>
                     <td>
                         <form action="{% url 'dashboard:update_subscription_status' profile.pk %}" method="post" style="display:inline;">
