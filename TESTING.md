@@ -1,6 +1,24 @@
 # Full details of manual site testing
+
+Click [here](README.md) to return to the README.md
+
 ## Site browser compatability
-The site was checked for compatability on Chrome, Edge and Firefox
+The site was checked for compatability on Chrome, Edge and Firefox. <br>
+The majority of the tests and screenshots shown in the README are from Chrome. <br>
+No major differences were found in the page functionalities and test purchases were complete successfully from all browsers checked.<br>
+
+### Edge
+![Edge desktop](static/images/READMEImages/browser-edge-desktop.png) <br>
+![Edge iPad](static/images/READMEImages/browser-edge-ipad.png) <br>
+![Edge phone](static/images/READMEImages/browser-edge-phone.png) <br>
+
+### Firefox
+![Firefox desktop](static/images/READMEImages/browser-firefox-desktop.png) <br>
+![Firefox desktop merch](static/images/READMEImages/browser-firefox-desktop-merch.png) <br>
+![Firefox iPad](static/images/READMEImages/browser-firefox-ipad.png) <br>
+![Firefox iPad toast](static/images/READMEImages/browser-firefox-ipad-toast.png) <br>
+![Firefox mobile](static/images/READMEImages/browser-firefox-mobile.png) <br>
+
 
 ## Home page
 | Test case description  | Expected outcome |  Pass?  | 
@@ -52,12 +70,12 @@ Page returning general search results
 Our Story
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| [Our Story HTML](static/images/READMEImages/story-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | N/A | no issues | [Story Lighthouse](static/images/READMEImages/Lighthouse-ourstory.png) |
+| ![Our Story HTML](static/images/READMEImages/story-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | N/A | no issues | ![Story Lighthouse](static/images/READMEImages/Lighthouse-ourstory.png) |
 
 FAQs and Contact Us
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| ![FAQ HTML](static/images/READMEImages/faq-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| ![FAQ HTML](static/images/READMEImages/faq-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | ![FAQ JSHint](static/images/READMEImages/faq-js-check.png) | no issues | ![FAQs Lighthouse](static/images/READMEImages/Lighthouse-faqs.png) |
 
 #### Restricted pages
 | Test case description  | Expected outcome |  Pass?  | 
@@ -81,16 +99,19 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) | N/A |  | ![Lighthouse fudge list](static/images/READMEImages/Lighthouse-edibleproducts.png) |
 
 #### Edible product detail page
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| Clear details and images of product | User can read the full details and ingredients of the products. The allergens are clearly stated, and it is confirmed whether or not the product is 'Plant Based' | Yes |
+| Choice of weights to buy | A drop down list of the available weights and the associated prices of these products are displayed. Whichever one the user selects prior to adding to the basket is reflected accurately in the basket.| Yes |
+| Choice of number of products | Users can update the number of products they wish to purchase either using the up and down arrows on the form, or by typing the number into the form field. A maximum of 99 are allowed for a single 'add to basket' | Yes |
+| Successful adding to basket feedback | Users are set to the basket page after they add products to it. They can see the products they have added and choose whether to keep shoppping or complete their purchase. The successful adding of the product is also reflected in the toast. | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| ![HTML product detail validation](static/images/READMEImages/edible-product-detail-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Lighthouse fudge details](static/images/READMEImages/Lighthouse-edibleproduct-detail.png)  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -101,7 +122,10 @@ FAQs and Contact Us
 #### Site filtering
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| Users can use search bar | Users can access the search bar in every screen size and enter their search terms | Yes |
+| Unsuccessful searches return a polite message | If a user enters a word which does not return a match for any of the products, a polite message is shown | Yes |
+| Search covers the product names and details | The search queries the product names and details, returning a list of hyperlinked names to the matching products | Yes |
+| Results are ordered and easy to use | The products returned are listed under 'Edible products', 'Merch', and 'Subscription'. | Yes |
 
 
 #### Other tests of possible user actions
@@ -114,11 +138,11 @@ FAQs and Contact Us
 ## Merchandise products
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-| Product list display | Products display with correct name and image, and are a link to a page with the details for that product |   |
+| Product list display | Products display with correct name and image, and are a link to a page with the details for that product | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| ![HTML merch list validation](static/images/READMEImages/merch-list-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Lighthouse merch list](static/images/READMEImages/Lighthouse-merch.png)  |
 
 #### Merch product detail page
 | Test case description  | Expected outcome |  Pass?  | 
@@ -129,7 +153,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Lighthouse merch detail](static/images/READMEImages/Lighthouse-merch-detail.png)  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -264,16 +288,20 @@ The Stripe payments were tested using their set of test numbers. It was also con
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 ### CRUD of Edible Products
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| Admin access list of details |  |   |
+| Admin create product |  |   |
+| Admin can delete product from the top list |  |   |
+| Admin edit product |  |   |
+| Changes immediately active on site |  |  |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -282,11 +310,15 @@ The Stripe payments were tested using their set of test numbers. It was also con
 ### CRUD of Merch Products
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| Admin access list of details |  |   |
+| Admin create product |  |   |
+| Admin can delete product from the top list |  |   |
+| Admin edit product |  |   |
+| Changes immediately active on site |  |  |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -299,7 +331,7 @@ The Stripe payments were tested using their set of test numbers. It was also con
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -312,7 +344,7 @@ The Stripe payments were tested using their set of test numbers. It was also con
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -322,6 +354,8 @@ The Stripe payments were tested using their set of test numbers. It was also con
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| Back-up from page |   |
+| Refresh page |   |
 
-## General testing of additional JavaScript files
+
+Click [here](README.md) to return to the README.md

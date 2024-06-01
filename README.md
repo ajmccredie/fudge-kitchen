@@ -394,6 +394,7 @@ Guest flavours have been identified on the site for general use. In a real life 
 [Return to Top](#roos-fudge-kitchen)
 
 ## Manual testing (overview)
+A full document of the detailed tests performed are contained in [Testing.md file](TESTING.md)
 ### Testing of User Stories
 |  User Story | MoSCow | Screenshot | Comments |
 | ---- | --- | --- | --- |
