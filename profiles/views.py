@@ -108,7 +108,7 @@ class DeleteProfileView(LoginRequiredMixin, View):
         user.delete()
         logout(request)  # Logout the user after account deletion
         messages.success(request, "Account successfully deleted.")
-        return redirect('home')
+        return redirect('profiles:profile')
 
 
 class OrderDetailView(LoginRequiredMixin, DetailView):

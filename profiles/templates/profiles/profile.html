@@ -87,7 +87,10 @@
     <div class="row mt-4">
         <div class="col-12">
             <a href="{% url 'profiles:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
-            <a href="{% url 'profiles:delete_account' %}" class="btn btn-danger" id="delete-account-btn">Delete Account</a>
+            <form action="{% url 'profiles:delete_account' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete Account</button>
+            </form>
         </div>
     </div>
 </div>

@@ -135,23 +135,33 @@ The merchandise and edible products are shown in 'cards' on the full product lis
 | **Basket** | ![Basket desktop](static/images/READMEImages/desktop-basket.png) | ![Basket iPad](static/images/READMEImages/ipad-basket.png) | ![Basket mobile](static/images/READMEImages/mobile-basket.png) | - Key product information (name, image, amount, flavour and weight for edible, and text for merch) shown <br> - Ability to update the number of products or remove them altogether <br> - Options for whether to clear basket, keep shopping or proceed to checkout <br> - If basket is empty, only a 'keep shopping' option is given which returns to the homepage |
 | **Login** | ![Login desktop](static/images/READMEImages/desktop-signin.png) | ![Login iPad](static/images/READMEImages/ipad-signin.png) | ![Login mobile](static/images/READMEImages/mobile-signin.png) | - Adapted template from allauth <br> - User receieves a toast confirming their actions |
 | **Sign-up** | ![Signup desktop](static/images/READMEImages/desktop-signup.png) | ![Signup iPad](static/images/READMEImages/ipad-signup.png) | ![Signup mobile](static/images/READMEImages/mobile-signup.png) | - Adapted template from allauth <br> - User receieves a toast confirming their actions <br> - Email address is confirmed and user redirected back to site |
-| Checkout | Desktop | Tablet | Phone | - Products, details and images are shown on the page <br> -  |
-| Checkout success | Desktop | Tablet | Phone | Comments |
-| Profile | Desktop | Tablet | Phone | Comments |
-| Order details | Desktop | Tablet | Phone | Comments |
-| Edit profile | Desktop | Tablet | Phone | Comments |
-| Story | Desktop | Tablet | Phone | Comments |
-| Contact us and FAQs | Desktop | Tablet | Phone | Comments |
-| Subscription | Desktop | Tablet | Phone | Comments |
-| Store Management | Desktop | Tablet | Phone | Comments |
-| Product CRUD | Desktop | Tablet | Phone | Comments |
-| Order tracking | Desktop | Tablet | Phone | Comments |
-| Subscription management | Desktop | Tablet | Phone | Comments |
-| Newsletter management | Desktop | Tablet | Phone | Comments |
-| Inquiries management | Desktop | Tablet | Phone | Comments |
+| Checkout | ![Checkout desktop](static/images/READMEImages/desktop-checkout.png) | ![Checkout iPad](static/images/READMEImages/ipad-checkout.png) | ![Checkout mobile](static/images/READMEImages/mobile-checkout.png) | - Items are shown. <br> - Non-authenticated users are asked to login or register for an account, and are then directed back to this page. <br> - Email address from login is lready populated and cannot be edited. <br> - Customers fill out the information <br> - Customers who have previously made a purchase will have their address details pre-populated, but can alter these as required. <br> - Stripe payment completed on the same page. <br> - Option to return to the basket is given if customers realise they have made mistakes. |
+| Checkout success | ![Confirmation desktop](static/images/READMEImages/desktop-confirmation.png) | ![Confirmation iPad](static/images/READMEImages/ipad-confirmation.png) | ![Confirmation mobile](static/images/READMEImages/mobile-confirmation.png) | - Shown on the page and with a toast. <br> - Email is also generated. <br> - Message on page suggests that users check their spam folders if it does not show up in their inbox in a couple of minutes.<br> - Customers receive a unique order number for tracking purposes. |
+| Profile | ![Profile desktop](static/images/READMEImages/desktop-profile.png) | ![Profile ipada](static/images/READMEImages/ipad-profile.png) | Phone | - Customers can see their address details, dietary preferences and allergen information. <br>
+ - They can see details of previous orders and whether the most recent one has been dispatched. |
+| Order details | ![Profile order details desktop](static/images/READMEImages/desktop-profile-orders.png)  | ![Profile order details ipad](static/images/READMEImages/ipad-profile-orders.png)  | Phone | - Full details, including the dispatch address, can be seen. |
+| Edit profile | ![Profile edit desktop](static/images/READMEImages/desktop-profile-edit.png) | ![Profile edit ipad](static/images/READMEImages/ipad-profile-edit.png)  | ![Profile edit mobile](static/images/READMEImages/mobile-profile-edit.png)  | - They can opt to sign up for the newsletter  (or remove this if required) <br> - The can change the delivery address information and any dietary preferences |
+| Story | ![Story desktop](static/images/READMEImages/desktop-story.png) | ![Story ipad](static/images/READMEImages/ipad-story.png)  | ![Story mobile](static/images/READMEImages/mobile-story.png)  |  - Simple images and text <br> - Top links to FAQs and contact us <br> - Base links to fudge and merch |
+| Contact us and FAQs | ![FAQs desktop](static/images/READMEImages/desktop-faqs.png) | ![FAQs ipad](static/images/READMEImages/ipad-faqs.png)  | ![FAQs mobile](static/images/READMEImages/mobile-faqs.png)  | - Drop down boxes for the FAQs <br> - FAQs available if logged in <br> - Login and register for people who are not logged in <br> - Messages are sent  to the inquiry dashboard |
+| Subscription | Desktop | Tablet | Phone | - Subscription benefits are listed. <br> - Authenticated users without a subscription can add it to their basket. <br> - Un-authenticated users are asked to sign-in or register. <br> - Authenticated users with an active subscription are recognised and prevented from adding it to their basket <br> - Subscription product can only be added once to the basket
+ |
+| Store Management | Desktop | Tablet | Phone | - Store management requires a “staff” login, but can then be accessed easily from the profile. <br> - The main dashboard provides the options available.
+ |
+| Product CRUD | Desktop | Tablet | Phone | - Edible and merch products have full CRUD capability from here. <br> - Ingredients and allergen details, and any changes to the standard prices can be added for edible products. Linked products (with alternative colours), and choices of phrases can be added  |
+| Order tracking | Desktop | Tablet | Phone | - The store manager can see the orders which have been placed. Dispatched orders display ‘greyed-out’. Individual products can be marked as ‘made’. This is a feature to help the management of a small business who make the products themselves (or maybe have a third party make the merch items). <br> - The list can be filtered to only show items requiring dispatch, edible items or merch items. Again, these are features which assist the running of the business (and therefore the customer experience of shopping at the site) |
+| Subscription management | Desktop | Tablet | Phone | - Subscription products can be managed, subscribed users listed and key information to ensure any free samples are suitable for their dietary/allergen requirements can be seen. The admin has the ability to cancel subscriptions and a countdown is provided for how long each subscriber has left of their annual subscription. This would be cancelled manually by the Store Owner, either at the end of the year, or earlier if the subscriber requested. A list of subscriber email addresses is provided here, allowing ease of contact for promotional or instructional emails. |
+| Newsletter management | Desktop | Tablet | Phone | - A list of users who have opted into the newsletter can be seen on this page. This should always be checked before triggering any newsletter emails from the business.
+ |
+| Inquiries management | Desktop | Tablet | Phone | - All submitted customer inquires appear listed from newest to oldest. These can also be marked as resolved to allow management to quickly assess where to direct their attention.
+ |
 
 
 #### Future features
+There are a number of future features which could be added, some of which were in the 'could' designation of the user stories, others of which were found in the development process:
+- Automatic monthly billing for subscriptions, <br>
+- Automatic cancellation at the end of the year, <br> 
+- Different ‘levels’ of subscription and bonus discount code which could be sent to the subscribers
+- Management of the content and sending of newsletter and subscription emails directly from the site rather than using a third party
 
 [Return to Top](#roos-fudge-kitchen)
 
@@ -228,8 +238,9 @@ This process is managed by MailChimp (where these promotional emails can easily 
 [Return to Top](#roos-fudge-kitchen)
 
 ## Agile project planning and methodology
-An initail collection of user stories were determined at the start. These were then analysed for prioritisation and  the first sprint planned in terms of goals. 
-Each sprint was conducted the extent to which the goals were met was analysed, the sprints assessed and any incomplete work's value reassessed as to where/whether it should be tackled in the future.
+An initail collection of user stories were determined at the start. These were then analysed for prioritisation and  the first sprint planned in terms of goals.  <br>
+Each sprint was conducted the extent to which the goals were met was analysed, the sprints assessed and any incomplete work's value reassessed as to where/whether it should be tackled in the future. <br>
+Progress was documented using GitHub Projects, which made it easy to visually manage the work load.
 
 ### Full user stories and acceptance criteria
 | User story  | MoSCoW |  Acceptance criteria  |  Story points  |
@@ -440,10 +451,12 @@ Full test details and results can be found in TESTING.md.
 - Urls between merch items
 - Images not showing in basket or checkout
 - Toast bugs
+- Account deletion was not working until this was found in final testing and rectified.
 
 
 #### Unresolved
 - Unable to get the allergen symbols to render with the allergens in the list filtering
+- Where the allergen filters are set up as {{ allergen_form.as_p }}, an error is being caused in the html validation regarding a stray closing "</p>" tag. A few things were tried (unsuccessfully) to solve this validation error, but it has been left in as a known bug.
 
 [Return to Top](#roos-fudge-kitchen)
 

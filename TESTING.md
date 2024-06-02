@@ -175,13 +175,13 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Lighthouse Signup](static/images/READMEImages/lighthouse-signup.png) |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-| Username |  |  |  |  |
-| Email |  |  |  |  |
-| Password |  |  |  |  |
+| Username |  |  | You cannot set up an account with the same name as one that already exists in the database | Users are asked to select more approrpriate character |
+| Email |  |  | You cannot set up an account with the same name as one that already exists in the database | Email confirmation is sent, the account is not successfully created until this verification occurs. |
+| Password |  | Users are reminded of the valid combinations and rules | Users are reminded of the valid combinations and rules | Users are reminded of the valid combinations and rules |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
