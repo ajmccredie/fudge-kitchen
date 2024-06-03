@@ -9,11 +9,13 @@
         {% csrf_token %}
         {{ form.as_p }}
         <h3>Colour Variations</h3>
+        <p>Reminder: your products already need to be loaded before you can link them. Don't forget to go back through to link them all together here.</p>
         {{ colour_formset.management_form }}
         {% for form in colour_formset %}
         {{ form.as_p }}
         {% endfor %}
         <h3>Text Options</h3>
+        <p>Reminder: You need to pre- prepare your text image file and save without a background, your text in the box must match the text in the image to avoid customer confusion.</p>
         {{ text_option_formset.management_form }}
         {% for form in text_option_formset %}
         {{ form.as_p }}
