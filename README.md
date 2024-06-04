@@ -147,8 +147,7 @@ The merchandise and edible products are shown in 'cards' on the full product lis
 | Product CRUD | ![Product CRUD desktop](static/images/READMEImages/desktop-crud-fudge.png) | ![Product CRUD ipad](static/images/READMEImages/ipad-crud-fudge-allergen.png) | ![Product CRUD mobile](static/images/READMEImages/mobile-dash-crud-fudge.png) | - Edible and merch products have full CRUD capability from here. <br> - Ingredients and allergen details, and any changes to the standard prices can be added for edible products. Linked products (with alternative colours), and choices of phrases can be added  |
 | Order tracking | ![Dashboard tracking desktop](static/images/READMEImages/desktop-dash-order-list.png) | ![Dashboard tracking ipad](static/images/READMEImages/ipad-dash-order-details.png) | ![Dashboard tracking mobile](static/images/READMEImages/mobile-dash-order-list.png) | - The store manager can see the orders which have been placed. Dispatched orders display ‘greyed-out’. Individual products can be marked as ‘made’. This is a feature to help the management of a small business who make the products themselves (or maybe have a third party make the merch items). <br> - The list can be filtered to only show items requiring dispatch, edible items or merch items. Again, these are features which assist the running of the business (and therefore the customer experience of shopping at the site) |
 | Subscription management | ![Subscription management desktop](static/images/READMEImages/desktop-dash-sub-list.png) | ![Subscription management tracking ipad](static/images/READMEImages/ipad-dash-subscription.png) | ![Subscription management tracking mobile](static/images/READMEImages/mobile-dash-subscription.png) | - Subscription products can be managed, subscribed users listed and key information to ensure any free samples are suitable for their dietary/allergen requirements can be seen. <br> - The admin has the ability to cancel subscriptions and a countdown is provided for how long each subscriber has left of their annual subscription. This would be cancelled manually by the Store Owner, either at the end of the year, or earlier if the subscriber requested. <br> - A list of subscriber email addresses is provided here, allowing ease of contact for promotional or instructional emails. <br> - Note about responsive behaviour: the table contains a lot of information and is required to horizontal scroll on smaller screen-sizes. This is a known bug. |
-| Newsletter management | ![Newsletter management desktop](static/images/READMEImages/desktop-dash-newsletter.png) | ![Newsletter management iPad](static/images/READMEImages/ipad-dash-newsletter.png) | ![Newsletter management mobile](static/images/READMEImages/mobile-dash-newsletter.png) | - A list of users who have opted into the newsletter can be seen on this page. This should always be checked before triggering any newsletter emails from the business.
- |
+| Newsletter management | ![Newsletter management desktop](static/images/READMEImages/desktop-dash-newsletter.png) | ![Newsletter management iPad](static/images/READMEImages/ipad-dash-newsletter.png) | ![Newsletter management mobile](static/images/READMEImages/mobile-dash-newsletter.png) | - A list of users who have opted into the newsletter can be seen on this page. This should always be checked before triggering any newsletter emails from the business.|
 | Inquiries management | ![Inquiries management desktop](static/images/READMEImages/desktop-dash-inquiries.png) | ![Inquiries management iPad](static/images/READMEImages/ipad-dash-inquiries.png) | ![Inquiries management mobile](static/images/READMEImages/mobile-dash-inquiries.png) | - All submitted customer inquires appear listed from newest to oldest. These can also be marked as resolved to allow management to quickly assess where to direct their attention.
  |
 
@@ -191,7 +190,7 @@ There are a number of future features which could be added, some of which were i
 - Many-to-One with Users/Profile
 
 7. ProductModel
-(was not used independently in the end)
+The parent class of the Fudge, Merchandise and Subscription models. CommonProduct was formed to allow unique products to be listed and saved.
 
 8. FudgeModel
 - Many-to-One with PaymentModel (a required payment can include multiple fudge items)
@@ -433,7 +432,7 @@ A full document of the detailed tests performed are contained in [Testing.md fil
 | As a **site admin**, I can **receive and respond to customer inquiries submitted through the website**, in order to **provide assistance and information as needed**. | Should | ![Inquiry list and management](static/images/READMEImages/user-inquiry-management.png) | These show as a list on the 'Store Management' and can be marked as 'dealt with' for ease of management. |
 | As a **site admin**, I can **implement and manage SEO strategies and tools on the website**, in order to **improve the site's visibility and ranking on search engines, thereby attracting more potential customers to our fudge products and increasing sales**. | Must | ![Meta tags](static/images/READMEImages/seo-meta-tags.png)  | Key search terms were researched and applied in the Meta tags. A sitemap was produced with an accompanying robots.txt file.  |
 
-Full test details and results can be found in TESTING.md.
+Full test details and results can be found in [Testing.md file](TESTING.md).
 
 [Return to Top](#roos-fudge-kitchen)
 
@@ -507,14 +506,18 @@ Full test details and results can be found in TESTING.md.
 [Return to Top](#roos-fudge-kitchen)
 
 ## References and credits
-- Walkthrough projects of "BoutiqueAdo" and "I Think, Therefore I Blog". Template from BoutiqueAdo used and manipulated, in particular for the initial basket, webhooks, and checkout structures.
+- Walkthrough projects of "BoutiqueAdo" and "I Think, Therefore I Blog". Template from BoutiqueAdo used and manipulated, in particular for the initial basket, webhooks, Stripe, toasts, and checkout structures.
 - Mentor for checking my ideas make sense and encouragement to get them implemented.
-- Learning Support, in particular Roman for assistance on a variety of topics, but mostly the webhooks.
-- Sam 
-- Previous Hackathon projects of XXX for assistance with headers, menus and some script tricks
-- References for particular features or inspiration...
+- Learning Support, for assistance on a variety of topics, but mostly the webhooks (in particular Roman).
+- Sam for allowing me to troubleshoot problems by talking (most 'at' him) the issues and potential solutions through.
+- Previous Hackathon projects of 'curse-generator-hackathon-2023' and 'EconoMate' for assistance with headers, menus and some script tricks.
+- Form structures and adapting existing ideas from CycleConnect (portfolio project 4)
+
 
 https://docs.djangoproject.com/en/5.0/topics/db/models/ for assistance on models and inheritance 
+https://docs.djangoproject.com/en/5.0/topics/serialization/ for serialising and sorting data appropriately.
+https://docs.djangoproject.com/en/5.0/topics/db/queries/ for reminders how to filter pages (some filters similar and some different to those used in my previous portfolio project 'CycleConnect').
+https://docs.djangoproject.com/en/5.0/intro/tutorial03/ for differentiating between urls.
 
 ## Procedures
 ### Prerequisites and installs
