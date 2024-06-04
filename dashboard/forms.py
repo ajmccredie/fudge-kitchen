@@ -12,7 +12,6 @@ class EdibleProductForm(forms.ModelForm):
         queryset=Allergen.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False,
-        error_messages={'required': 'Please select at least one allergen.'}
     )
 
     class Meta:

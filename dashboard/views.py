@@ -326,9 +326,6 @@ class SubscriptionManagementView(StaffRequiredMixin, View):
         subscription_products = SubscriptionProduct.objects.all()
         allergen_fields = ProfileForm.ALLERGEN_FIELDS
 
-        allergen_display = None
-        dietary_display = None
-
         for profile in subscriptions:
             allergen_info = {
                 field: getattr(profile, field) for field, _ in allergen_fields
@@ -341,9 +338,6 @@ class SubscriptionManagementView(StaffRequiredMixin, View):
                 profile.get_dietary_preference_display()
             )
 
-            allergen_display = profile.user.allergen_display
-            dietary_display = profile.user.dietary_preference_display
-            
             if not profile.user.allergen_display:
                 profile.user.allergen_display = "None selected"
 

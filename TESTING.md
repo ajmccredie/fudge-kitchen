@@ -40,7 +40,7 @@ No major differences were found in the page functionalities and test purchases w
 #### Search bar
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-| Text entry | Results show no results available for " " |  | Spelling mistakes are unlikely to generate zero results. | N/A |
+| Text entry | Results show no results available for " " | Limit kicks in set from the model and no further text accepted. | Spelling mistakes are unlikely to generate zero results. | N/A |
 
 Page returning general search results
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
@@ -85,7 +85,7 @@ FAQs and Contact Us
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| Back-up after sending an inquiry results in the inquiry still being sent to the admin | Yes |
 
 [Return to Top](#full-details-of-manual-site-testing)
 
@@ -99,7 +99,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| There is a known error on this page: <br> ![Edible product list html validation](static/images/READMEImages/edible-product-list-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | N/A | No issues | ![Lighthouse fudge list](static/images/READMEImages/Lighthouse-edibleproducts.png) |
+| There is a known error on this page: <br> ![Edible product list html validation](static/images/READMEImages/edible-product-list-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | No issues | ![Lighthouse fudge list](static/images/READMEImages/Lighthouse-edibleproducts.png) |
 
 #### Edible product detail page
 | Test case description  | Expected outcome |  Pass?  | 
@@ -116,7 +116,7 @@ FAQs and Contact Us
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
 | Choice of weight and price | Not possible with drop down - reverts to default| Not possible with drop down - reverts to default | Not possible with drop down - reverts to default | Not possible with drop down - reverts to default |
-| Number of products to add |  |  |  |  |
+| Number of products to add | Returns the 500 error on a custom page with a return to site button | Error is shown on the page | Error is shown on the page | Error is shown on the page |
 
 
 #### Site filtering
@@ -131,7 +131,7 @@ FAQs and Contact Us
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| Site will search for anything the user types and will return what they typed with any possible results. This means that users can spot accidental typos and potentially understand why their results are not as expected. | Yes |
 
 [Return to Top](#full-details-of-manual-site-testing)
 
@@ -142,36 +142,37 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| ![HTML merch list validation](static/images/READMEImages/merch-list-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Lighthouse merch list](static/images/READMEImages/Lighthouse-merch.png)  |
+| ![HTML merch list validation](static/images/READMEImages/merch-list-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional script | No issues | ![Lighthouse merch list](static/images/READMEImages/Lighthouse-merch.png) |
 
 #### Merch product detail page
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-| Product details display with correct image |  |   |
-| Product selection | Product in volume of 1-99 can be added to basket and appears correctly in toast  | Yes |
+| Product details display with correct image | The product details display in full with any relevant additional products and the image of the slogan text. | Yes |
+| Product selection | Product in volume of 1-99 can be added to basket and appears correctly in toast. | Yes |
 | Links to alternative colours | Alternative colours, where available, are displayed and are links to that product detail page instead | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Lighthouse merch detail](static/images/READMEImages/Lighthouse-merch-detail.png)  |
+| This shows an error because the src is controlled by logic from Django. A default image was added to try to remove the error, but unsuccessfully. It does not affect the page function. <br> ![HTML merch list validation](static/images/READMEImages/merch-list-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | ![JSHint validation for merch text](static/images/READMEImages/jshint-merch-text.png) | No issues | ![Lighthouse merch detail](static/images/READMEImages/Lighthouse-merch-detail.png) |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-| Text choice |  |  |  |  |
-| Number to add to basket |  |  |  |  |
+| Text choice | Cannot be blank from drop down | Cannot be blank from drop down | Cannot be incorrect from drop down | Cannot be invalid from drop down |
+| Number to add to basket | Returns the 500 error on a custom page with a return to site button | Error is shown on the page | Error is shown on the page | Error is shown on the page |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| If a user wishes to add more than 99 products, they can do this by adding 99 and then going back to the same product and repeating the process. | Yes |
 
 [Return to Top](#full-details-of-manual-site-testing)
 
 ## Accounts pages (including sign-up, sign-in and sign-out)
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  User registration |  |   |
-| User login |  |  |
+| User registration | User can enter details and sign-up for an account. Their email is verified and they cannot proceed without a valid address. | Yes |
+| User login | User can enter their details which they used for registration and then gain full access to the customer logged in services.  | Yes |
+| User secure logout | User can opt to logout from the site securely | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
@@ -179,14 +180,14 @@ FAQs and Contact Us
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-| Username |  |  | You cannot set up an account with the same name as one that already exists in the database | Users are asked to select more approrpriate character |
-| Email |  |  | You cannot set up an account with the same name as one that already exists in the database | Email confirmation is sent, the account is not successfully created until this verification occurs. |
-| Password |  | Users are reminded of the valid combinations and rules | Users are reminded of the valid combinations and rules | Users are reminded of the valid combinations and rules |
+| Username | Message on screen to fill in | Capped at character limit | You cannot set up an account with the same name as one that already exists in the database | Users are asked to select more approrpriate character |
+| Email | Message on screen to fill in | Capped at character limit | You cannot set up an account with the same name as one that already exists in the database | Email confirmation is sent, the account is not successfully created until this verification occurs. |
+| Password | Message on screen to fill in | Users are reminded of the valid combinations and rules | Users are reminded of the valid combinations and rules | Users are reminded of the valid combinations and rules |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-|  |   |
+| Backing up from being logged out initially looks like you are still signed in, until user tries to follow any authorised links, where it then directs them to sign-in. | Yes |
 
 #### Basket
 | Test case description  | Expected outcome |  Pass?  | 
@@ -203,10 +204,10 @@ FAQs and Contact Us
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-| Number of products |  |  |  |  |
-| Update |  |  |  |  |
-| Remove |  |  |  |  |
-| Increment up/down |  |  |  |  |
+| Number of products | Custom 500 page shown, returning to the homepage with basket in tact | Caps at 99 on proceed | Will not accept letters | Will not accept letters |
+| Update | Custom 500 page show, returning to the homepage with basket in tactn | Caps at 99 on proceed | Custom 500 page shown, returning to the homepage with basket in tact | No change to the field results in no change on upadte |
+| Remove | No effect | No effect | Accidental removal allowed | Not applicable |
+| Increment up/down | No possible for this element | Will not go below 0 or above 99 | Will not go below 0 or above 99 | Will not go below 0 or above 99 |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
@@ -240,33 +241,28 @@ FAQs and Contact Us
 | Stripe Payment | Tries to complete the payment, but returns to checkout page with message of card number being incomplete | Will not accept more digits | Returns to the checkout page with errors visible under the Stripe element | Returns to the checkout page with errors visible under the Stripe element |
 
 The Stripe payments were tested using their set of test numbers. It was also confirmed that after the user received their error warning that they were then able to complete a purchase as planned with a correct number.
+**Stripe Test Codes**
+![Stripe test codes](static/images/READMEImages/stripe-test-codes.png)
+<br>
+
+**Declined**
+![Stripe declined message](static/images/READMEImages/stripe-declined.png)
+<br>
+
+**Expired**
+![Stripe expired message](static/images/READMEImages/stripe-expired.png)
+<br>
+
+**Invalid**
+![Stripe invalid message](static/images/READMEImages/stripe-invalid.png)
 
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-| Back-up |   |
-| Change page from a link |   |
-| Change page from the page address bar |   |
-
-#### Restricted pages
-| Test case description  | Expected outcome |  Pass?  | 
-| ----------- | ----------- | ----------- |
-| User login |  |   |
-| User logout |  |   |
-| Store admin login |  |   |
-
-| Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
-| ----------- | ----------- | ----------- | ----------- | --------|
-| Sign-up |  |  |  |  |
-| Sign-in |  |  |  |  |
-| Password |  |  |  |  |
-
-#### Other tests of possible user actions
-| Action description  | Result acceptable? | 
-| ----------- | ----------- |
-| Attempting access with the address bar |   |
-| Back-up after logging out |   |
+| Back-up returns to basket | Yes |
+| Change page from a link will return to checkout on 'back-up'. Basket remains in tact and available. | Yes |
+| Change page from the page address bar returns to the checkout with the information as it was left | Yes |
 
 ## Subscriptions page
 | Test case description  | Expected outcome |  Pass?  | 
@@ -288,72 +284,101 @@ The Stripe payments were tested using their set of test numbers. It was also con
 ## Admin dashboard features
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| Store manager can navigate the Store Management pages | Full list of available features shown categorised on the main dashboard | Yes |
+| Store manager can access the Store Management pages | Each category acts as a link to the sub category with further options | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | No issues | Not available for logged in pages |
 
 ### CRUD of Edible Products
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-| Admin access list of details |  |   |
-| Admin create product |  |   |
-| Admin can delete product from the top list |  |   |
-| Admin edit product |  |   |
-| Changes immediately active on site |  |  |
+| Admin access detailed list of all edible products | Full list of edible products can be seen with images and options for actions | Yes |
+| Admin create product | A new product can be created by filling in the form and will appear on the customer front end | Yes |
+| Admin can delete product from the top list | A product can be deleted and will disappear from the customer front end. This action is checked with a message first. | Yes |
+| Admin edit product | Store manager can make quick changes, save the form and it appears on the customer front end | Yes |
+| Changes immediately active on site | Any changes on the Store Management are immediately reflected on the customer front end | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | No issues | Not available for logged in pages |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-|  |  |  |  |  |
+| Name |  | Caps at limit | This would be allowed and then down to the Store Manager to find the typo | Numbers are allowed. This would also need to be caught by the Store Management |
+| Flavour | Form error shows on page | Caps at limit | This would be allowed and then down to the Store Manager to find the typo | Numbers are allowed. This would also need to be caught by the Store Management |
+| Description | Form error shows on page | Caps at limit | This would be allowed and then down to the Store Manager to find the typo | Numbers are allowed. This would also need to be caught by the Store Management |
+| Ingredients | Form error shows on page | Caps at limit | This would be allowed and then down to the Store Manager to find the typo | Numbers are allowed. This would also need to be caught by the Store Management |
+| Image | Form accepts blank, but the top level list then shows that it requires filling in. | Image quality cap seems to be fairly high | This would need to be caught by store management | Invalid image types are disallowed |
+| Allergen tick boxes | No issue | N/A | Needs to be caught by management | N/A |
+| Plant based tick boxes | No issue | N/A | Needs to be caught by management | N/A |
+| Weight over-rides |  |  |  |  |
 
 ### CRUD of Merch Products
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-| Admin access list of details |  |   |
-| Admin create product |  |   |
-| Admin can delete product from the top list |  |   |
-| Admin edit product |  |   |
-| Changes immediately active on site |  |  |
+| Admin access detailed list of all merch products | Full list of merch products can be seen with images and options for actions | Yes |
+| Admin create product | A new product can be created by filling in the form and will appear on the customer front end | Yes |
+| Admin can delete product from the top list | A product can be deleted and will disappear from the customer front end | Yes |
+| Admin edit product | Store manager can make quick changes, save the form and it appears on the customer front end | Yes |
+| Changes immediately active on site | Any changes on the Store Management are immediately reflected on the customer front end | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | No issues | Not available for logged in pages |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-|  |  |  |  |  |
+| Name |  |  |  |  |
+| Description |  |  |  |  |
+| Price |  |  |  | Only accepts numbers |
+| Type | Form error shown on page |  |  |  |
+| Colour |  |  |  |  |
+| Image |  | Resolution of image can be too high and shows as a form error |  |  |
+| Colour variations (name) |  |  |  |  |
+| Colour variations (image) |  |  |  |  |
+| Colour variations (product url) |  |  |  |  |
+| Colour variations (delete) | N/A | N/A | Deleted links disappear on save. This is not checked | N/A |
+| Text options (text) |  |  |  |  |
+| Text options (image) |  |  | Anything can be added. Store Manager needs to check |  |
+| Text options (delete) |  |  | Deleted options disappear on save. This is not checked |  |
 
 ### Tracking of orders
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| List of orders can be seen | Full list of orders can be seen in chronological order | Yes |
+| Full details available | Each item on the list acts as a link to the details of the order  | Yes |
+| Orders clearly marked as 'made' and 'dispatched' as appropriate | Tags are shown and can be toggled. Orders marked as dispatched appear 'greyed-out' compared to the other items | Yes |
+| Orders can be sorted appropriately | Orders can be filtered by type and whether requiring dispatch | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | No issues | Not available for logged in pages |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-|  |  |  |  |  |
+| Toggle as made | N/A | N/A |  | N/A |
+| Toggle as dispatched | N/A | N/A |  | N/A |
+| Mark as deleted | N/A | N/A | Removes from the list and from the 'orders' in the user's profile too. | N/A |
 
 ### Receiving and checking off inquiries
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
 | Admin receive the messages | Messages sent from users appear in the dashboard list | Yes  |
-|  |  |  |
+| Admin can choose act on message |  |  |
+| Admin can mark images as dealt with |  |  |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | No issues | Not available for logged in pages |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
 |  |  |  |  |  |
+
+### Subscription Management
+
 
 
 #### Other tests of possible user actions

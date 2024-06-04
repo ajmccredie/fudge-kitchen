@@ -15,25 +15,35 @@
     {% for colour in colours %}
     <div class="col-auto mb-2">
       <a href="{{ colour.get_absolute_url }}">
-        <img src="{{ colour.image.url }}" alt="{{ colour.colour_name }} Image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+        <img src="{{ colour.image.url }}" alt="{{ colour.colour_name }} Image" class="img-thumbnail"
+          style="width: 100px; height: 100px; object-fit: cover;">
       </a>
     </div>
     {% endfor %}
   </div>
 
-  <!-- Text options display and selection -->
-  <label for="text-select">Text options:</label>
-  <select id="text-select" name="text_option" onchange="updateTextDisplay();">
-    {% for text in text_options %}
-    <option value="{{ text.id }}" data-img="{{ text.image.url }}" {% if text.is_default %}selected{% endif %}>
-      {{ text.text }}</option>
-    {% endfor %}
-  </select>
+<!-- Text options display and selection -->
+<label for="text-select">Text options:</label>
+<select id="text-select" name="text_option" onchange="updateTextDisplay();">
+  {% for text in text_options %}
+  <option value="{{ text.id }}" data-img="{{ text.image.url }}" {% if text.is_default %}selected{% endif %}>
+    {{ text.text }}</option>
+  {% endfor %}
+</select>
 
-  <!-- Image display based on selected text option -->
-  <img id="text-display-image"
-    src="{{ text.image.url }}"
-    alt="Selected Text Image" class="img-fluid mt-3">
+{% with default_image_url='/static/images/default.png' %}
+{% with image_url=default_image_url %}
+{% for text in text_options %}
+{% if text.is_default %}
+{% with image_url=text.image.url %}
+{% endwith %}
+{% endif %}
+{% endfor %}
+{% endwith %}
+{% endwith %}
+
+<!-- Image display based on selected text option -->
+<img id="text-display-image" src="{{ image_url }}" alt="Selected Text Image" class="img-fluid mt-3">
 
   <!-- Add to basket form -->
   <form method="post" action="{% url 'basket:add_to_basket' object.id %}">
@@ -58,10 +68,6 @@
 </div>
 
 <script>
-  // function changeMainImage(url) {
-  //   document.getElementById('main-product-image').src = url;
-  // }
-
   function updateTextDisplay() {
     var selectElement = document.getElementById('text-select');
     var textImage = document.getElementById('text-display-image');
