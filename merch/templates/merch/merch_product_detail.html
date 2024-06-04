@@ -32,7 +32,7 @@
 
   <!-- Image display based on selected text option -->
   <img id="text-display-image"
-    src="{% for text in text_options %}{% if text.is_default %}{{ text.image.url }}{% endif %}{% endfor %}"
+    src="{{ text.image.url }}"
     alt="Selected Text Image" class="img-fluid mt-3">
 
   <!-- Add to basket form -->
