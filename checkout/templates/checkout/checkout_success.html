@@ -17,7 +17,8 @@
             <p>Your order information is below. We will send confirmation to <strong>{{ order.email }}</strong>.</p>
             <p>If you have not received this email within a couple of minutes, please check your spam folder.</p>
             <br>
-            <p>If you wish to receive email updates about our company and new guest flavours and promotions, please head to your <a href="{% url 'profiles:profile' %}">Profile</a> and check the box in the edit pages.</p>
+            <p>If you wish to receive email updates about our company and new guest flavours and promotions, please head
+                to your <a href="{% url 'profiles:profile' %}">Profile</a> and check the box in the edit pages.</p>
         </div>
     </div>
 
@@ -57,25 +58,27 @@
                 <div class="row">
                     <div class="col-2 mb-1">
                         {% if item.product_type == 'edible' %}
-                                {% if item.edible_product.image %}
-                                    <img class="w-100" src="{{ item.edible_product.image.url }}" alt="{{ item.edible_product.flavour }}">
-                                {% else %}
-                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
-                                {% endif %}
-                            {% elif item.product_type == 'merch' %}
-                                {% if item.merch_product.image %}
-                                    <img class="w-100" src="{{ item.merch_product.image.url }}" alt="{{ item.merch_product.name }}">
-                                {% else %}
-                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
-                                {% endif %}
-                            {% elif item.product_type == 'subscription' %}
-                                {% if item.subscription_product.image %}
-                                    <img class="w-100" src="{{ item.subscription_product.image.url }}" alt="{{ item.subscription_product.name }}">
-                                {% else %}
-                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
-                                {% endif %}
-                            {% endif %}
-                        </div>
+                        {% if item.edible_product.image %}
+                        <img class="w-100" src="{{ item.edible_product.image.url }}"
+                            alt="{{ item.edible_product.flavour }}">
+                        {% else %}
+                        <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
+                        {% endif %}
+                        {% elif item.product_type == 'merch' %}
+                        {% if item.merch_product.image %}
+                        <img class="w-100" src="{{ item.merch_product.image.url }}" alt="{{ item.merch_product.name }}">
+                        {% else %}
+                        <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
+                        {% endif %}
+                        {% elif item.product_type == 'subscription' %}
+                        {% if item.subscription_product.image %}
+                        <img class="w-100" src="{{ item.subscription_product.image.url }}"
+                            alt="{{ item.subscription_product.name }}">
+                        {% else %}
+                        <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="no product image">
+                        {% endif %}
+                        {% endif %}
+                    </div>
                     <div class="col-7">
                         {% if item.product_type == 'edible' %}
                         <p class="my-0"><strong>{{ item.edible_product.flavour }}</strong></p>
@@ -195,6 +198,16 @@
                 <div class="col text-center">
                     <a href="{% url 'index' %}" class="btn btn-primary">Back to Home</a>
                 </div>
+            </div>
+            <!-- Social Links -->
+            <div class="social-links">
+                <p>Spread the sweetness! Follow us and use hashtags #RoosFudgeKitchen #LifeIsSweeter</p>
+                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-instagram"></i> Follow us on Instagram
+                </a>
+                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-facebook"></i> Follow us on Facebook
+                </a>
             </div>
         </div>
     </div>

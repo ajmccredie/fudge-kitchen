@@ -32,6 +32,8 @@ Grand Total: £{{ order.grand_total }}
 
 If you have any questions, feel free to contact us at {{ contact_email }}.
 
+Don't forget to post your pictures online, follow us and use hashtags #RoosFudgeKitchen #LifeIsSweeter< 
+
 Thank you for your order!
 
 Sincerely,

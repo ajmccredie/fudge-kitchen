@@ -1,1 +1,1 @@
-Fudge Confirmation for Order Number {{ order.order_number }}
+Roo's Fudge Kitchen Confirmation for Order Number {{ order.order_number }}

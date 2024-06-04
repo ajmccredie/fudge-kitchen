@@ -92,14 +92,14 @@ FAQs and Contact Us
 ## Edible Products
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-| Display all products | Products display with correct price and images, and link to the correct product details |   |
+| Display all products | Products display with correct price and images, and link to the correct product details | Yes  |
 | Products displayed according to preference | Products can be correctly displayed as 'All', 'Plant-based' or 'Traditional' | Yes |
 | Allergen filtering | Products can be filtered on page according to selected allergens, and this can be changed multiple times without issue. | Yes |
 | Guest products are identifiable | Guest products are shown with a banner which states they are 'guest products' | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) | N/A |  | ![Lighthouse fudge list](static/images/READMEImages/Lighthouse-edibleproducts.png) |
+| There is a known error on this page: <br> ![Edible product list html validation](static/images/READMEImages/edible-product-list-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | N/A | No issues | ![Lighthouse fudge list](static/images/READMEImages/Lighthouse-edibleproducts.png) |
 
 #### Edible product detail page
 | Test case description  | Expected outcome |  Pass?  | 
@@ -111,11 +111,11 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| ![HTML product detail validation](static/images/READMEImages/edible-product-detail-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Lighthouse fudge details](static/images/READMEImages/Lighthouse-edibleproduct-detail.png)  |
+| ![HTML product detail validation](static/images/READMEImages/edible-product-detail-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | ![JSHint validation](static/images/READMEImages/jshint-edible_products.png) | No issues | ![Lighthouse fudge details](static/images/READMEImages/Lighthouse-edibleproduct-detail.png)  |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-| Choice of weight and price |  |  |  |  |
+| Choice of weight and price | Not possible with drop down - reverts to default| Not possible with drop down - reverts to default | Not possible with drop down - reverts to default | Not possible with drop down - reverts to default |
 | Number of products to add |  |  |  |  |
 
 
@@ -175,7 +175,7 @@ FAQs and Contact Us
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  | ![Lighthouse Signup](static/images/READMEImages/lighthouse-signup.png) |
+| These are from AllAuth | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | NOt specifically tested | ![Lighthouse Signup](static/images/READMEImages/lighthouse-signup.png) |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -192,7 +192,10 @@ FAQs and Contact Us
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
 | Subscription status honoured | If a user is already a subscriber, this is reflected in the banner and the removal of the delivery charge. If the subscription product is in the basket for checkout, the same thing happens. | Yes  |
-|  |  |   |
+| View all items | All items in the basket plus key additional information are shown | Yes |
+| Remove or update the number of items | 'Remove' successfully removes the item and returns to the basket page. The arrows can be used to change the quantity of any item in the basket, 'update' saves this information to the basket and updates the cost. | Yes |
+| Grand total can be seen | The grand total is calculated and returned to the user accurately. | Yes |
+
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
@@ -239,7 +242,6 @@ FAQs and Contact Us
 The Stripe payments were tested using their set of test numbers. It was also confirmed that after the user received their error warning that they were then able to complete a purchase as planned with a correct number.
 
 
-
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
@@ -269,17 +271,19 @@ The Stripe payments were tested using their set of test numbers. It was also con
 ## Subscriptions page
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-| View non-restricted content when not registered/logged in |  |   |
-| Access to restricted content after logging in |  |   |
+| View non-restricted content when not registered/logged in | Page suggests login |  Yes |
+| Access to restricted content after logging in | Page content changes to show the login | Yes |
+| Unable to subscribe twice | Page content changes to tell the user they are subscribed already | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-|  | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| ![Subscription HTML validation](static/images/READMEImages/subscription-html-checked.png) | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | No issues | ![Lighthouse Subscription](static/images/READMEImages/subscription-html-checked.png) |
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-| Attempt to register the same email address twice |   |
+| Attempt to register the same email address twice results in a warning on the screen that the address is already in use | Yes |
+| Customer attempts to add two subscriptions to the same basket will cause an error message to display in the toast that there cannot be more than one of these items in the basket. | Yes |
 
 ## Admin dashboard features
 | Test case description  | Expected outcome |  Pass?  | 
@@ -288,7 +292,7 @@ The Stripe payments were tested using their set of test numbers. It was also con
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
 
 ### CRUD of Edible Products
 | Test case description  | Expected outcome |  Pass?  | 
@@ -301,7 +305,7 @@ The Stripe payments were tested using their set of test numbers. It was also con
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -318,7 +322,7 @@ The Stripe payments were tested using their set of test numbers. It was also con
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -331,7 +335,7 @@ The Stripe payments were tested using their set of test numbers. It was also con
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
@@ -340,11 +344,12 @@ The Stripe payments were tested using their set of test numbers. It was also con
 ### Receiving and checking off inquiries
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
-|  |  |   |
+| Admin receive the messages | Messages sent from users appear in the dashboard list | Yes  |
+|  |  |  |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
-| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) |  |  |  |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS |  | Not available for logged in pages |
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|

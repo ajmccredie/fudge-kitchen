@@ -4,7 +4,7 @@ from core.models import Product, CommonProduct
 
 class Allergen(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(max_length=100, blank=True, null=True)
     symbol = models.ImageField(upload_to='allergens/', null=True, blank=True)
 
     def __str__(self):
@@ -25,10 +25,10 @@ class EdibleProduct(Product):
     }
 
     plant_based = models.BooleanField(default=False)
-    description = models.TextField(blank=False, null=True)
+    description = models.TextField(max_length=600, blank=False, null=True)
     flavour = models.CharField(max_length=254, null=True, blank=False)
     guest_flavour = models.BooleanField(default=False)
-    ingredients = models.TextField()
+    ingredients = models.TextField(max_length=300)
     weight = models.PositiveIntegerField(
         default=400, choices=WEIGHT_CHOICES, help_text="Weight in grams"
     )

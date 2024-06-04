@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class OurStory(models.Model):
     title = models.CharField(max_length=200, help_text="Enter the page title")
-    content = models.TextField(help_text="Enter the page content")
+    content = models.TextField(max_length=1000, help_text="Enter the page content")
     image = models.ImageField(
         null=True, blank=True,
         help_text="Upload an image for the story"
@@ -18,7 +18,7 @@ class OurStory(models.Model):
 class Inquiry(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField(max_length=500)
-    email = models.EmailField()
+    email = models.EmailField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     is_new = models.BooleanField(default=True)
     is_dealt_with = models.BooleanField(default=False)
