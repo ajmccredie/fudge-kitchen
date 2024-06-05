@@ -1,6 +1,4 @@
-from django.shortcuts import (
-    render, get_object_or_404, redirect, reverse
-)
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views import View
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -39,17 +37,12 @@ class BasketView(View):
 
 class AddToBasketView(View):
     def post(self, request, item_id):
-        print("Received data:", request.POST)  # Debug statement
-
         product_type = request.POST.get('product_type')
-        print("Product type:", product_type)  # Debug statement
 
         if product_type == 'edible':
             product = get_object_or_404(EdibleProduct, pk=item_id)
             product_id = product.id
-            name = product.name
-            price = product.price
-            # image_url = product.image.url
+
         elif product_type == 'merch':
             product = get_object_or_404(MerchProduct, pk=item_id)
             product_id = product.id
@@ -107,15 +100,14 @@ class AddToBasketView(View):
             if str(common_product.id) not in basket:
                 basket[str(common_product.id)] = {'details': {}}
 
-            if text_option_id in basket[
-                str(common_product.id)]['details']:
-                    basket[str(common_product.id)]['details'][
+            if text_option_id in basket[str(common_product.id)]['details']:
+                basket[str(common_product.id)]['details'][
                     text_option_id
-                ] += quantity
+                    ] += quantity
             else:
                 basket[str(common_product.id)]['details'][
                     text_option_id
-                ] = quantity
+                    ] = quantity
 
         elif product_type == 'subscription':
             if request.user.profile.is_subscribed:
@@ -133,9 +125,9 @@ class AddToBasketView(View):
 
             basket = {
                 k: v for k, v in basket.items()
-                if (
-                    CommonProduct.objects.get(pk=k).product_type != 'subscription'
-                )
+                if CommonProduct.objects.get(
+                    pk=k
+                    ).product_type != 'subscription'
             }
             basket[str(common_product.id)] = 1
 

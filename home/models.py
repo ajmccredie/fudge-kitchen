@@ -4,7 +4,9 @@ from django.contrib.auth.models import User
 
 class OurStory(models.Model):
     title = models.CharField(max_length=200, help_text="Enter the page title")
-    content = models.TextField(max_length=1000, help_text="Enter the page content")
+    content = models.TextField(
+        max_length=1000, help_text="Enter the page content"
+        )
     image = models.ImageField(
         null=True, blank=True,
         help_text="Upload an image for the story"

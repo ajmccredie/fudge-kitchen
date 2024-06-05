@@ -1,5 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
 from edible_products.models import EdibleProduct, ProductWeightPrice, Allergen
 from merch.models import MerchProduct, ColourVariation, TextOption
 from checkout.models import Order, OrderLineItem
@@ -12,6 +14,7 @@ class EdibleProductForm(forms.ModelForm):
         queryset=Allergen.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False,
+        help_text="Please check this matches the product ingredients.",
     )
 
     class Meta:
@@ -22,6 +25,8 @@ class EdibleProductForm(forms.ModelForm):
             'description',
             'ingredients',
             'image',
+            'plant_based',
+            'guest_flavour',
             'gluten',
             'crustaceans',
             'eggs',
@@ -35,9 +40,8 @@ class EdibleProductForm(forms.ModelForm):
             'sesame_seeds',
             'sulphur_dioxide_and_sulphites',
             'lupin',
-            'molluscs',
-            'plant_based'
-            ]
+            'molluscs'
+        ]
         error_messages = {
             'name': {'required': 'Name is required.'},
             'flavour': {'required': 'Flavour is required.'},
@@ -48,6 +52,7 @@ class EdibleProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EdibleProductForm, self).__init__(*args, **kwargs)
+        self.fields['name'].initial = 'Fudge'
         default_prices = EdibleProduct.DEFAULT_WEIGHT_PRICES
 
         for weight, price in default_prices.items():
@@ -58,6 +63,46 @@ class EdibleProductForm(forms.ModelForm):
                 required=False
             )
 
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Fieldset(
+                'Product Information',
+                'name',
+                'flavour',
+                'description',
+                'ingredients',
+                'image',
+                'plant_based',
+                'guest_flavour'
+            ),
+            Fieldset(
+                'Allergens',
+                'gluten',
+                'crustaceans',
+                'eggs',
+                'fish',
+                'peanuts',
+                'soybeans',
+                'milk',
+                'nuts',
+                'celery',
+                'mustard',
+                'sesame_seeds',
+                'sulphur_dioxide_and_sulphites',
+                'lupin',
+                'molluscs',
+                Field('allergens', template='fields/allergens_field.html')
+            ),
+            Fieldset(
+                'Price Overrides',
+                *[f'price_{weight}g' for weight in default_prices.keys()]
+            ),
+            ButtonHolder(
+                Submit('save', 'Save', css_class='btn btn-primary')
+            )
+        )
+
     def save(self, commit=True):
         instance = super(EdibleProductForm, self).save(commit=False)
         instance.plant_based = self.cleaned_data.get('plant_based', False)
@@ -65,14 +110,15 @@ class EdibleProductForm(forms.ModelForm):
         if commit:
             instance.save()
             self.save_m2m()  # To save many-to-many data
-            for weight, price in EdibleProduct.DEFAULT_WEIGHT_PRICES.items():
+            for weight in EdibleProduct.DEFAULT_WEIGHT_PRICES.keys():
                 field_name = f'price_{weight}g'
-                weight_price = self.cleaned_data.get(field_name) or price
-                ProductWeightPrice.objects.update_or_create(
-                    product=instance,
-                    weight=weight,
-                    defaults={'price': weight_price}
-                )
+                weight_price = self.cleaned_data.get(field_name)
+                if weight_price is not None:
+                    ProductWeightPrice.objects.update_or_create(
+                        product=instance,
+                        weight=weight,
+                        defaults={'price': weight_price}
+                    )
 
         return instance
 

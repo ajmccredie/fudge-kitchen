@@ -10,14 +10,30 @@ class Product(models.Model):
         ('subscription', 'Subscription'),
     ]
 
-    name = models.CharField(max_length=254, blank=True, null=True)
-    description = models.TextField(max_length=600, blank=True, null=True)
+    name = models.CharField(
+        max_length=254,
+        blank=False,
+        null=False,
+        default="Product Name"
+        )
+    description = models.TextField(
+        max_length=600,
+        blank=False,
+        null=False,
+        default="Product Description"
+        )
     price = models.DecimalField(
         max_digits=6,
         decimal_places=2,
-        blank=True, null=True
+        blank=False,
+        null=True,
+        default=7.00
         )
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(
+        null=False,
+        blank=False,
+        default='static/images/default_text_logo.png'
+        )
     product_type = models.CharField(
         max_length=50,
         choices=PRODUCT_TYPE_CHOICES,

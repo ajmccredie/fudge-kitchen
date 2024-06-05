@@ -363,7 +363,9 @@ class SubProfileDetailView(StaffRequiredMixin, DetailView):
         profile = self.object
         allergen_fields = ProfileForm.ALLERGEN_FIELDS
         context['allergens'] = [
-            label for field, label in allergen_fields if getattr(profile, field)
+            label for field, label in allergen_fields if getattr(
+                profile, field
+                )
         ]
         return context
 

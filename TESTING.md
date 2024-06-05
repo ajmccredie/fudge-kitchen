@@ -330,19 +330,19 @@ The Stripe payments were tested using their set of test numbers. It was also con
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-| Name |  |  |  |  |
-| Description |  |  |  |  |
-| Price |  |  |  | Only accepts numbers |
-| Type | Form error shown on page |  |  |  |
-| Colour |  |  |  |  |
-| Image |  | Resolution of image can be too high and shows as a form error |  |  |
-| Colour variations (name) |  |  |  |  |
-| Colour variations (image) |  |  |  |  |
-| Colour variations (product url) |  |  |  |  |
+| Name | Form error shown on page | Capped at limit | Anything can be added. Store Manager needs to check | Anything can be added in CharField. Store Manager needs to check |
+| Description | Form error shown on page | Capped at limit | Anything can be added. Store Manager needs to check | Anything can be added. Store Manager needs to check |
+| Price | Form error shown on page | Capped at limit | Store Manager needs to check | Only accepts numbers |
+| Type | Form error shown on page | Capped at limit | Anything can be added. Store Manager needs to check | Anything can be added. Store Manager needs to check |
+| Colour | Form error shown on page | Capped at limit | Anything can be added. Store Manager needs to check | Anything can be added. Store Manager needs to check |
+| Image | Form error shown on page | Resolution of image can be too high and shows as a form error | Anything can be added. Store Manager needs to check | Only accepts valid image files |
+| Colour variations (name) | No issue | Capped at limit | Anything can be added. Store Manager needs to check | Anything can be added. Store Manager needs to check |
+| Colour variations (image) | No issue | Resolution of image can be too high and shows as a form error | Anything can be added. Store Manager needs to check | Only accepts valid image files |
+| Colour variations (product url) | No issue | From a drop-down list | Incorrect link will be made, this will need to be checked by the Store Manager | Should not be an issue because only valid options appear in the drop-down menu |
 | Colour variations (delete) | N/A | N/A | Deleted links disappear on save. This is not checked | N/A |
-| Text options (text) |  |  |  |  |
-| Text options (image) |  |  | Anything can be added. Store Manager needs to check |  |
-| Text options (delete) |  |  | Deleted options disappear on save. This is not checked |  |
+| Text options (text) | No issue | Capped at limit | Anything can be added. Store Manager needs to check | Anything can be added. Store Manager needs to check |
+| Text options (image) | No issue | Resolution of image can be too high and shows as a form error | Anything can be added. Store Manager needs to check | N/A |
+| Text options (delete) | N/A | N/A | Deleted options disappear on save. This is not checked | N/A |
 
 ### Tracking of orders
 | Test case description  | Expected outcome |  Pass?  | 
@@ -359,15 +359,15 @@ The Stripe payments were tested using their set of test numbers. It was also con
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
 | Toggle as made | N/A | N/A |  | N/A |
-| Toggle as dispatched | N/A | N/A |  | N/A |
+| Toggle as dispatched | N/A | N/A | Will show as 'dispatched' | N/A |
 | Mark as deleted | N/A | N/A | Removes from the list and from the 'orders' in the user's profile too. | N/A |
 
 ### Receiving and checking off inquiries
 | Test case description  | Expected outcome |  Pass?  | 
 | ----------- | ----------- | ----------- |
 | Admin receive the messages | Messages sent from users appear in the dashboard list | Yes  |
-| Admin can choose act on message |  |  |
-| Admin can mark images as dealt with |  |  |
+| Admin can choose best action for message | The autonomy of how best to deal with the inquiry is given to the Store Manager. The email address is included, so that actions can be reported back in an email if required. | Yes |
+| Admin can mark images as dealt with | The Store Manager can mark those inquiries which have been responded to or dealt with appropriately in any other manner in order to allow them to prioritise the ones which still need attention, but keep a record of resolved ones. | Yes |
 
 |  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
 | ---- | ---- | ---- | ---- | ---- |
@@ -375,17 +375,48 @@ The Stripe payments were tested using their set of test numbers. It was also con
 
 | Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
 | ----------- | ----------- | ----------- | ----------- | --------|
-|  |  |  |  |  |
+| Mark as dealt with | Stays marked as not dealt with | N/A | If pressed by mistake, it will show as 'dealt with' | N/A |
 
 ### Subscription Management
+#### CRUD of Subscription Products
+| Test case description  | Expected outcome |  Pass?  | 
+| ----------- | ----------- | ----------- |
+| Admin access detailed list of all subscription products | Full list of subscription products can be seen with images and options for actions | Yes |
+| Admin create product | A new product can be created by filling in the form and will appear on the customer front end | Yes |
+| Admin can delete product from the top list | A product can be deleted and will disappear from the customer front end | Yes |
+| Admin edit product | Store manager can make quick changes, save the form and it appears on the customer front end | Yes |
+| Changes immediately active on site | Any changes on the Store Management are immediately reflected on the customer front end | Yes |
 
+|  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
+| ---- | ---- | ---- | ---- | ---- |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | No issues | Not available for logged in pages |
+
+| Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
+| ----------- | ----------- | ----------- | ----------- | --------|
+| Name | Form error displayed | Capped at set limit | Needs to be caught by management | Needs to be caught by management |
+| Description | Form error displayed | Capped at set limit | Needs to be caught by management | Needs to be caught by management |
+| Price | Form error displayed | Capped at set limit | Needs to be caught by management | Only accepts numbers |
+
+#### Management of existing subscriptions
+ Test case description  | Expected outcome |  Pass?  | 
+| ----------- | ----------- | ----------- |
+| Management can use the subscriber list for contact or sending samples | The main list contains the email addresses, which can be used for contact. The link takes the manager to a page with the address and dietary details, which would be needed to send free samples | Yes |
+| Management can manage the length of the subscription | A clear countdown is provided for each subscribing member. The ability to unsubscribe the customer either acting on their request or at the end of their subscription period is given in the form of a button | Yes |
+
+|  HTML  |  CSS  |  JSHint  |  Python Linter  |  Lighthouse |
+| ---- | ---- | ---- | ---- | ---- |
+| Unable to test due to password protection | ![CSS validation](static/images/READMEImages/css-validated.png) | No additional JS | No issues | Not available for logged in pages |
+
+| Form field  | Blank |  Too long/large  |  Incorrect  | Invalid |
+| ----------- | ----------- | ----------- | ----------- | --------|
+| Unsubscribe | N/A | N/A | User is accidentally unsubscribed | N/A |
 
 
 #### Other tests of possible user actions
 | Action description  | Result acceptable? | 
 | ----------- | ----------- |
-| Back-up from page |   |
-| Refresh page |   |
+| Back-up from page results in nothing saving, unless the save and return was pressed | Yes |
+| Refresh page empties the filled in fields, requiring them to be filled in again (unless these were filled in as default values initially). | Yes |
 
 
 Click [here](README.md) to return to the README.md
