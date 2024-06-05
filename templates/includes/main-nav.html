@@ -8,13 +8,13 @@
             </a>
         </li>
         <li class="nav-item dropdown">
-            <a class="logo-font font-weight-bold nav-link mr-5" href="{% url 'product_list' %}"
+            <a class="logo-font font-weight-bold nav-link mr-5" href="{% url 'edible_products:product_list' %}"
                 id="edible-products-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Edible Products
             </a>
             <div class="dropdown-menu border-0" aria-labelledby="edible-products-link">
-                <a href="{% url 'plant_based_products' %}" class="dropdown-item">Plant Based</a>
-                <a href="{% url 'traditional_products' %}" class="dropdown-item">Traditional</a>
+                <a href="{% url 'edible_products:plant_based_products' %}" class="dropdown-item">Plant Based</a>
+                <a href="{% url 'edible_products:traditional_products' %}" class="dropdown-item">Traditional</a>
             </div>
         </li>
 
@@ -25,10 +25,10 @@
                 Merch
             </a>
             <div class="dropdown-menu border-0" aria-labelledby="merch-link">
-                <a href="{% url 'merch_product_list' %}?type=mug" class="dropdown-item">Mugs</a>
-                <a href="{% url 'merch_product_list' %}?type=bag" class="dropdown-item">Bags</a>
-                <a href="{% url 'merch_product_list' %}?type=coaster" class="dropdown-item">Coasters</a>
-                <a href="{% url 'merch_product_list' %}?type=bottle" class="dropdown-item">Water Bottles</a>
+                <a href="{% url 'merch:merch_product_list' %}?type=mug" class="dropdown-item">Mugs</a>
+                <a href="{% url 'merch:merch_product_list' %}?type=bag" class="dropdown-item">Bags</a>
+                <a href="{% url 'merch:merch_product_list' %}?type=coaster" class="dropdown-item">Coasters</a>
+                <a href="{% url 'merch:merch_product_list' %}?type=bottle" class="dropdown-item">Water Bottles</a>
             </div>
         </li>
 

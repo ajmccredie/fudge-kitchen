@@ -64,7 +64,7 @@ class CheckoutView(View):
                 request,
                 "There's nothing in your basket at the moment."
             )
-            return redirect(reverse('product_list'))
+            return redirect(reverse('edible_products:product_list'))
 
         if request.user.is_authenticated:
             profile = request.user.profile
@@ -132,7 +132,7 @@ class CheckoutView(View):
             if 'basket' in request.session:
                 del request.session['basket']
 
-            return redirect('checkout_success', order.order_number)
+            return redirect('checkout:checkout_success', order.order_number)
         else:
             messages.error(
                 request,

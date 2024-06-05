@@ -7,9 +7,9 @@
 <div class="container mt-5 pt-7">
     <h2 class="logo-font text-center my-4">Our Products</h2>
     <div class="navigation-links">
-        <a href="{% url 'product_list' %}">All of the Sweetness</a> |
-        <a href="{% url 'traditional_products' %}">Traditional</a> |
-        <a href="{% url 'plant_based_products' %}">Plant Based</a>
+        <a href="{% url 'edible_products:product_list' %}">All of the Sweetness</a> |
+        <a href="{% url 'edible_products:traditional_products' %}">Traditional</a> |
+        <a href="{% url 'edible_products:plant_based_products' %}">Plant Based</a>
     </div>
     <!-- Product List -->
     <div class="allergen-filters mb-3">
@@ -28,7 +28,7 @@
     </div>
     <div class="row">
         {% for product in edible_products %}
-        <a href="{% url 'product_detail' product.id %}" style="text-decoration: none; color: inherit;"
+        <a href="{% url 'edible_products:product_detail' product.id %}" style="text-decoration: none; color: inherit;"
             class="col-sm-6 col-md-4 col-lg-3 mb-4" onmouseover="this.style.cursor='pointer'">
             <div class="card h-100 position-relative">
                 {% if product.guest_flavour %}

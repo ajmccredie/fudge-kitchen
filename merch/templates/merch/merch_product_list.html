@@ -10,7 +10,7 @@
     <div class="container mt-5 pt-5">
         <div class="row">
             {% for product in object_list %}
-            <a href="{% url 'merch_product_detail' product.id %}" style="text-decoration: none; color: inherit;"
+            <a href="{% url 'merch:merch_product_detail' product.id %}" style="text-decoration: none; color: inherit;"
                 class="col-sm-6 col-md-4 col-lg-3 mb-4" onmouseover="this.style.cursor='pointer'">
                 <div class="card h-100 merch-card">
                     {% if product.image %}

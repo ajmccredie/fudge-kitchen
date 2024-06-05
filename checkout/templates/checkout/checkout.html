@@ -63,7 +63,7 @@
         </div>
         <div class="col-12 col-lg-6">
             {% if user.is_authenticated %}
-            <form action="{% url 'checkout' %}" method="POST" id="payment-form">
+            <form action="{% url 'checkout:checkout' %}" method="POST" id="payment-form">
                 {% csrf_token %}
                 <div class="form-group">
                     {{ order_form.full_name|as_crispy_field }}

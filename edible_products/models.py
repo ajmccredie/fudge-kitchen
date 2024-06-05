@@ -28,7 +28,7 @@ class EdibleProduct(Product):
     description = models.TextField(max_length=600, blank=False, null=True)
     flavour = models.CharField(max_length=254, null=True, blank=False)
     guest_flavour = models.BooleanField(default=False)
-    ingredients = models.TextField(max_length=300)
+    ingredients = models.TextField(max_length=700)
     weight = models.PositiveIntegerField(
         default=400, choices=WEIGHT_CHOICES, help_text="Weight in grams"
     )

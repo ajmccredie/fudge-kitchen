@@ -15,7 +15,7 @@
                 <ul>
                     {% for product in edible_products %}
                         <li>
-                            <a href="{% url 'product_detail' product.id %}">
+                            <a href="{% url 'edible_products:product_detail' product.id %}">
                                 {{ product.name }} - {{ product.flavour }}
                             </a>
                         </li>
@@ -27,7 +27,7 @@
                 <ul>
                     {% for product in merch_products %}
                         <li>
-                            <a href="{% url 'merch_product_detail' product.id %}">
+                            <a href="{% url 'merch:merch_product_detail' product.id %}">
                                 {{ product.name }}
                             </a>
                         </li>

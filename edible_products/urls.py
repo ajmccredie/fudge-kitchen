@@ -4,6 +4,8 @@ from .views import (
     GetPriceView, PlantBasedListView, TraditionalListView
 )
 
+app_name = 'edible_products'
+
 urlpatterns = [
     path('', EdibleProductListView.as_view(), name='product_list'),
     path(
