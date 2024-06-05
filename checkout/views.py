@@ -28,12 +28,8 @@ def cache_checkout_data(request):
         order_number = request.POST.get('order_number')
         if client_secret:
             pid = client_secret.split('_secret')[0]
-            print("Cache pid: ", pid)
+
             stripe.api_key = settings.STRIPE_SECRET_KEY
-            print(
-                'basket in cache checkout data',
-                json.dumps(request.session.get('basket', {}))
-            )
             stripe.PaymentIntent.modify(
                 pid,
                 metadata={

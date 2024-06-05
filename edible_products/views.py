@@ -18,7 +18,6 @@ class EdibleProductListView(ListView):
             for allergen in allergens_selected:
                 queryset = queryset.exclude(**{allergen: True})
 
-        print("Number of products found:", queryset.count())
         return queryset
 
     def get_context_data(self, **kwargs):

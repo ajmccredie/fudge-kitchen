@@ -85,8 +85,6 @@ class Profile(models.Model):
         expiration_date = (
             self.subscription_start_date + timedelta(days=365 * 1)
         )
-        print(f"Expiration Date: {expiration_date}, "
-              f"Current Date: {timezone.now().date()}")
         return expiration_date - timezone.now().date()
 
 

@@ -88,7 +88,9 @@ def basket_contents(request):
                 has_subscription = True
 
         except Exception as e:
-            print(f"Error processing item ID {item_id}: {e}")
+            messages.error(
+                request, f"Error processing item ID {item_id}: {e}"
+                )
 
     delivery = calculate_delivery(total, request.user, has_subscription)
     context = {

@@ -55,7 +55,6 @@ class AddToBasketView(View):
             name = "Annual Subscription"
             price = product.price
         else:
-            print("Invalid product type detected.")  # Debug statement
             messages.error(request, 'Invalid product type.')
             return redirect(reverse('basket:view_basket'))
 
@@ -63,12 +62,7 @@ class AddToBasketView(View):
             common_product = CommonProduct.objects.get(
                 product_id=product_id, product_type=product_type
             )
-            print("CommonProduct found:", common_product)  # Debug statement
         except CommonProduct.DoesNotExist:
-            print(
-                f"CommonProduct with Product ID {product_id} and type "
-                f"{product_type} does not exist."
-            )
             messages.error(
                 request, f"Product with ID {product_id} not found."
             )

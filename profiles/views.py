@@ -125,7 +125,6 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
 
 class SubscriptionView(View):
     def get(self, request):
-        print("SubscriptionView: GET request received")
         subscription_product = (
             get_object_or_404(
                 SubscriptionProduct,

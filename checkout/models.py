@@ -110,7 +110,6 @@ class OrderLineItem(models.Model):
                 price_per_unit = self.edible_product.get_price_for_weight(
                     self.weight
                 )
-                print(price_per_unit)
                 if price_per_unit is None:
                     price_per_unit = Decimal('7.00')
                 self.lineitem_total = price_per_unit * Decimal(self.quantity)
