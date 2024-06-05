@@ -42,8 +42,8 @@ class ColourVariation(models.Model):
 
     def get_absolute_url(self):
         if self.url_product:
-            return reverse('merch_product_detail', args=[self.url_product.pk])
-        return reverse('merch_product_detail', args=[self.product.pk])
+            return reverse('merch:merch_product_detail', args=[self.url_product.pk])
+        return reverse('merch:merch_product_detail', args=[self.product.pk])
 
 
 class TextOption(models.Model):
