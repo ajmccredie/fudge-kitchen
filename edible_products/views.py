@@ -69,9 +69,9 @@ class EdibleProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.get_object()
-        context['price_400g'] = product.get_price_for_weight(400)
+        weight_prices = ProductWeightPrice.objects.filter(product=product)
+        context['weight_prices'] = weight_prices
         return context
-
 
 class GetPriceView(View):
     def get(self, request, *args, **kwargs):

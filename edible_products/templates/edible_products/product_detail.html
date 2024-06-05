@@ -39,14 +39,14 @@
                 <form class="form" action="{% url 'basket:add_to_basket' edible_product.id %}" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
-                        <input type="hidden" name="product_id" value="{{ object.id }}">
+                        <input type="hidden" name="product_id" value="{{ edible_product.id }}">
                         <input type="hidden" name="product_type" value="edible">
                         <input type="hidden" name="flavour" value="{{ edible_product.flavour }}">
                         <label for="weight">Weight:</label>
                         <select name="weight" id="weight" class="form-control" onchange="updatePrice()" data-product-id="{{ edible_product.id }}">
-                            <option value="100">100g - £3.50</option>
-                            <option value="400" selected>400g - £7.00</option>
-                            <option value="800">800g - £11.00</option>
+                            {% for weight_price in weight_prices %}
+                                <option value="{{ weight_price.weight }}">{{ weight_price.weight }}g - £{{ weight_price.price }}</option>
+                            {% endfor %}
                         </select>                            
                     </div>
                     <input type="hidden" name="redirect_url" value="{{ request.path }}">

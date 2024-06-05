@@ -130,6 +130,7 @@ class EdibleProduct(Product):
         is_new = self._state.adding
         super().save(*args, **kwargs)
         if is_new:
+            print("Running is_new")
             for weight, price in self.DEFAULT_WEIGHT_PRICES.items():
                 ProductWeightPrice.objects.create(
                     product=self, weight=weight, price=price
@@ -138,12 +139,16 @@ class EdibleProduct(Product):
                 product_type='edible', product_id=self.id
             )
         else:
+            print("Not running is_new")
             common_product = CommonProduct.objects.filter(
                 product_type='edible', product_id=self.id
             ).first()
             if common_product:
+                print("Now running if")
                 common_product.save()
+                print(common_product)
             else:
+                print("Now running else")
                 CommonProduct.objects.create(
                     product_type='edible', product_id=self.id
                 )

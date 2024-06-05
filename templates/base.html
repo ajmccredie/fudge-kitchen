@@ -231,6 +231,31 @@
 
   {% endblock %}
 
+  <footer class="container mt-5">
+    <div class="row">
+      <div class="col-12 text-center">
+        <p>
+          {% if request.user.is_authenticated %}
+            {% if request.user.profile.newsletter_recipient %}
+              Don't forget to read your latest newsletter!
+            {% else %}
+              Don't miss anything, <a href="{% url 'account_login' %}?next={% url 'profiles:profile' %}">sign-up for our awesome newsletter by clicking here</a>!
+            {% endif %}
+          {% else %}
+            Don't miss anything, <a href="{% url 'account_login' %}?next={% url 'profiles:profile' %}">sign-up for our awesome newsletter by clicking here</a>!
+          {% endif %}
+        </p>
+        <p>Spread the sweetness! Follow us and use hashtags #RoosFudgeKitchen #LifeIsSweeter</p>
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer nofollow">
+          <i class="fab fa-facebook"></i> Follow us on Facebook
+        </a>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer nofollow">
+          <i class="fab fa-instagram"></i> Follow us on Instagram
+        </a>
+      </div>
+    </div>
+  </footer>
+
   {% block postloadjs %}
   <script>
     $('.toast').toast('show');
@@ -253,7 +278,6 @@
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   {% endblock %}
-
 </body>
 
 </html>

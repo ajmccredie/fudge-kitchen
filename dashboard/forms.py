@@ -53,12 +53,23 @@ class EdibleProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EdibleProductForm, self).__init__(*args, **kwargs)
         self.fields['name'].initial = 'Fudge'
+        
+        if 'instance' in kwargs:
+            edible_product = kwargs['instance']
+            # Fetch the prices for the given product
+            weight_prices = ProductWeightPrice.objects.filter(product=edible_product)
+            price_dict = {price.weight: price.price for price in weight_prices}
+        else:
+            price_dict = {}
+
+        # Use the prices from the database if they exist, otherwise fall back to default prices
         default_prices = EdibleProduct.DEFAULT_WEIGHT_PRICES
 
         for weight, price in default_prices.items():
             field_name = f'price_{weight}g'
+            initial_price = price_dict.get(weight, price)
             self.fields[field_name] = forms.DecimalField(
-                initial=price,
+                initial=initial_price,
                 label=f'Price for {weight}g (override)',
                 required=False
             )

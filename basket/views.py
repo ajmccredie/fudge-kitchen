@@ -42,6 +42,7 @@ class AddToBasketView(View):
         if product_type == 'edible':
             product = get_object_or_404(EdibleProduct, pk=item_id)
             product_id = product.id
+            name = product.flavour
 
         elif product_type == 'merch':
             product = get_object_or_404(MerchProduct, pk=item_id)
