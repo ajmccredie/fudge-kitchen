@@ -14,38 +14,46 @@ Postcode: 42424<br>
 - [Project Rationale](#project-rationale)
 - [Business and Customer Goals](#business-and-customer-goals)
 - [UX/UI](#uxui)
-  - [Wireframes](#wireframes)
+  - [Wireframe Initial Ideas](#wireframe-initial-ideas)
   - [Colour Schemes](#colour-schemes)
   - [Fonts](#fonts)
-  - [Mock-ups](#mock-ups)
   - [Design Development and Consistency in Site Theming](#design-development-and-consistency-in-site-theming)
   - [Structure Plane: Key Site Features](#structure-plane-key-site-features)
 - [Data Relationships](#data-relationships)
+  - [ERD](#erd)
+  - [Explanation of Relationships](#explanation-of-relationships)
 - [Marketing](#marketing)
   - [Business Model](#business-model)
   - [Core Business Intent](#core-business-intent)
   - [Search Engine Optimisation (SEO)](#search-engine-optimisation-seo)
+    - [Keywords](#keywords)
+    - [SiteMap](#sitemap)
+    - [Robots](#robots)
   - [Social Media](#social-media)
+    - [Facebook Business Page (Mockup)](#facebook-business-page-mockup)
+    - [Instagram with Merchandise](#instagram-with-merchandise)
+    - [Newsletters](#newsletters)
 - [Agile Project Planning and Methodology](#agile-project-planning-and-methodology)
   - [Sprint 1: Objectives](#sprint-1-objectives)
   - [Sprint 2: Objectives](#sprint-2-objectives)
   - [Sprint 3: Objectives](#sprint-3-objectives)
   - [Sprint 4: Objectives](#sprint-4-objectives)
 - [Manual Testing (Overview)](#manual-testing-overview)
-  - [Responsiveness](#responsiveness)
-  - [Browser Compatibility](#browser-compatability)
+  - [Testing of User Stories](#testing-of-user-stories)
   - [Bugs](#bugs)
-  - [User Stories Tests](#user-stories-tests)
+    - [Resolved](#resolved)
+    - [Unresolved](#unresolved)
 - [Technologies Used](#technologies-used)
+  - [Languages](#languages)
   - [Frameworks](#frameworks)
-  - [Libraries](#libraries)
+  - [Libraries and Packages](#libraries-and-packages)
   - [Programmes](#programmes)
 - [References and Credits](#references-and-credits)
 - [Procedures](#procedures)
   - [Prerequisites and Installs](#prerequisites-and-installs)
   - [Forking and Cloning](#forking-and-cloning)
   - [Heroku App Creation](#heroku-app-creation)
-  - [AWS S3 Bucket Creation and Setup](#aws-s3-bucket-creation-and-set-up)
+  - [AWS S3 Bucket Creation and Setup](#aws-s3-bucket-creation-and-setup)
   - [Integrating AWS S3 with Django](#integrating-aws-s3-with-django)
   - [Stripe Configuration](#stripe-configuration)
 
@@ -56,14 +64,14 @@ Overall, the site targets discerning customers looking for gourmet fudge and a p
 
 ## Business and customer goals
 ### User goals:
-- Seamless, user friendly interface to enable browsing, filtering and purchasing of products with no uneccessary complexity.
+- Seamless, user friendly interface to enable browsing, filtering and purchasing of products with no unnecessary complexity.
 - Allergen filtering to be able to remove undesired products quickly and easily.
 - Payments are processed securely.
 - Users receive order confirmations and are able to track their order, and contact the business for inquiries.
 
 ### Business goals:
 - Establishment of a robust e-commerce platform to support and expand the market reach of the fudge company.
-- EFficiently manage product listings, inquiries, and processing and tracking of orders.
+- Efficiently manage product listings, inquiries, and processing and tracking of orders.
 - Engagement of customers through newsletters and social media, and the encouragement of brand loyalty with merchandise.
 - Implementation of a subscription model with benefits to the customers and enhanced customer retention.
 - Implementation of effective SEO strategies and social media presence in order to attract more customers and increase sales.
@@ -86,7 +94,7 @@ A full list of user stories and the associated acceptance criteria are detailed 
 | Subscription benefits page | ![Subscription benefits wireframe](static/images/READMEImages/WF4-SubscriptionBenefits.png)  | Some nice images and a good list of benefits, with the ability to click a link to join the service.  |
 | Basket page | ![Basket wireframe](static/images/READMEImages/WF5-Basket.png)  | Checkout page to look fairly similar, but with sign-in and Stripe element, and no ability to make further changes to the order.  |
 | Order confirmation page | ![Order confirmation wireframe](static/images/READMEImages/WF6-OrderConfirmation.png)  | Again, a very similar look and feel to the basket and checkout pages  |
-| Sign-up page | ![Sign-up wireframe](static/images/READMEImages/WF7-SignUpForm.png)  | This is just an idea, but used the all-auth in-built designs instead and personalised with CSS  |
+| Sign-up page | ![Sign-up wireframe](static/images/READMEImages/WF7-SignUpForm.png)  | This is just an idea, but used the allauth in-built designs instead and personalised with CSS  |
 | Our Story page | !![Our Story wireframe](static/images/READMEImages/WF8-BackgroundStory.png)  | An idea for how to layout images and text for this page.  |
 | FAQs and Inquiries page | ![FAQs and inquiries wireframe](static/images/READMEImages/WF9-FAQsInquiries.png)  | This will be accessed from 'Our Story' but only allow the inquiry form to be rendered for logged in users.  |
 | Custom 404 page | ![Custom 404 wireframe](static/images/READMEImages/WF10-CustomError.png)  | A similar look will be used for a custom 500 page too.  |
@@ -102,7 +110,7 @@ Soft, warm tone to give a sense of sweetness and nostalgia.<br>
 **Primary text colour: #2c2c2c (dark charcoal)**<br>
 A suitable neutral colour to provide balance to the warm tones and excellent readability.<br>
 **Header background colour and card background colour: #6b4f4f (deep taupe)**<br>
-Rich and warm, contrasing with the cornsilk.<br>
+Rich and warm, contrasting with the cornsilk.<br>
 **Header text colour: #f5f5cd (light khaki)**
 Soft, pale yellow, to contrast with the header background and ensure readability.<br>
 **Link colours and card titles: #daa520 (goldenrod)**<br>
@@ -110,11 +118,11 @@ Highlights important names and adds some vibrancy to the interactive features.<b
 
 ### Fonts
 **Terrapin, serif**
-A classic, elegrant font, with a sense of fun. Used for headers and slogans on the merchandise.
+A classic, elegant font, with a sense of fun. Used for headers and slogans on the merchandise.
 **Anonymous Pro, monospace**
 Provides a modern, clean look and excellent readability.
 
-### Design development and consistency in site theming
+### Design Development and consistency in site theming
 The same colour schemes and fonts are used throughout the site. The use of the base.html file allowed for the same headers and navbar, giving the users a strong sense of familiarity whilst navigating around the site.
 Toasts are used throughout the site to provide information regarding the basket and other user actions, including confirmation of any CRUD actions in the business dashboard. 
 The merchandise and edible products are shown in 'cards' on the full product lists with key information, with further details and choices available when these are clicked on. This prevents overload of information and allows the customer to quickly browse products of interest.
@@ -133,7 +141,7 @@ The merchandise and edible products are shown in 'cards' on the full product lis
 | **Merchandise products** | ![Merch list desktop](static/images/READMEImages/desktop-merch-list.png) | ![Merch list iPad](static/images/READMEImages/ipad-merch-list.png) | ![Merch list mobile](static/images/READMEImages/mobile-merch-list.png) | - Full variety of products can be seen. <br> - These can be further filtered using the navbar <br> - Detail and price shown on cards |
 | **Merchandise product details** | ![Merch details desktop](static/images/READMEImages/desktop-merch-detail.png) | ![Merch details iPad](static/images/READMEImages/ipad-merch-details.png) | ![Merch details mobile](static/images/READMEImages/mobile-merch-details.png) | - Price and description with larger, full image shown <br> - Alternative colours (if available) are shown and act as links to those products <br> - Choice of text in drop down menu, shown in the correct font when suggested. <br> - Ability to change the quantity required |
 | **Basket** | ![Basket desktop](static/images/READMEImages/desktop-basket.png) | ![Basket iPad](static/images/READMEImages/ipad-basket.png) | ![Basket mobile](static/images/READMEImages/mobile-basket.png) | - Key product information (name, image, amount, flavour and weight for edible, and text for merch) shown <br> - Ability to update the number of products or remove them altogether <br> - Options for whether to clear basket, keep shopping or proceed to checkout <br> - If basket is empty, only a 'keep shopping' option is given which returns to the homepage |
-| **Login** | ![Login desktop](static/images/READMEImages/desktop-signin.png) | ![Login iPad](static/images/READMEImages/ipad-signin.png) | ![Login mobile](static/images/READMEImages/mobile-signin.png) | - Adapted template from allauth <br> - User receieves a toast confirming their actions |
+| **Login** | ![Login desktop](static/images/READMEImages/desktop-signin.png) | ![Login iPad](static/images/READMEImages/ipad-signin.png) | ![Login mobile](static/images/READMEImages/mobile-signin.png) | - Adapted template from allauth <br> - User receives a toast confirming their actions |
 | **Sign-up** | ![Signup desktop](static/images/READMEImages/desktop-signup.png) | ![Signup iPad](static/images/READMEImages/ipad-signup.png) | ![Signup mobile](static/images/READMEImages/mobile-signup.png) | - Adapted template from allauth <br> - User receieves a toast confirming their actions <br> - Email address is confirmed and user redirected back to site |
 | Checkout | ![Checkout desktop](static/images/READMEImages/desktop-checkout.png) | ![Checkout iPad](static/images/READMEImages/ipad-checkout.png) | ![Checkout mobile](static/images/READMEImages/mobile-checkout.png) | - Items are shown. <br> - Non-authenticated users are asked to login or register for an account, and are then directed back to this page. <br> - Email address from login is lready populated and cannot be edited. <br> - Customers fill out the information <br> - Customers who have previously made a purchase will have their address details pre-populated, but can alter these as required. <br> - Stripe payment completed on the same page. <br> - Option to return to the basket is given if customers realise they have made mistakes. |
 | Checkout success | ![Confirmation desktop](static/images/READMEImages/desktop-confirmation.png) | ![Confirmation iPad](static/images/READMEImages/ipad-confirmation.png) | ![Confirmation mobile](static/images/READMEImages/mobile-confirmation.png) | - Shown on the page and with a toast. <br> - Email is also generated. <br> - Message on page suggests that users check their spam folders if it does not show up in their inbox in a couple of minutes.<br> - Customers receive a unique order number for tracking purposes. |
@@ -200,7 +208,7 @@ The parent class of the Fudge, Merchandise and Subscription models. CommonProduc
 
 ## Marketing
 ### Business model
-This site works on the principle of Business to Customer. The user is able to purchase the products directly from the business and have them shipped straight to them. A login is required to complete the purchase, but this has the advantage to the user that they can then track their order. There are further advantages and additional features available to registered users, newsletter suscribers and those who purchase an annual subscription.
+This site works on the principle of Business to Customer. The user is able to purchase the products directly from the business and have them shipped straight to them. A login is required to complete the purchase, but this has the advantage to the user that they can then track their order. There are further advantages and additional features available to registered users, newsletter subscribers and those who purchase an annual subscription.
 
 ### Core business intent
 To provide a simple and satisfying shopping experience for customers, allowing them to easily find the products they want and to make selections and purchases without problems. 
@@ -322,7 +330,7 @@ Goal 2: Set-up merchandise products and add a selection of these to the site <br
 Goal 3: Add the ability of the site to use the subscription status of the user to determine whether they pay delivery fee or not <br>
 Goal 4: Add all the initial edible products <br>
 Goal 5: Set-up filtering according to allergens and dietary preference of 'plant-based' diets <br>
-Goal 6: Set-up auto-filering with user profile details and login <br>
+Goal 6: Set-up auto-filtering with user profile details and login <br>
 Goal 7: Set-up basket and checkout procedures for the new products
 
 #### Sprint analysis and lessons learned
@@ -394,7 +402,7 @@ Goal 6: General bug fixing for address details and updating <br>
 Goal 7: 'Flavour of the month' products (automatically ordered for subscribed customers, and optional additions for other customers)?
 
 #### Sprint analysis and lessons learned
-The subscription product was made. At the moment users can sign up for a full year of free deliveries (starting from the instant of adding it to their basket and completing checkout). They can opt to remove the susbcription by contacting admin. Admin can see the dates when subscription were set up and the countdown of the number of valid dates remaining. <br>
+The subscription product was made. At the moment users can sign up for a full year of free deliveries (starting from the instant of adding it to their basket and completing checkout). They can opt to remove the subscription by contacting admin. Admin can see the dates when subscription were set up and the countdown of the number of valid dates remaining. <br>
 The emails were linked up, but this proved to be a little more difficult than originally anticipated and also lead to the webhooks not working for a time. Users were given the ability to sign-up for the newsletter and a list of interested users is easily available through the Store Management pages. General bugs were addressed through iteration and targeting. More were found through final testing and steps taken to fix each one. <br>
 Guest flavours have been identified on the site for general use. In a real life business, these would be sent to the users who are subscribed using information contained in the Store Management.
 
@@ -624,7 +632,7 @@ AWS S3 is used to store static and media files, as Heroku does not persist this 
 - Click "Create bucket".
   - **Bucket name**: Choose a name, ideally matching your Heroku app's name.
   - **Region**: Select the region closest to you.
-  - **Uncheck** "Block all public access" and acknowledge that the bucket will be public.
+  - **Uncheck** "Block all Public Access" and acknowledge that the bucket will be public.
   - Under "Object Ownership", enable ACLs and select "Bucket owner preferred".
   - In the "Properties" tab, enable static website hosting. Set "index.html" and "error.html" as the default documents.
 

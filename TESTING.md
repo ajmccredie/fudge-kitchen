@@ -2,8 +2,44 @@
 
 Click [here](README.md) to return to the README.md
 
-## Site browser compatability
-The site was checked for compatability on Chrome, Edge and Firefox. <br>
+## Table of Contents
+- [Full details of manual site testing](#full-details-of-manual-site-testing)
+- [Site browser compatibility](#site-browser-compatibility)
+  - [Edge](#edge)
+  - [Firefox](#firefox)
+- [Home page](#home-page)
+  - [Main nav menu](#main-nav-menu)
+  - [Search bar](#search-bar)
+  - [Other tests of possible user actions](#other-tests-of-possible-user-actions)
+- [About us](#about-us)
+  - [Restricted pages](#restricted-pages)
+  - [Other tests of possible user actions](#other-tests-of-possible-user-actions-1)
+- [Edible Products](#edible-products)
+  - [Edible product detail page](#edible-product-detail-page)
+  - [Site filtering](#site-filtering)
+  - [Other tests of possible user actions](#other-tests-of-possible-user-actions-2)
+- [Merchandise products](#merchandise-products)
+  - [Merch product detail page](#merch-product-detail-page)
+  - [Other tests of possible user actions](#other-tests-of-possible-user-actions-3)
+- [Accounts pages (including sign-up, sign-in and sign-out)](#accounts-pages-including-sign-up-sign-in-and-sign-out)
+  - [Basket](#basket)
+  - [Checkout](#checkout)
+  - [Other tests of possible user actions](#other-tests-of-possible-user-actions-4)
+- [Subscriptions page](#subscriptions-page)
+  - [Other tests of possible user actions](#other-tests-of-possible-user-actions-5)
+- [Admin dashboard features](#admin-dashboard-features)
+  - [CRUD of Edible Products](#crud-of-edible-products)
+  - [CRUD of Merch Products](#crud-of-merch-products)
+  - [Tracking of orders](#tracking-of-orders)
+  - [Receiving and checking off inquiries](#receiving-and-checking-off-inquiries)
+  - [Subscription Management](#subscription-management)
+    - [CRUD of Subscription Products](#crud-of-subscription-products)
+    - [Management of existing subscriptions](#management-of-existing-subscriptions)
+  - [Other tests of possible user actions](#other-tests-of-possible-user-actions-6)
+
+
+## Site browser compatibility
+The site was checked for compatibility on Chrome, Edge and Firefox. <br>
 The majority of the tests and screenshots shown in the README are from Chrome. <br>
 No major differences were found in the page functionalities and test purchases were complete successfully from all browsers checked.<br>
 
