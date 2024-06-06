@@ -5,7 +5,7 @@
 A site for the e-commerce store selling homemade fudge. The site allows for products to be filtered according to allergen needs. Access the deployed site [here](https://roos-fudge-kitchen-9f7897dcad9e.herokuapp.com/) <br>
 If you want to test the payment system, use these test card details:<br>
 Card Number: 4242 4242 4242 4242<br>
-Date: 0424<br>
+Date: 04/25<br>
 CVC: 242<br>
 Postcode: 42424<br>
 
