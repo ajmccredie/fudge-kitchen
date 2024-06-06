@@ -450,9 +450,7 @@ Full test details and results can be found in [Testing.md file](TESTING.md).
 
 - Issues caused by single product id but multiple available weights and flavours to Stripe. This was found when testing the basket contents. The first item added would be fine, but some subsequently added products could cause anomalies. For example, if fudge were in the basket first, attempting to add a water bottle could end up with the quantity of the first fudge product increasing, rather than creating a new product. Or potentially a new product was created, but then adding a further different product could result in the same issues. It was identified that this was due to the database set up of the different product types. After a bit of research and considering a few options, it was decided that the neatest and most robust solution would be to create a parent class of ‘Product’ and have the edible products and merch products inherit shared features, This also allowed the space to develop the subscription product during a later sprint. The parent class ‘Product’ was not designed to hold database items, so a further list of ‘CommonProducts’ was used to ensure that unique information would be handled by the store and Stripe.
 
-- Issues then caused to the basket and adding different weights of the same products
-
-- Deployment issues (images and adding links in admin or 'dashboard', orders not being saved or properly managed, disappearance of new accounts, whenever a redeployment was made). This was found through further investigation to be a database issue. I went to have a look at the database to find that it was apparently no longer stored in ElephantSQL (despite still having access to everything stored prior to its corruption and being able to temporarily store things from the deployed site (just not saving after re-deployment of the site). This was solved by cutting all links to the old database, deleting the former migrations and reconnecting to a new database. The migrations were then run again, the super-user reinstated, and then the database repopulated (thankfully a fairly swift process due to the nature of the Store Management dashboard CRUD capabilities). This bug occurred only a few weeks prior to the project submission date, so required swift resolution. 
+- Deployment issues (images and adding links in admin or 'dashboard', orders not being saved or properly managed, disappearance of new accounts, whenever a redeployment was made). This was found through further investigation to be a database issue. I went to have a look at the database to find that it was apparently no longer stored in ElephantSQL (despite still having access to everything stored prior to its corruption and being able to temporarily store things from the deployed site, just not saving after re-deployment of the site). This was solved by cutting all links to the old database, deleting the former migrations and reconnecting to a new database. The migrations were then run again, the super-user reinstated, and then the database repopulated (thankfully a fairly swift process due to the nature of the Store Management dashboard CRUD capabilities). This bug occurred only a few weeks prior to the project submission date, so required swift resolution. 
 
 - Allergen filtering set-up and the use of the forms took a while in order to ensure that there would be consistency between user input and database recognition. It took a while to find a satisfactory format for the information and for this to consistently work. This checkbox and filter system for the allergens was then used on all three template pages containing lists of the fudge products (all, traditional and plant based.). Having these as separate templates also removed some further requirements for live filtering.
 
@@ -465,6 +463,8 @@ Full test details and results can be found in [Testing.md file](TESTING.md).
 - The mobile header search bar was returning results only from the ‘edible products list’ (how it was initially set up) and not from all of the available products. This was found in testing and rectified in the template.
 
 - Account deletion was not working until this was found in final testing and rectified. This was simply down to carelessness and lack of earlier testing. It was quickly resolved with the addition of a csrf token. 
+
+- Ensuring the prices of the different weights of fudge could be changed from the admin back end took a little while. The way the values were both being saved and were then being called into the templates using them had to be reviewed and fixed. 
 
 
 #### Unresolved
@@ -516,16 +516,16 @@ Full test details and results can be found in [Testing.md file](TESTING.md).
 ## References and credits
 - Walkthrough projects of "BoutiqueAdo" and "I Think, Therefore I Blog". Template from BoutiqueAdo used and manipulated, in particular for the initial basket, webhooks, Stripe, toasts, and checkout structures.
 - Mentor for checking my ideas make sense and encouragement to get them implemented.
-- Learning Support, for assistance on a variety of topics, but mostly the webhooks (in particular Roman).
+- Learning Support, for assistance on a variety of topics, but mostly the webhooks and the structure of the items in the basket (in particular Roman).
 - Sam for allowing me to troubleshoot problems by talking (most 'at' him) the issues and potential solutions through.
 - Previous Hackathon projects of 'curse-generator-hackathon-2023' and 'EconoMate' for assistance with headers, menus and some script tricks.
 - Form structures and adapting existing ideas from CycleConnect (portfolio project 4)
 
 
-https://docs.djangoproject.com/en/5.0/topics/db/models/ for assistance on models and inheritance 
-https://docs.djangoproject.com/en/5.0/topics/serialization/ for serialising and sorting data appropriately.
-https://docs.djangoproject.com/en/5.0/topics/db/queries/ for reminders how to filter pages (some filters similar and some different to those used in my previous portfolio project 'CycleConnect').
-https://docs.djangoproject.com/en/5.0/intro/tutorial03/ for differentiating between urls.
+https://docs.djangoproject.com/en/5.0/topics/db/models/ for assistance on models and inheritance <br>
+https://docs.djangoproject.com/en/5.0/topics/serialization/ for serialising and sorting data appropriately. <br>
+https://docs.djangoproject.com/en/5.0/topics/db/queries/ for reminders how to filter pages (some filters similar and some different to those used in my previous portfolio project 'CycleConnect'). <br>
+https://docs.djangoproject.com/en/5.0/intro/tutorial03/ for differentiating between urls.<br>
 
 ## Procedures
 ### Prerequisites and installs
